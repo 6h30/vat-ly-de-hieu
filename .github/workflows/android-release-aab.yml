@@ -1,4 +1,4 @@
-name: Android release bundle (Google Play): Vật lý dễ hiểu
+name: Android release bundle (Google Play) - Vật lý dễ hiểu
 
 # Builds the .aab you upload to Google Play, plus a release .apk you can install to try it.
 # Signing needs these repository secrets: ANDROID_KEYSTORE_BASE64, ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS.
