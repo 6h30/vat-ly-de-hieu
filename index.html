@@ -53,6 +53,7 @@ select{width:100%;font:inherit;padding:8px;border-radius:8px;border:1px solid va
 .below{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
 .below ol{margin:0;padding-left:20px}
 .below li{margin-bottom:6px}
+.pic{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#f4f6fa}
 .real{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .real figure{margin:0}
 .real svg{display:block;width:100%;background:#f3f7fc;border-radius:10px;border:1px solid var(--line)}
@@ -101,6 +102,7 @@ details p{margin:10px 0 0}
         <div class="card box"><h3>Số liệu quan sát</h3><div id="read"></div></div>
       </div>
     </div>
+    <div class="card box" id="picbox" style="margin-top:16px"><h3>Hình minh hoạ</h3><img id="pic" class="pic" alt="" loading="lazy"></div>
     <div class="card box" style="margin-top:16px"><h3>Trong thực tế</h3><div class="real" id="real"></div></div>
     <div class="below">
       <div class="card box"><h3>Câu hỏi gợi mở</h3><ol id="qs"></ol></div>
@@ -902,6 +904,7 @@ function open(id){cur=LESSONS.find(l=>l.id===id)||LESSONS[0];S={};cur.ctl.forEac
   const col=GROUPS[cur.g][1];document.documentElement.style.setProperty('--acc',col);
   $('tag').textContent=GROUPS[cur.g][0]+' · '+cur.grade;$('tag').style.background=col;$('title').textContent=cur.title;$('goal').textContent=cur.goal;
   $('qs').innerHTML=cur.qs.map(q=>`<li>${q}</li>`).join('');$('concl').textContent=cur.concl;$('det').open=false;
+  {const im=$('pic');im.alt='Hình minh hoạ: '+cur.title;im.onerror=()=>{$('picbox').style.display='none'};$('picbox').style.display='';im.src='img/'+cur.id+'.webp';}
   $('real').innerHTML=(REAL[cur.id]||[]).map(r=>`<figure>${r[2]}<figcaption><b>${r[0]}</b>${r[1]}</figcaption></figure>`).join('');
   const box=$('ctl');box.innerHTML='';
   cur.ctl.forEach(c=>{const d=document.createElement('div');d.className='ctl';
