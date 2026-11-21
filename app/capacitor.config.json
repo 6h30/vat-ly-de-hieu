@@ -1,0 +1,8 @@
+{
+  "appId": "com.vatlydehieu.app",
+  "appName": "Vật lý dễ hiểu",
+  "webDir": "www",
+  "backgroundColor": "#172033",
+  "server": { "androidScheme": "https" },
+  "android": { "allowMixedContent": false }
+}

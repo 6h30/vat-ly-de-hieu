@@ -1,0 +1,928 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#172033">
+<link rel="icon" href="icon-192.png">
+<title>Vật lý dễ hiểu – THCS</title>
+<style>
+:root{--bg:#f4f6fa;--card:#fff;--ink:#1c2433;--mute:#5d6b82;--line:#dfe5ee;--acc:#2563eb;
+  --co:#2563eb;--nhiet:#dc4a26;--dien:#0f9d6b;--quang:#8b3fd9}
+*{box-sizing:border-box}
+body{padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:#172033;z-index:50}
+html,body{margin:0;height:100%}
+body{font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px}
+.app{display:grid;grid-template-columns:250px 1fr;min-height:100%}
+nav{background:#172033;color:#fff;padding:16px 12px;overflow:auto}
+nav h1{font-size:19px;margin:4px 8px 2px}
+nav .sub{font-size:13px;color:#9fb0cc;margin:0 8px 14px}
+.grp{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:14px 8px 6px;font-weight:700;display:flex;align-items:center;gap:8px}
+.grp i{width:10px;height:10px;border-radius:50%;display:inline-block}
+nav button{display:block;width:100%;text-align:left;background:none;border:0;color:#dbe4f3;font:inherit;font-size:14px;padding:6px 10px;border-radius:8px;cursor:pointer}
+nav button:hover{background:#243251}
+nav button.on{background:#fff;color:#172033;font-weight:600}
+main{padding:18px 22px 28px;min-width:0}
+.head{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.head .t{flex:1;min-width:220px}
+.tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;padding:3px 10px;border-radius:99px;margin-bottom:6px}
+h2{margin:0;font-size:26px;line-height:1.2}
+.goal{color:var(--mute);margin:6px 0 0;max-width:70ch}
+.tools{display:flex;gap:8px}
+.btn{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer}
+.btn:hover{border-color:#9fb0cc}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff}
+.work{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:16px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px}
+.stage{padding:8px}
+canvas{display:block;width:100%;aspect-ratio:800/460;border-radius:8px;background:#fff}
+.side{display:flex;flex-direction:column;gap:14px}
+.box{padding:14px 16px}
+.box h3{margin:0 0 10px;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.ctl{margin-bottom:12px}
+.ctl:last-child{margin-bottom:0}
+.ctl label{display:flex;justify-content:space-between;font-size:15px;margin-bottom:4px;gap:8px}
+.ctl output{font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+input[type=range]{width:100%;accent-color:var(--acc);height:26px;margin:0}
+select{width:100%;font:inherit;padding:8px;border-radius:8px;border:1px solid var(--line);background:#fff}
+.row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;border-bottom:1px dashed var(--line);font-size:15px}
+.row b{font-variant-numeric:tabular-nums;text-align:right}
+.verdict{margin-top:10px;padding:10px 12px;border-radius:8px;background:#eef4ff;font-weight:600;font-size:15px}
+.note{font-size:13px;color:var(--mute);margin-top:8px}
+.below{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.below ol{margin:0;padding-left:20px}
+.below li{margin-bottom:6px}
+.real{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.real figure{margin:0}
+.real svg{display:block;width:100%;background:#f3f7fc;border-radius:10px;border:1px solid var(--line)}
+.real figcaption{font-size:15px;margin-top:8px;line-height:1.4}
+.real figcaption b{display:block;margin-bottom:2px}
+@media(max-width:760px){.real{grid-template-columns:1fr}}
+details summary{cursor:pointer;font-weight:600;color:var(--acc)}
+details p{margin:10px 0 0}
+:fullscreen nav{display:none}
+:fullscreen .app{grid-template-columns:1fr}
+@media(max-width:1000px){.work{grid-template-columns:1fr}.below{grid-template-columns:1fr}}
+@media(max-width:760px){
+  .app{grid-template-columns:1fr}
+  nav{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+  nav{scrollbar-width:none}nav::-webkit-scrollbar{display:none}
+  nav h1,nav .sub{display:none}
+  .grp{margin:0 2px 0 8px;white-space:nowrap}
+  nav button{width:auto;white-space:nowrap;padding:8px 10px}
+  main{padding:12px}
+  h2{font-size:21px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav id="nav">
+    <h1>Vật lý dễ hiểu</h1>
+    <p class="sub">Mô phỏng tương tác · THCS</p>
+  </nav>
+  <main>
+    <div class="head">
+      <div class="t">
+        <span class="tag" id="tag"></span>
+        <h2 id="title"></h2>
+        <p class="goal" id="goal"></p>
+      </div>
+      <div class="tools">
+        <button class="btn" id="pause">⏸ Tạm dừng</button>
+        <button class="btn pri" id="full">⛶ Trình chiếu</button>
+      </div>
+    </div>
+    <div class="work">
+      <div class="card stage"><canvas id="cv"></canvas></div>
+      <div class="side">
+        <div class="card box"><h3>Điều chỉnh</h3><div id="ctl"></div></div>
+        <div class="card box"><h3>Số liệu quan sát</h3><div id="read"></div></div>
+      </div>
+    </div>
+    <div class="card box" style="margin-top:16px"><h3>Trong thực tế</h3><div class="real" id="real"></div></div>
+    <div class="below">
+      <div class="card box"><h3>Câu hỏi gợi mở</h3><ol id="qs"></ol></div>
+      <div class="card box"><h3>Kết luận</h3>
+        <details id="det"><summary>Bấm để hiện kết luận</summary><p id="concl"></p></details>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+"use strict";
+const W=800,H=460,cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let scale=1;
+const GROUPS={co:['Cơ học','#2563eb'],nhiet:['Nhiệt học','#dc4a26'],dien:['Điện học','#0f9d6b'],quang:['Quang học','#8b3fd9']};
+const f=(n,d=1)=>Number(n).toFixed(d).replace('.',',');
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const row=(a,b)=>`<div class="row"><span>${a}</span><b>${b}</b></div>`;
+const verdict=t=>`<div class="verdict">${t}</div>`;
+const note=t=>`<div class="note">${t}</div>`;
+
+/* ---------- vẽ cơ bản ---------- */
+function line(x1,y1,x2,y2,col='#1c2433',w=2,dash){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;if(dash)ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
+function txt(s,x,y,o={}){ctx.save();ctx.font=(o.bold?'600 ':'')+(o.size||15)+'px "Segoe UI",system-ui,Arial';ctx.fillStyle=o.col||'#1c2433';ctx.textAlign=o.align||'center';ctx.textBaseline=o.base||'middle';ctx.fillText(s,x,y);ctx.restore();}
+function head(x,y,ang,col,s=10){ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-s,-s*.45);ctx.lineTo(-s,s*.45);ctx.closePath();ctx.fill();ctx.restore();}
+function arrow(x1,y1,x2,y2,col,w=3){if(Math.hypot(x2-x1,y2-y1)<2)return;line(x1,y1,x2,y2,col,w);head(x2,y2,Math.atan2(y2-y1,x2-x1),col,11);}
+function flow(p,off,sp,col){let L=0;const seg=[];for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],l=Math.hypot(b[0]-a[0],b[1]-a[1]);seg.push([a,b,l]);L+=l;}
+  const n=Math.round(L/sp);sp=L/n;ctx.fillStyle=col;
+  for(let k=0;k<n;k++){let d=(((off%L)+L)%L+k*sp)%L;for(const [a,b,l] of seg){if(d<=l){ctx.beginPath();ctx.arc(a[0]+(b[0]-a[0])*d/l,a[1]+(b[1]-a[1])*d/l,4,0,7);ctx.fill();break;}d-=l;}}}
+function poly(p,col,w=3){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;ctx.lineJoin='round';ctx.beginPath();p.forEach((q,i)=>i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1]));ctx.closePath();ctx.stroke();ctx.restore();}
+function battery(x,y,U){ctx.fillStyle='#fff';ctx.fillRect(x-20,y-9,40,18);line(x-18,y-7,x+18,y-7,'#1c2433',3);line(x-9,y+7,x+9,y+7,'#1c2433',6);
+  txt('+',x-30,y-9,{bold:1,size:18,col:'#dc2626'});txt('−',x-30,y+9,{bold:1,size:18,col:'#2563eb'});txt('U = '+f(U,1)+' V',x-14,y+38,{size:14,bold:1,align:'center'});}
+function bulb(x,y,P,name){const a=clamp(P/10,0,1);ctx.save();
+  if(a>0.02){const g=ctx.createRadialGradient(x,y,5,x,y,30+a*40);g.addColorStop(0,`rgba(255,200,40,${.25+a*.6})`);g.addColorStop(1,'rgba(255,200,40,0)');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,30+a*40,0,7);ctx.fill();}
+  ctx.fillStyle=`rgb(255,${Math.round(255-a*45)},${Math.round(255-a*200)})`;ctx.strokeStyle='#1c2433';ctx.lineWidth=2.5;ctx.beginPath();ctx.arc(x,y,24,0,7);ctx.fill();ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x-17,y-17);ctx.lineTo(x+17,y+17);ctx.moveTo(x+17,y-17);ctx.lineTo(x-17,y+17);ctx.stroke();ctx.restore();
+  if(name)txt(name,x,y-40,{bold:1});}
+function axes(x0,y0,x1,y1,xl,yl){arrow(x0,y0,x1+18,y0,'#1c2433',2);arrow(x0,y0,x0,y1-18,'#1c2433',2);txt(xl,x1+18,y0+32,{size:14,align:'right'});txt(yl,x0+8,y1-26,{size:14,align:'left'});}
+
+/* ---------- các bài học ---------- */
+const LESSONS=[
+/* 1. Đòn bẩy */
+{id:'donbay',g:'co',title:'Đòn bẩy',grade:'Lớp 6',
+ goal:'Thay đổi độ lớn lực và khoảng cách đến điểm tựa ở hai bên để tìm điều kiện đòn bẩy cân bằng.',
+ ctl:[{k:'F1',label:'Lực F₁ (bên trái)',min:1,max:10,step:1,v:4,u:'N'},{k:'d1',label:'Khoảng cách d₁',min:10,max:50,step:5,v:30,u:'cm'},
+      {k:'F2',label:'Lực F₂ (bên phải)',min:1,max:10,step:1,v:6,u:'N'},{k:'d2',label:'Khoảng cách d₂',min:10,max:50,step:5,v:20,u:'cm'}],
+ init(s){s.a=0;},
+ draw(s,dt){const M1=s.F1*s.d1,M2=s.F2*s.d2,k=5.2,px=400,py=200;
+  const tg=M1===M2?0:Math.sign(M2-M1)*(5+11*Math.min(1,Math.abs(M2-M1)/(M1+M2)*2.5))*Math.PI/180;
+  s.a+=(tg-s.a)*Math.min(1,dt*3);
+  line(120,400,680,400,'#8a96a8',3);
+  ctx.fillStyle='#94a3b8';ctx.beginPath();ctx.moveTo(px,py+6);ctx.lineTo(px-42,400);ctx.lineTo(px+42,400);ctx.closePath();ctx.fill();
+  txt('Điểm tựa O',px,420,{size:14,col:'#5d6b82'});
+  ctx.save();ctx.translate(px,py);ctx.rotate(s.a);ctx.fillStyle='#b7793a';ctx.strokeStyle='#7a4b1c';ctx.lineWidth=2;ctx.fillRect(-272,-9,544,18);ctx.strokeRect(-272,-9,544,18);
+  for(let c=10;c<=50;c+=10)for(const sg of[-1,1]){line(sg*c*k,-9,sg*c*k,2,'#fff',2);txt(c,sg*c*k,-22,{size:12,col:'#5d6b82'});}
+  ctx.restore();
+  const hang=(d,F,sg,col,name)=>{const x=px+sg*d*k*Math.cos(s.a),y=py+sg*d*k*Math.sin(s.a),sz=30+F*4;
+   line(x,y,x,y+34,'#1c2433',2);ctx.fillStyle=col;ctx.fillRect(x-sz/2,y+34,sz,sz);txt(name,x,y+34+sz/2-8,{col:'#fff',bold:1,size:13});txt(F+' N',x,y+34+sz/2+9,{col:'#fff',bold:1,size:13});};
+  hang(s.d1,s.F1,-1,'#2563eb','F₁');hang(s.d2,s.F2,1,'#dc4a26','F₂');
+  ctx.fillStyle='#1c2433';ctx.beginPath();ctx.arc(px,py,6,0,7);ctx.fill();
+  txt(M1===M2?'CÂN BẰNG':(M1>M2?'Nghiêng về bên trái':'Nghiêng về bên phải'),400,50,{bold:1,size:22,col:M1===M2?'#0f9d6b':'#b45309'});},
+ read(s){const M1=s.F1*s.d1,M2=s.F2*s.d2;return row('F₁ × d₁',`${s.F1} × ${s.d1} = ${M1}`)+row('F₂ × d₂',`${s.F2} × ${s.d2} = ${M2}`)+
+  verdict(M1===M2?'F₁·d₁ = F₂·d₂ → đòn bẩy cân bằng':(M1>M2?'F₁·d₁ > F₂·d₂ → đầu bên trái hạ xuống':'F₁·d₁ < F₂·d₂ → đầu bên phải hạ xuống'));},
+ qs:['Giữ nguyên F₁ và d₁. Có những cặp (F₂, d₂) nào làm đòn bẩy cân bằng?','Muốn dùng lực nhỏ để nâng vật nặng thì phải đặt lực ở xa hay gần điểm tựa?','Kể tên vài dụng cụ trong đời sống hoạt động như đòn bẩy (kéo, xà beng, bập bênh…).'],
+ concl:'Đòn bẩy cân bằng khi F₁·d₁ = F₂·d₂. Lực đặt càng xa điểm tựa thì tác dụng làm quay càng lớn, nên có thể dùng lực nhỏ để thắng lực lớn nếu cánh tay đòn dài hơn.'},
+
+/* 2. Lực đẩy Ác-si-mét */
+{id:'acsimet',g:'co',title:'Lực đẩy Ác-si-mét và sự nổi',grade:'Lớp 8',
+ goal:'Thả một vật vào chất lỏng, so sánh trọng lượng P với lực đẩy F_A để biết vật nổi, lơ lửng hay chìm.',
+ ctl:[{k:'Dl',label:'Chất lỏng',type:'select',v:1000,opts:[[800,'Dầu ăn (800 kg/m³)'],[1000,'Nước (1000 kg/m³)'],[1200,'Nước muối (1200 kg/m³)']]},
+      {k:'Dv',label:'Khối lượng riêng của vật',min:200,max:2700,step:50,v:600,u:'kg/m³'},
+      {k:'V',label:'Thể tích vật',min:0.5,max:3,step:0.5,v:1,u:'dm³',d:1},
+      {type:'button',label:'↻ Thả lại từ trên cao',act(s){s.y=40;s.vy=0;}}],
+ init(s){s.y=40;s.vy=0;s.fr=0;},
+ draw(s,dt){const top=180,bot=420,side=50*Math.cbrt(s.V),g=600;
+  for(let i=0;i<4;i++){const h=dt/4;s.fr=clamp((s.y+side-top)/side,0,1);const a=g*(1-s.fr*s.Dl/s.Dv);s.vy+=a*h;if(s.fr>0)s.vy*=Math.exp(-3.5*h);s.y+=s.vy*h;if(s.y+side>=bot){s.y=bot-side;s.vy=Math.min(0,s.vy);}}
+  s.fr=clamp((s.y+side-top)/side,0,1);
+  const lc={800:'rgba(240,200,60,.45)',1000:'rgba(80,160,235,.4)',1200:'rgba(60,190,190,.45)'}[s.Dl];
+  ctx.fillStyle=lc;ctx.fillRect(220,top,360,bot-top);
+  ctx.strokeStyle='#1c2433';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(220,110);ctx.lineTo(220,bot);ctx.lineTo(580,bot);ctx.lineTo(580,110);ctx.stroke();
+  line(220,top,580,top,'#2f6fb5',2);txt('Mặt thoáng',640,top,{size:13,col:'#5d6b82'});
+  const x=400-side/2;ctx.fillStyle=s.Dv<700?'#c58a4a':s.Dv<1500?'#9aa7b8':'#6b7686';ctx.fillRect(x,s.y,side,side);ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.strokeRect(x,s.y,side,side);
+  const P=s.Dv*s.V/100,FA=s.Dl*s.V*s.fr/100,sc=95/Math.max(P,s.Dl*s.V/100),cx=400,cy=s.y+side/2;
+  arrow(cx-9,cy,cx-9,cy+P*sc,'#dc2626',4);txt('P',cx-26,cy+P*sc-4,{bold:1,col:'#dc2626',size:17});
+  if(FA>0.01){arrow(cx+9,cy,cx+9,cy-FA*sc,'#2563eb',4);txt('F_A',cx+34,cy-FA*sc+6,{bold:1,col:'#2563eb',size:17});}
+  s.P=P;s.FA=FA;},
+ read(s){const st=s.Dv<s.Dl?'Vật NỔI (D vật &lt; D chất lỏng)':s.Dv===s.Dl?'Vật LƠ LỬNG (D vật = D chất lỏng)':'Vật CHÌM (D vật &gt; D chất lỏng)';
+  return row('Trọng lượng P',f(s.P||0,1)+' N')+row('Lực đẩy F_A',f(s.FA||0,1)+' N')+row('Phần thể tích chìm',Math.round((s.fr||0)*100)+' %')+verdict(st)+note('F_A = d·V<sub>chìm</sub>, với d = 10·D là trọng lượng riêng của chất lỏng.');},
+ qs:['Khi vật nổi yên trên mặt chất lỏng, P và F_A so với nhau thế nào?','Cùng một vật, đổi từ nước sang nước muối thì phần chìm tăng hay giảm? Vì sao?','Tàu làm bằng thép (D ≈ 7800 kg/m³) vì sao vẫn nổi trên nước?'],
+ concl:'Vật nhúng trong chất lỏng chịu lực đẩy hướng lên F_A = d·V (V là thể tích phần chìm). Vật nổi khi D vật < D chất lỏng, lơ lửng khi bằng nhau và chìm khi lớn hơn. Khi nổi yên, F_A = P.'},
+
+/* 3. Chuyển động phân tử */
+{id:'phantu',g:'nhiet',title:'Chuyển động phân tử và khuếch tán',grade:'Lớp 8',
+ goal:'Quan sát các phân tử của hai chất chuyển động hỗn loạn và tự trộn lẫn vào nhau; nhiệt độ càng cao, chuyển động càng nhanh.',
+ ctl:[{k:'T',label:'Nhiệt độ',min:0,max:100,step:5,v:25,u:'°C'},{type:'button',label:'↻ Tách hai chất ra như ban đầu',act(s){this.reset(s);}}],
+ reset(s){s.p=[];for(let i=0;i<90;i++){const left=i<45;s.p.push({x:(left?70:410)+Math.random()*320,y:50+Math.random()*360,a:Math.random()*6.283,k:.6+Math.random()*.8,c:left?0:1});}s.time=0;},
+ init(s){LESSONS[2].reset(s);},
+ draw(s,dt){const v=45+s.T*2.4;s.time+=dt;
+  ctx.fillStyle='#f8fafc';ctx.fillRect(60,40,680,380);ctx.strokeStyle='#1c2433';ctx.lineWidth=3;ctx.strokeRect(60,40,680,380);line(400,40,400,420,'#94a3b8',1.5,[6,6]);
+  let mix=0;for(const q of s.p){q.a+=(Math.random()-.5)*dt*9;q.x+=Math.cos(q.a)*v*q.k*dt;q.y+=Math.sin(q.a)*v*q.k*dt;
+   if(q.x<68){q.x=68;q.a=Math.PI-q.a;}if(q.x>732){q.x=732;q.a=Math.PI-q.a;}if(q.y<48){q.y=48;q.a=-q.a;}if(q.y>412){q.y=412;q.a=-q.a;}
+   if((q.c===0&&q.x>400)||(q.c===1&&q.x<400))mix++;
+   ctx.fillStyle=q.c?'#f59e0b':'#2563eb';ctx.beginPath();ctx.arc(q.x,q.y,7,0,7);ctx.fill();}
+  s.mix=Math.min(100,Math.round(mix/s.p.length*200));
+  txt('Nhiệt độ: '+s.T+' °C',400,20,{bold:1,size:17,col:'#dc4a26'});
+  ctx.fillStyle='#2563eb';ctx.beginPath();ctx.arc(90,442,7,0,7);ctx.fill();txt('Phân tử chất A',104,442,{align:'left',size:14});
+  ctx.fillStyle='#f59e0b';ctx.beginPath();ctx.arc(250,442,7,0,7);ctx.fill();txt('Phân tử chất B',264,442,{align:'left',size:14});},
+ read(s){return row('Nhiệt độ',s.T+' °C')+row('Tốc độ phân tử',s.T<30?'Chậm':s.T<70?'Trung bình':'Nhanh')+row('Thời gian',f(s.time||0,0)+' s')+row('Mức độ trộn lẫn',(s.mix||0)+' %')+
+  note('Tốc độ trong hình được phóng đại để dễ quan sát; kích thước và số phân tử thật khác xa mô hình.');},
+ qs:['Không ai khuấy, vì sao hai chất vẫn tự trộn vào nhau?','Đặt 0 °C rồi 100 °C, bấm “Tách hai chất” mỗi lần. Trường hợp nào trộn lẫn nhanh hơn?','Vì sao đường tan trong nước nóng nhanh hơn trong nước lạnh?'],
+ concl:'Các chất được cấu tạo từ các phân tử, nguyên tử chuyển động hỗn loạn không ngừng. Nhiệt độ của vật càng cao thì các phân tử chuyển động càng nhanh, nên hiện tượng khuếch tán xảy ra càng nhanh.'},
+
+/* 4. Nóng chảy và sôi */
+{id:'nongchay',g:'nhiet',title:'Sự nóng chảy và sự sôi của nước',grade:'Lớp 6',
+ goal:'Đun nóng nước đá từ −20 °C và theo dõi đồ thị nhiệt độ theo thời gian: nhiệt độ có tăng đều suốt quá trình không?',
+ ctl:[{k:'P',label:'Công suất bếp',min:500,max:2000,step:100,v:1000,u:'W'},{type:'button',label:'↻ Đun lại (giữ đường cũ để so sánh)',act(s){s.prev=s.pts;s.pts=[];s.Q=0;s.t=0;}}],
+ init(s){s.pts=[];s.prev=[];s.Q=0;s.t=0;s.clock=0;},
+ T(Q){return Q<8400?-20+Q/420:Q<75200?0:Q<159200?(Q-75200)/840:100;},
+ draw(s,dt){const QM=219200,me=LESSONS[3];s.clock+=dt;
+  if(s.Q<QM&&s.t<480){s.t+=dt*20;s.Q=Math.min(QM,s.Q+s.P*dt*20);s.pts.push([s.t,me.T(s.Q)]);}
+  const T=me.T(s.Q),Q=s.Q,melt=clamp((Q-8400)/66800,0,1),boil=Q>=159200;
+  /* cốc */
+  const bx=70,bw=170,bb=350,lvl=230+(boil?(Q-159200)/60000*18:0);
+  ctx.fillStyle=`rgba(80,160,235,${.12+.33*melt})`;ctx.fillRect(bx,lvl,bw,bb-lvl);
+  if(melt<1){const sz=34*(1-melt*.85);ctx.fillStyle='#dbeeff';ctx.strokeStyle='#7fb2e0';ctx.lineWidth=2;
+   [[95,310],[140,312],[185,308],[112,272],[160,270]].forEach(([x,y])=>{ctx.fillRect(x,y+34-sz,sz,sz);ctx.strokeRect(x,y+34-sz,sz,sz);});}
+  if(boil){ctx.fillStyle='rgba(255,255,255,.9)';ctx.strokeStyle='#5aa0dd';ctx.lineWidth=1.5;for(let i=0;i<9;i++){const x=bx+12+(i*37)%(bw-24),y=bb-((s.clock*70+i*53)%(bb-lvl));ctx.beginPath();ctx.arc(x,y,3+i%3,0,7);ctx.fill();ctx.stroke();}
+   ctx.strokeStyle='rgba(120,130,150,.55)';ctx.lineWidth=3;for(let i=0;i<3;i++){ctx.beginPath();for(let y=0;y<70;y+=5){const x=bx+45+i*40+Math.sin(y/9+s.clock*4+i)*8;y?ctx.lineTo(x,lvl-12-y):ctx.moveTo(x,lvl-12-y);}ctx.stroke();}}
+  ctx.strokeStyle='#1c2433';ctx.lineWidth=4;ctx.beginPath();ctx.moveTo(bx,160);ctx.lineTo(bx,bb);ctx.lineTo(bx+bw,bb);ctx.lineTo(bx+bw,160);ctx.stroke();
+  line(50,362,260,362,'#475569',6);
+  const fh=16+s.P/55;for(let i=0;i<5;i++){const x=95+i*30,w=Math.sin(s.clock*12+i*2)*3;ctx.fillStyle='#f97316';ctx.beginPath();ctx.moveTo(x-11,410);ctx.quadraticCurveTo(x+w,410-fh*1.9,x+11,410);ctx.fill();ctx.fillStyle='#fde047';ctx.beginPath();ctx.moveTo(x-5,410);ctx.quadraticCurveTo(x+w,410-fh,x+5,410);ctx.fill();}
+  ctx.fillStyle='#475569';ctx.fillRect(70,410,170,14);
+  txt(f(T,0)+' °C',155,120,{bold:1,size:30,col:'#dc4a26'});
+  const stage=Q<8400?'Nước đá đang nóng lên':Q<75200?'Đang nóng chảy – nhiệt độ giữ ở 0 °C':Q<159200?'Nước đang nóng lên':'Đang sôi – nhiệt độ giữ ở 100 °C';s.stage=stage;
+  txt(stage,155,60,{bold:1,size:14,col:'#1c2433'});
+  /* đồ thị */
+  const gx=340,gy=400,gw=410,gh=330,X=t=>gx+t/480*gw,Y=v=>gy-(v+20)/140*gh;
+  axes(gx,gy,gx+gw,gy-gh,'Thời gian (s)','Nhiệt độ (°C)');
+  for(const v of[-20,0,20,40,60,80,100]){txt(v,gx-10,Y(v),{size:12,align:'right',col:'#5d6b82'});if(v===0||v===100)line(gx,Y(v),gx+gw,Y(v),'#94a3b8',1,[5,5]);}
+  for(let t=0;t<=480;t+=120)txt(t,X(t),gy+14,{size:12,col:'#5d6b82'});
+  const curve=(pts,col,w)=>{if(pts.length<2)return;ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;ctx.lineJoin='round';ctx.beginPath();pts.forEach((p,i)=>i?ctx.lineTo(X(p[0]),Y(p[1])):ctx.moveTo(X(p[0]),Y(p[1])));ctx.stroke();ctx.restore();};
+  curve(s.prev,'#cbd5e1',3);curve(s.pts,'#dc4a26',4);
+  if(s.pts.length){const p=s.pts[s.pts.length-1];ctx.fillStyle='#dc4a26';ctx.beginPath();ctx.arc(X(p[0]),Y(p[1]),6,0,7);ctx.fill();}
+  if(Q>=QM)txt('Hết lượt đun – bấm “Đun lại” để thử công suất khác',gx+gw/2,gy-gh-2,{size:13,col:'#5d6b82'});},
+ read(s){return row('Thời gian đun',f(s.t||0,0)+' s')+row('Nhiệt độ',f(LESSONS[3].T(s.Q||0),0)+' °C')+row('Công suất bếp',s.P+' W')+verdict(s.stage||'')+note('Mô phỏng 200 g nước đá, bỏ qua hao phí nhiệt. Thời gian chạy nhanh gấp 20 lần thực tế.');},
+ qs:['Trên đồ thị có mấy đoạn nằm ngang? Lúc đó trong cốc đang xảy ra điều gì?','Bếp vẫn cấp nhiệt, vì sao nhiệt độ không tăng trong lúc nước đá đang tan?','Tăng công suất bếp thì nhiệt độ nóng chảy và nhiệt độ sôi có thay đổi không? Cái gì thay đổi?'],
+ concl:'Trong suốt thời gian nóng chảy (0 °C) và thời gian sôi (100 °C), nhiệt độ của nước không đổi dù vẫn tiếp tục được đun. Bếp mạnh hơn chỉ làm quá trình diễn ra nhanh hơn, không làm đổi nhiệt độ nóng chảy và nhiệt độ sôi.'},
+
+/* 5. Định luật Ôm */
+{id:'om',g:'dien',title:'Định luật Ôm',grade:'Lớp 9',
+ goal:'Thay đổi hiệu điện thế U và điện trở R, quan sát cường độ dòng điện I thay đổi theo trong mạch và trên đồ thị.',
+ ctl:[{k:'U',label:'Hiệu điện thế U',min:0,max:12,step:0.5,v:6,u:'V',d:1},{k:'R',label:'Điện trở R',min:1,max:20,step:1,v:6,u:'Ω'}],
+ init(s){s.off=0;},
+ draw(s,dt){const I=s.U/s.R,p=[[70,340],[70,110],[400,110],[400,340]];s.off+=I*30*dt;
+  poly(p,'#1c2433',3);if(I>0)flow(p,s.off,34,'#f59e0b');
+  battery(70,225,s.U);
+  ctx.fillStyle='#fff';ctx.strokeStyle='#1c2433';ctx.lineWidth=2.5;ctx.fillRect(190,96,90,28);ctx.strokeRect(190,96,90,28);txt('R = '+s.R+' Ω',235,110,{bold:1,size:14});
+  ctx.beginPath();ctx.arc(400,225,24,0,7);ctx.fillStyle='#fff';ctx.fill();ctx.stroke();txt('A',400,225,{bold:1,size:20});txt(f(I,2)+' A',400,266,{bold:1,size:15,col:'#0f9d6b'});
+  if(I>0){head(150,110,0,'#dc2626',14);head(240,340,Math.PI,'#dc2626',14);txt('chiều dòng điện',240,362,{size:13,col:'#dc2626'});}
+  /* đồ thị I–U */
+  const gx=510,gy=350,gw=230,gh=230,X=u=>gx+u/12*gw,Y=i=>gy-Math.min(i,6)/6*gh;
+  axes(gx,gy,gx+gw,gy-gh,'U (V)','I (A)');
+  for(let u=0;u<=12;u+=3)txt(u,X(u),gy+14,{size:12,col:'#5d6b82'});for(let i=2;i<=6;i+=2)txt(i,gx-10,Y(i),{size:12,align:'right',col:'#5d6b82'});
+  const ue=Math.min(12,6*s.R);line(X(0),Y(0),X(ue),Y(ue/s.R),'#0f9d6b',3);
+  if(I<=6){line(X(s.U),gy,X(s.U),Y(I),'#94a3b8',1,[4,4]);line(gx,Y(I),X(s.U),Y(I),'#94a3b8',1,[4,4]);ctx.fillStyle='#dc2626';ctx.beginPath();ctx.arc(X(s.U),Y(I),7,0,7);ctx.fill();}
+  else txt('I vượt quá thang đo 6 A',gx+gw/2,gy-gh-30,{size:13,col:'#dc2626'});
+  txt('Đồ thị I theo U (R không đổi)',gx+gw/2,gy+56,{size:13,col:'#5d6b82'});},
+ read(s){const I=s.U/s.R;return row('Hiệu điện thế U',f(s.U,1)+' V')+row('Điện trở R',s.R+' Ω')+row('Cường độ I = U / R',f(I,2)+' A')+verdict(`I = ${f(s.U,1)} / ${s.R} = ${f(I,2)} A`);},
+ qs:['Giữ R, tăng U gấp đôi thì I thay đổi thế nào? Đồ thị có dạng gì?','Giữ U, tăng R gấp đôi thì I thay đổi thế nào? Đường đồ thị dốc hơn hay thoải hơn?','Muốn dòng điện qua một bóng đèn nhỏ đi, ta có thể làm những cách nào?'],
+ concl:'Cường độ dòng điện chạy qua dây dẫn tỉ lệ thuận với hiệu điện thế đặt vào hai đầu dây và tỉ lệ nghịch với điện trở của dây: I = U / R. Đồ thị I theo U là đường thẳng đi qua gốc toạ độ.'},
+
+/* 6. Nối tiếp – song song */
+{id:'mach',g:'dien',title:'Đoạn mạch nối tiếp và song song',grade:'Lớp 9',
+ goal:'So sánh cường độ dòng điện, hiệu điện thế và độ sáng của hai đèn khi mắc nối tiếp và khi mắc song song.',
+ ctl:[{k:'mode',label:'Cách mắc',type:'select',v:'nt',opts:[['nt','Nối tiếp'],['ss','Song song']]},{k:'U',label:'Hiệu điện thế nguồn U',min:1,max:12,step:0.5,v:6,u:'V',d:1},
+      {k:'R1',label:'Điện trở đèn Đ₁',min:1,max:20,step:1,v:4,u:'Ω'},{k:'R2',label:'Điện trở đèn Đ₂',min:1,max:20,step:1,v:8,u:'Ω'}],
+ init(s){s.o1=0;s.o2=0;},
+ calc(s){if(s.mode==='nt'){const R=s.R1+s.R2,I=s.U/R;return{R,I,I1:I,I2:I,U1:I*s.R1,U2:I*s.R2};}const I1=s.U/s.R1,I2=s.U/s.R2;return{R:s.R1*s.R2/(s.R1+s.R2),I:I1+I2,I1,I2,U1:s.U,U2:s.U};},
+ draw(s,dt){const c=LESSONS[5].calc(s),sp=22;s.o1+=c.I1*sp*dt;s.o2+=c.I2*sp*dt;
+  const lab=(x,y,i,u,n)=>{txt(`I${n} = ${f(i,2)} A`,x,y,{size:14,bold:1,col:'#0f9d6b'});txt(`U${n} = ${f(u,1)} V`,x,y+19,{size:14,bold:1,col:'#2563eb'});};
+  if(s.mode==='nt'){const p=[[110,360],[110,130],[690,130],[690,360]];poly(p,'#1c2433',3);flow(p,s.o1,34,'#f59e0b');
+   bulb(300,130,c.I1*c.U1,'Đ₁ ('+s.R1+' Ω)');bulb(520,130,c.I2*c.U2,'Đ₂ ('+s.R2+' Ω)');lab(300,178,c.I1,c.U1,'₁');lab(520,178,c.I2,c.U2,'₂');
+   txt('Dòng điện chỉ có một đường đi',400,400,{size:14,col:'#5d6b82'});}
+  else{const p1=[[110,360],[110,130],[430,130],[430,360]],p2=[[110,360],[110,130],[690,130],[690,360]];poly(p2,'#1c2433',3);line(430,130,430,360,'#1c2433',3);
+   flow(p1,s.o1,34,'#f59e0b');flow(p2,s.o2,34,'#fb7185');
+   bulb(430,245,c.I1*c.U1);bulb(690,245,c.I2*c.U2);txt('Đ₁ ('+s.R1+' Ω)',365,215,{bold:1});txt('Đ₂ ('+s.R2+' Ω)',625,215,{bold:1});lab(360,250,c.I1,c.U1,'₁');lab(620,250,c.I2,c.U2,'₂');
+   txt('Dòng điện tách thành hai nhánh',400,400,{size:14,col:'#5d6b82'});}
+  battery(110,245,s.U);txt('I = '+f(c.I,2)+' A',200,108,{bold:1,size:15,col:'#dc2626'});head(215,130,0,'#dc2626',14);
+  txt(s.mode==='nt'?'MẮC NỐI TIẾP':'MẮC SONG SONG',400,50,{bold:1,size:22,col:'#0f9d6b'});},
+ read(s){const c=LESSONS[5].calc(s),nt=s.mode==='nt';return row('Điện trở tương đương',f(c.R,2)+' Ω')+row('Dòng mạch chính I',f(c.I,2)+' A')+row('I₁ · I₂',f(c.I1,2)+' A · '+f(c.I2,2)+' A')+row('U₁ · U₂',f(c.U1,1)+' V · '+f(c.U2,1)+' V')+
+  verdict(nt?'I = I₁ = I₂ &nbsp;·&nbsp; U = U₁ + U₂<br>R<sub>tđ</sub> = R₁ + R₂':'I = I₁ + I₂ &nbsp;·&nbsp; U = U₁ = U₂<br>1/R<sub>tđ</sub> = 1/R₁ + 1/R₂');},
+ qs:['Khi mắc nối tiếp, đèn có điện trở lớn hơn sáng hơn hay tối hơn? Khi mắc song song thì sao?','Cùng nguồn, cùng hai đèn: cách mắc nào cho dòng mạch chính lớn hơn?','Các bóng đèn trong nhà mắc nối tiếp hay song song? Vì sao?'],
+ concl:'Nối tiếp: dòng điện qua các đèn như nhau, hiệu điện thế chia cho từng đèn (U = U₁ + U₂), R tương đương bằng tổng. Song song: hiệu điện thế hai đầu mỗi đèn như nhau, dòng mạch chính bằng tổng dòng các nhánh, R tương đương nhỏ hơn mỗi điện trở thành phần.'},
+
+/* 7. Phản xạ – khúc xạ */
+{id:'khucxa',g:'quang',title:'Phản xạ và khúc xạ ánh sáng',grade:'Lớp 7 · 9',
+ goal:'Chiếu một tia sáng tới mặt phân cách hai môi trường, đo góc tới, góc phản xạ và góc khúc xạ.',
+ ctl:[{k:'i',label:'Góc tới i',min:0,max:85,step:1,v:40,u:'°'},
+      {k:'n1',label:'Môi trường chứa tia tới',type:'select',v:1,opts:[[1,'Không khí'],[1.33,'Nước'],[1.5,'Thuỷ tinh']]},
+      {k:'n2',label:'Môi trường bên kia',type:'select',v:1.33,opts:[[1,'Không khí'],[1.33,'Nước'],[1.5,'Thuỷ tinh']]}],
+ init(){},
+ draw(s){const ox=400,oy=230,L=205,i=s.i*Math.PI/180,sr=s.n1*Math.sin(i)/s.n2,tir=sr>1,r=tir?0:Math.asin(sr);s.r=tir?null:r*180/Math.PI;
+  const col={1:'#f8fbff',1.33:'#cfe6fb',1.5:'#d9e6e2'},nm={1:'Không khí',1.33:'Nước',1.5:'Thuỷ tinh'};
+  ctx.fillStyle=col[s.n1];ctx.fillRect(40,20,720,210);ctx.fillStyle=col[s.n2];ctx.fillRect(40,230,720,210);
+  line(40,oy,760,oy,'#1c2433',3);line(ox,30,ox,430,'#64748b',1.5,[7,6]);txt('Pháp tuyến',ox+8,38,{size:13,col:'#64748b',align:'left'});
+  txt(nm[s.n1],60,40,{align:'left',bold:1,col:'#475569'});txt(nm[s.n2],60,420,{align:'left',bold:1,col:'#475569'});
+  const ray=(dx,dy,colr,a,out)=>{ctx.save();ctx.globalAlpha=a;const x=ox+dx*L,y=oy+dy*L;line(ox,oy,x,y,colr,4);const mx=ox+dx*L*.55,my=oy+dy*L*.55;head(mx,my,out?Math.atan2(dy,dx):Math.atan2(-dy,-dx),colr,15);ctx.restore();};
+  ray(-Math.sin(i),-Math.cos(i),'#dc2626',1,false);ray(Math.sin(i),-Math.cos(i),'#dc2626',tir?1:.4,true);
+  if(!tir)ray(Math.sin(r),Math.cos(r),'#7c3aed',1,true);
+  const arc=(a0,a1,rad,c)=>{ctx.save();ctx.strokeStyle=c;ctx.lineWidth=2;ctx.beginPath();ctx.arc(ox,oy,rad,a0,a1);ctx.stroke();ctx.restore();};
+  if(s.i>3){arc(-Math.PI/2-i,-Math.PI/2,55,'#dc2626');arc(-Math.PI/2,-Math.PI/2+i,68,'#dc2626');
+   txt('i',ox-Math.sin(i/2)*74,oy-Math.cos(i/2)*74,{bold:1,size:18,col:'#dc2626'});txt("i'",ox+Math.sin(i/2)*88,oy-Math.cos(i/2)*88,{bold:1,size:18,col:'#dc2626'});
+   if(!tir){arc(Math.PI/2-r,Math.PI/2,55,'#7c3aed');txt('r',ox+Math.sin(r/2)*74,oy+Math.cos(r/2)*74,{bold:1,size:18,col:'#7c3aed'});}}
+  txt('Tia tới',ox-Math.sin(i)*L-6,oy-Math.cos(i)*L-14,{size:14,col:'#dc2626'});txt('Tia phản xạ',ox+Math.sin(i)*L+6,oy-Math.cos(i)*L-14,{size:14,col:'#dc2626'});
+  if(!tir)txt('Tia khúc xạ',ox+Math.sin(r)*L+8,oy+Math.cos(r)*L+14,{size:14,col:'#7c3aed'});
+  else txt('Không có tia khúc xạ – phản xạ toàn phần',ox,340,{bold:1,size:17,col:'#7c3aed'});},
+ read(s){let v;if(s.n1===s.n2)v='Hai môi trường giống nhau → tia sáng truyền thẳng';else if(s.r===null)v='Phản xạ toàn phần (mở rộng): toàn bộ ánh sáng bị phản xạ';else v=s.n1<s.n2?'Góc khúc xạ r &lt; góc tới i → tia khúc xạ lệch gần pháp tuyến':'Góc khúc xạ r &gt; góc tới i → tia khúc xạ lệch xa pháp tuyến';
+  return row('Góc tới i',s.i+'°')+row("Góc phản xạ i'",s.i+'°')+row('Góc khúc xạ r',s.r===null?'—':f(s.r,1)+'°')+verdict(v);},
+ qs:['So sánh góc phản xạ với góc tới khi thay đổi i. Rút ra điều gì?','Ánh sáng đi từ không khí vào nước: r lớn hơn hay nhỏ hơn i? Đổi ngược lại thì sao?','Khi i = 0° (tia vuông góc mặt phân cách), tia khúc xạ đi thế nào?','Vì sao chiếc đũa cắm trong cốc nước trông như bị gãy?'],
+ concl:'Phản xạ: tia phản xạ nằm trong mặt phẳng tới, góc phản xạ bằng góc tới (i′ = i). Khúc xạ: khi truyền từ không khí sang nước hoặc thuỷ tinh, góc khúc xạ nhỏ hơn góc tới; đi theo chiều ngược lại thì góc khúc xạ lớn hơn góc tới. Tia vuông góc với mặt phân cách thì truyền thẳng.'},
+
+/* 8. Thấu kính */
+{id:'thaukinh',g:'quang',title:'Ảnh của vật tạo bởi thấu kính',grade:'Lớp 9',
+ goal:'Di chuyển vật trước thấu kính và dựng ảnh bằng hai tia đặc biệt; nhận xét ảnh thật hay ảo, cùng chiều hay ngược chiều, lớn hay nhỏ hơn vật.',
+ ctl:[{k:'type',label:'Loại thấu kính',type:'select',v:'ht',opts:[['ht','Hội tụ'],['pk','Phân kì']]},{k:'fo',label:'Tiêu cự f',min:5,max:20,step:1,v:10,u:'cm'},
+      {k:'d',label:'Khoảng cách từ vật đến thấu kính d',min:2,max:45,step:0.5,v:25,u:'cm',d:1},{k:'h',label:'Chiều cao vật h',min:2,max:8,step:0.5,v:5,u:'cm',d:1}],
+ init(){},
+ calc(s){const fs=s.type==='ht'?s.fo:-s.fo;if(Math.abs(s.d-fs)<1e-9)return{fs,none:true};const di=s.d*fs/(s.d-fs);return{fs,di,hi:-s.h*di/s.d};},
+ draw(s){const k=8,ox=400,oy=230,c=LESSONS[7].calc(s),fs=c.fs,ax=ox-s.d*k,ay=oy-s.h*k;
+  line(20,oy,780,oy,'#64748b',1.5);
+  /* thấu kính */
+  line(ox,oy-160,ox,oy+160,'#0891b2',4);const ht=s.type==='ht';
+  for(const sg of[-1,1]){const y=oy+sg*160;if(ht){line(ox-11,y-sg*14,ox,y,'#0891b2',4);line(ox+11,y-sg*14,ox,y,'#0891b2',4);}else{line(ox-11,y+sg*14,ox,y,'#0891b2',4);line(ox+11,y+sg*14,ox,y,'#0891b2',4);}}
+  txt('O',ox+12,oy+14,{size:14});
+  for(const [x,n] of[[ox-s.fo*k,'F'],[ox+s.fo*k,"F'"]]){ctx.fillStyle='#1c2433';ctx.beginPath();ctx.arc(x,oy,4,0,7);ctx.fill();txt(n,x,oy+16,{size:14,bold:1});}
+  const ext=(x0,y0,dx,dy,col)=>{const t=(790-x0)/dx;line(x0,y0,x0+dx*t,y0+dy*t,col,2.5);head(x0+dx*t*.25,y0+dy*t*.25,Math.atan2(dy,dx),col,12);};
+  ctx.save();ctx.beginPath();ctx.rect(10,10,780,440);ctx.clip();
+  /* tia 1: song song trục chính */
+  line(ax,ay,ox,ay,'#f59e0b',2.5);head((ax+ox)/2,ay,0,'#f59e0b',12);
+  if(fs>0)ext(ox,ay,fs*k,oy-ay,'#f59e0b');else{ext(ox,ay,-fs*k,ay-oy,'#f59e0b');line(ox+fs*k,oy,ox,ay,'#f59e0b',1.5,[6,5]);}
+  /* tia 2: qua quang tâm */
+  line(ax,ay,ox,oy,'#16a34a',2.5);ext(ox,oy,ox-ax,oy-ay,'#16a34a');
+  /* vật */
+  arrow(ax,oy,ax,ay,'#2563eb',5);txt('A',ax,oy+16,{size:14,bold:1,col:'#2563eb'});txt('B',ax-12,ay-4,{size:14,bold:1,col:'#2563eb'});
+  if(!c.none){const ix=ox+c.di*k,iy=oy-c.hi*k,virt=c.di<0;
+   if(virt&&fs>0){line(ox,ay,ix,iy,'#f59e0b',1.5,[6,5]);line(ax,ay,ix,iy,'#16a34a',1.5,[6,5]);}
+   ctx.save();if(virt)ctx.setLineDash([7,5]);ctx.strokeStyle='#dc2626';ctx.lineWidth=5;ctx.beginPath();ctx.moveTo(ix,oy);ctx.lineTo(ix,iy);ctx.stroke();ctx.restore();head(ix,iy,Math.atan2(iy-oy,0),'#dc2626',12);
+   txt("A'",ix,oy+(c.hi<0?-14:16),{size:14,bold:1,col:'#dc2626'});txt("B'",ix+14,iy+(c.hi<0?8:-4),{size:14,bold:1,col:'#dc2626'});}
+  ctx.restore();
+  if(c.none)txt('Vật đặt đúng tiêu điểm: các tia ló song song, không tạo ảnh',400,430,{bold:1,size:15,col:'#dc2626'});
+  txt('Tia song song trục chính',30,28,{align:'left',size:13,col:'#b45309'});txt('Tia qua quang tâm O',30,48,{align:'left',size:13,col:'#16a34a'});},
+ read(s){const c=LESSONS[7].calc(s);if(c.none)return row('Tiêu cự f',s.fo+' cm')+row('d',f(s.d,1)+' cm')+verdict('d = f → không có ảnh (ảnh ở vô cực)');
+  const virt=c.di<0,hi=Math.abs(c.hi),sz=Math.abs(hi-s.h)<0.01?'bằng vật':hi>s.h?'lớn hơn vật':'nhỏ hơn vật';
+  return row('Khoảng cách vật d',f(s.d,1)+' cm')+row("Khoảng cách ảnh d'",f(Math.abs(c.di),1)+' cm'+(virt?' (cùng phía vật)':''))+row("Chiều cao ảnh h'",f(hi,1)+' cm')+
+   verdict(`Ảnh ${virt?'ẢO':'THẬT'}, ${virt?'cùng chiều':'ngược chiều'}, ${sz}`)+note('Nét đứt là đường kéo dài của tia ló; ảnh ảo vẽ bằng nét đứt.');},
+ qs:['Với thấu kính hội tụ, đưa vật từ rất xa lại gần: ảnh thay đổi thế nào khi d > 2f, d = 2f, f < d < 2f?','Khi d < f, ảnh nằm ở đâu, có hứng được trên màn không? Dụng cụ nào dùng cách này?','Đổi sang thấu kính phân kì và di chuyển vật: tính chất của ảnh có thay đổi không?'],
+ concl:'Thấu kính hội tụ: vật ngoài tiêu cự (d > f) cho ảnh thật, ngược chiều — nhỏ hơn vật khi d > 2f, bằng vật khi d = 2f, lớn hơn vật khi f < d < 2f; vật trong tiêu cự (d < f) cho ảnh ảo, cùng chiều, lớn hơn vật (kính lúp). Thấu kính phân kì luôn cho ảnh ảo, cùng chiều, nhỏ hơn vật và nằm trong khoảng tiêu cự.'}
+];
+
+/* ---------- minh hoạ thực tế ---------- */
+const sv=inner=>`<svg viewBox="0 0 160 100" role="img"><g fill="none" stroke="#1c2433" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">${inner}</g></svg>`;
+const tx=(x,y,s,sz=9,c='#1c2433')=>`<text x="${x}" y="${y}" font-size="${sz}" font-family="Segoe UI,Arial" font-weight="600" text-anchor="middle" fill="${c}" stroke="none">${s}</text>`;
+const dots=(arr,c,r=2.2,o=1)=>arr.map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="${r}" fill="${c}" stroke="none" opacity="${o}"/>`).join('');
+const steam=(x,y)=>[0,14,28].map(d=>`<path d="M${x+d} ${y} q-5 -6 0 -12 q5 -6 0 -12" stroke="#94a3b8" stroke-width="2"/>`).join('');
+const flame=(x,y)=>`<path d="M${x-7} ${y} q7 -22 14 0z" fill="#f97316" stroke="none"/><path d="M${x-3} ${y} q3 -11 6 0z" fill="#fde047" stroke="none"/>`;
+const REAL={
+donbay:[
+ ['Bập bênh','Bạn nhẹ ngồi xa điểm tựa vẫn cân bằng được với bạn nặng ngồi gần điểm tựa.',
+  sv(`<path d="M10 88h140" stroke="#8a96a8"/><path d="M68 88l12-26 12 26z" fill="#94a3b8"/><path d="M18 70L142 54" stroke="#b7793a" stroke-width="6"/><circle cx="26" cy="56" r="8" fill="#f59e0b"/><circle cx="106" cy="44" r="12" fill="#2563eb"/>${tx(26,40,'nhẹ')}${tx(106,26,'nặng')}`)],
+ ['Xà beng','Tay đặt lực ở đầu xa điểm tựa nên chỉ cần lực nhỏ là bẩy được tảng đá nặng.',
+  sv(`<path d="M10 88h140" stroke="#8a96a8"/><path d="M98 88l8-30 26-6 16 20-2 16z" fill="#94a3b8"/><circle cx="88" cy="81" r="7" fill="#64748b"/><path d="M18 34L104 84" stroke-width="5"/><path d="M20 10v16M14 20l6 8 6-8" stroke="#dc2626" stroke-width="3"/>${tx(46,16,'lực tay',9,'#dc2626')}${tx(88,98,'điểm tựa',8,'#475569')}`)],
+ ['Cái kéo','Điểm tựa là chốt ở giữa. Đặt vật càng sát chốt thì cắt càng nhẹ tay.',
+  sv(`<path d="M34 34L136 66M34 66L136 34" stroke="#64748b" stroke-width="5"/><circle cx="24" cy="28" r="11" stroke="#dc4a26" stroke-width="4"/><circle cx="24" cy="72" r="11" stroke="#dc4a26" stroke-width="4"/><circle cx="85" cy="50" r="4" fill="#1c2433"/>${tx(85,74,'chốt (điểm tựa)',8,'#475569')}`)]],
+acsimet:[
+ ['Tàu thuỷ','Tàu làm bằng thép vẫn nổi vì thân tàu rỗng: khối lượng riêng trung bình của cả con tàu nhỏ hơn của nước.',
+  sv(`<rect x="0" y="62" width="160" height="38" fill="#bfdbfe" stroke="none"/><path d="M24 50h112l-16 28H44z" fill="#dc4a26"/><rect x="58" y="32" width="38" height="18" fill="#fff"/><rect x="72" y="18" width="10" height="14" fill="#475569"/><path d="M0 62h24M136 62h24" stroke="#2f6fb5"/>`)],
+ ['Tảng băng trôi','Nước đá nhẹ hơn nước một chút nên khoảng 9/10 tảng băng chìm dưới mặt nước.',
+  sv(`<path d="M52 40l12-22 14 10 10-8 14 20 16 30-20 24-34 2-24-26z" fill="#e0f2fe"/><rect x="0" y="40" width="160" height="60" fill="#60a5fa" opacity=".4" stroke="none"/><path d="M0 40h160" stroke="#2f6fb5"/>${tx(134,32,'phần nổi',8,'#475569')}${tx(134,74,'phần chìm',8,'#1e3a8a')}`)],
+ ['Trứng trong nước muối','Trứng chìm trong nước thường nhưng nổi lên trong nước muối đặc, vì nước muối có khối lượng riêng lớn hơn.',
+  sv(`<rect x="19" y="32" width="50" height="50" fill="#bfdbfe" stroke="none"/><rect x="91" y="32" width="50" height="50" fill="#99d5d5" stroke="none"/><path d="M18 20v62h52V20M90 20v62h52V20"/><ellipse cx="44" cy="74" rx="10" ry="7" fill="#fff7e6"/><ellipse cx="116" cy="38" rx="10" ry="7" fill="#fff7e6"/>${tx(44,95,'Nước')}${tx(116,95,'Nước muối')}`)]],
+phantu:[
+ ['Lọ nước hoa','Mở lọ nước hoa ở góc phòng, lát sau cả phòng có mùi: phân tử nước hoa khuếch tán vào không khí.',
+  sv(`<rect x="22" y="52" width="28" height="36" rx="4" fill="#ddd6fe"/><rect x="30" y="40" width="12" height="12" fill="#a78bfa"/>${dots([[58,44],[62,56],[66,36],[72,50],[70,66],[80,42],[84,60],[90,30],[96,52],[100,72],[110,40],[118,62],[128,34],[136,54],[146,44],[124,80]],'#8b5cf6')}`)],
+ ['Pha trà','Trà ngấm nhanh trong nước nóng, chậm trong nước lạnh: nhiệt độ càng cao, phân tử chuyển động càng nhanh.',
+  sv(`<path d="M50 36v44q0 8 8 8h44q8 0 8-8V36z" fill="#fde9c4" stroke="none"/><path d="M50 30v50q0 8 8 8h44q8 0 8-8V30M110 44h10q8 0 8 10t-8 10h-10"/><path d="M80 14v32" stroke-width="1.5"/><rect x="72" y="46" width="16" height="18" fill="#92400e"/>${dots([[64,60],[94,56],[68,76],[92,74],[80,72],[100,66],[60,48]],'#b45309',2,.6)}${steam(60,26).replace(/M(\d+) /g,(m,a)=>'M'+(+a+28)+' ')}`)],
+ ['Giọt mực trong nước','Nhỏ giọt mực vào cốc nước để yên, mực tự loang đều khắp cốc dù không ai khuấy.',
+  sv(`<rect x="51" y="30" width="58" height="58" fill="#e0f2fe" stroke="none"/><circle cx="80" cy="52" r="12" fill="#1d4ed8" opacity=".75" stroke="none"/><circle cx="80" cy="56" r="20" fill="#1d4ed8" opacity=".3" stroke="none"/><circle cx="80" cy="60" r="27" fill="#1d4ed8" opacity=".14" stroke="none"/><path d="M50 22v66h60V22"/><path d="M80 8q-5 8 0 10q5-2 0-10z" fill="#1d4ed8"/>`)]],
+nongchay:[
+ ['Ly nước đá','Ly nước đá đang tan luôn ở khoảng 0 °C cho đến khi đá tan hết, dù trời nóng.',
+  sv(`<path d="M56 40l6 48h36l6-48z" fill="#bfdbfe" stroke="none"/><path d="M52 18l10 70h36l10-70"/><rect x="64" y="34" width="14" height="14" fill="#f0f9ff" transform="rotate(-12 71 41)"/><rect x="84" y="36" width="14" height="14" fill="#f0f9ff" transform="rotate(15 91 43)"/><rect x="72" y="54" width="13" height="13" fill="#f0f9ff" transform="rotate(8 78 60)"/>${tx(132,50,'0 °C',12,'#2563eb')}`)],
+ ['Nồi nước sôi','Nước sôi ở 100 °C. Vặn lửa to hơn nước không nóng thêm, chỉ sôi mạnh và cạn nhanh hơn.',
+  sv(`<rect x="46" y="44" width="68" height="34" rx="3" fill="#cbd5e1"/><path d="M46 52H34M114 52h12"/>${dots([[58,66],[70,58],[82,68],[94,60],[104,70]],'#fff',3)}${steam(66,38)}${flame(60,96)}${flame(80,96)}${flame(100,96)}${tx(140,30,'100 °C',10,'#dc4a26')}`)],
+ ['Cây nến','Sáp nến nóng chảy khi đốt, chảy xuống rồi đông đặc lại khi nguội. Đúc kim loại cũng dựa trên nóng chảy và đông đặc.',
+  sv(`<path d="M30 90h100" stroke="#8a96a8"/><rect x="68" y="38" width="24" height="52" fill="#fef3c7"/><path d="M68 44q-6 10 0 18M92 42q7 14 0 26" stroke="#eab308" fill="#fef3c7"/><path d="M80 38v-6" stroke-width="2"/>${flame(80,32)}<path d="M52 90q10-8 20 0M90 90q10-6 18 0" fill="#fef3c7"/>`)]],
+om:[
+ ['Núm chỉnh độ sáng','Núm chỉnh độ sáng đèn hay âm lượng loa là biến trở: vặn cho R tăng thì I giảm, đèn tối đi.',
+  sv(`<circle cx="44" cy="54" r="22" fill="#e2e8f0"/><path d="M44 54l12-14" stroke-width="4"/><path d="M22 84a32 32 0 0 1 44 0" stroke="#94a3b8" stroke-width="2" stroke-dasharray="3 4"/><path d="M66 54h30"/><circle cx="116" cy="42" r="18" fill="#fde047"/><rect x="108" y="60" width="16" height="12" fill="#94a3b8"/><path d="M96 54v24h20V72"/>`)],
+ ['Đèn pin','Lắp thêm pin thì hiệu điện thế U tăng, dòng điện qua bóng lớn hơn nên đèn sáng hơn.',
+  sv(`<rect x="22" y="40" width="74" height="24" rx="4" fill="#94a3b8"/><path d="M46 40v24M70 40v24" stroke-width="1.5"/><path d="M96 38l22-10v48l-22-10z" fill="#fde047"/><path d="M126 34l18-10M128 52h22M126 70l18 10" stroke="#f59e0b"/>${tx(34,56,'+ −',9)}${tx(58,56,'+ −',9)}${tx(83,56,'+ −',9)}`)],
+ ['Cầu chì, aptomat','Khi chập mạch, điện trở rất nhỏ nên dòng điện tăng vọt; cầu chì đứt hoặc aptomat nhảy để ngắt mạch.',
+  sv(`<path d="M8 50h28M124 50h28"/><rect x="36" y="36" width="88" height="28" rx="6" fill="#f1f5f9"/><rect x="36" y="36" width="16" height="28" fill="#94a3b8"/><rect x="108" y="36" width="16" height="28" fill="#94a3b8"/><path d="M52 50h20M90 50h18" stroke-width="2"/><path d="M74 42l6 6-5 3 7 8" stroke="#f97316" stroke-width="3"/>${tx(80,84,'dây chì đứt',9,'#475569')}`)]],
+mach:[
+ ['Dây đèn trang trí','Dây đèn kiểu cũ mắc nối tiếp: chỉ cần một bóng đứt là cả dây tắt.',
+  sv(`<path d="M6 34q18 26 37 0t37 0 37 0 37 0" stroke-width="2"/>${[[24,48,'#ef4444'],[62,22,'#22c55e'],[98,48,'#3b82f6'],[136,22,'#f59e0b']].map(b=>`<circle cx="${b[0]}" cy="${b[1]+ (b[1]>30?6:-2)}" r="8" fill="${b[2]}"/>`).join('')}${tx(80,90,'các bóng nối tiếp nhau',9,'#475569')}`)],
+ ['Ổ cắm trong nhà','Ổ cắm và đèn trong nhà mắc song song: thiết bị nào cũng nhận 220 V và bật tắt độc lập với nhau.',
+  sv(`<rect x="28" y="34" width="118" height="32" rx="8" fill="#f1f5f9"/><path d="M28 50H10q-6 0-6 8v20"/>${[52,88,124].map(x=>`<circle cx="${x-6}" cy="50" r="3" fill="#1c2433"/><circle cx="${x+6}" cy="50" r="3" fill="#1c2433"/>`).join('')}${tx(88,86,'mỗi ổ: 220 V',9,'#475569')}`)],
+ ['Pin trong điều khiển','Hai viên pin 1,5 V lắp nối tiếp (cực + của viên này chạm cực − của viên kia) cho hiệu điện thế 3 V.',
+  sv(`<rect x="18" y="38" width="56" height="24" rx="3" fill="#fde047"/><rect x="74" y="45" width="5" height="10" fill="#94a3b8"/><rect x="82" y="38" width="56" height="24" rx="3" fill="#fde047"/><rect x="138" y="45" width="5" height="10" fill="#94a3b8"/>${tx(46,54,'− 1,5 V +',9)}${tx(110,54,'− 1,5 V +',9)}${tx(80,84,'tổng: 3 V',10,'#0f9d6b')}`)]],
+khucxa:[
+ ['Chiếc đũa “gãy”','Đũa cắm trong cốc nước trông như gãy ở mặt nước, do ánh sáng bị khúc xạ khi đi từ nước ra không khí.',
+  sv(`<rect x="51" y="42" width="58" height="46" fill="#bfdbfe" stroke="none"/><path d="M50 18v70h60V18"/><path d="M104 6L88 42" stroke="#b7793a" stroke-width="5"/><path d="M80 42L66 84" stroke="#b7793a" stroke-width="5"/><path d="M51 42h58" stroke="#2f6fb5" stroke-width="1.5"/>`)],
+ ['Bóng trên mặt hồ','Mặt hồ phẳng lặng soi bóng cảnh vật như một tấm gương phẳng: đó là sự phản xạ ánh sáng.',
+  sv(`<rect x="0" y="52" width="160" height="48" fill="#bfdbfe" stroke="none"/><path d="M20 52l34-36 24 22 16-12 34 26z" fill="#86a98a"/><path d="M20 52l34 36 24-22 16 12 34-26z" fill="#86a98a" opacity=".35" stroke-opacity=".3"/><circle cx="130" cy="20" r="9" fill="#fde047"/><circle cx="130" cy="84" r="9" fill="#fde047" opacity=".4" stroke-opacity=".3"/><path d="M0 52h160" stroke="#2f6fb5"/>`)],
+ ['Cá trông nông hơn','Nhìn từ trên bờ, con cá và đáy hồ trông nông hơn thực tế vì tia sáng bị gãy khúc khi ra khỏi nước.',
+  sv(`<rect x="0" y="38" width="160" height="62" fill="#bfdbfe" stroke="none"/><path d="M0 38h160" stroke="#2f6fb5"/><circle cx="26" cy="12" r="5" fill="#1c2433"/><path d="M118 84L78 38 30 14" stroke="#dc2626" stroke-width="2"/><path d="M78 38l28 18" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="4 4"/><path d="M108 84q12-10 24 0q-12 10-24 0zM132 84l8-6v12z" fill="#f59e0b"/><path d="M100 58q10-8 20 0q-10 8-20 0z" stroke-dasharray="3 3" stroke-width="1.5"/>${tx(132,54,'ảnh',8,'#475569')}${tx(140,72,'cá thật',8,'#475569')}${tx(46,10,'mắt',8,'#475569')}`)]],
+thaukinh:[
+ ['Kính lúp','Kính lúp là thấu kính hội tụ: đặt vật trong khoảng tiêu cự để thấy ảnh ảo, cùng chiều, lớn hơn vật.',
+  sv(`<circle cx="68" cy="44" r="30" fill="#dbeafe" stroke-width="4"/><path d="M90 66l34 28" stroke-width="7"/>${tx(68,58,'A',38)}${tx(22,88,'A',11)}`)],
+ ['Máy ảnh và mắt','Vật kính máy ảnh và thuỷ tinh thể của mắt là thấu kính hội tụ, tạo ảnh thật, ngược chiều, nhỏ hơn vật trên cảm biến hoặc màng lưới.',
+  sv(`<rect x="30" y="32" width="100" height="54" rx="8" fill="#64748b"/><rect x="46" y="22" width="22" height="10" fill="#475569"/><circle cx="84" cy="59" r="20" fill="#e2e8f0"/><circle cx="84" cy="59" r="11" fill="#93c5fd"/><rect x="108" y="40" width="14" height="8" fill="#fde047"/>`)],
+ ['Kính cận, kính lão','Kính cận là thấu kính phân kì (rìa dày hơn giữa); kính lão là thấu kính hội tụ (giữa dày hơn rìa).',
+  sv(`<circle cx="52" cy="52" r="22" fill="#dbeafe"/><circle cx="108" cy="52" r="22" fill="#dbeafe"/><path d="M74 50q6-8 12 0M30 48L12 36M130 48l18-12"/>`)]]
+};
+
+/* ---------- 20 bài bổ sung ---------- */
+function cflame(x,y,h,ph){const w=Math.sin(ph)*3;ctx.fillStyle='#f97316';ctx.beginPath();ctx.moveTo(x-h*.45,y);ctx.quadraticCurveTo(x+w,y-h*1.9,x+h*.45,y);ctx.fill();ctx.fillStyle='#fde047';ctx.beginPath();ctx.moveTo(x-h*.2,y);ctx.quadraticCurveTo(x+w,y-h,x+h*.2,y);ctx.fill();}
+function disc(x,y,r,fill,stroke){ctx.beginPath();ctx.arc(x,y,r,0,7);if(fill){ctx.fillStyle=fill;ctx.fill();}if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=2.5;ctx.stroke();}}
+function pline(P,col,w,dash){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;ctx.lineJoin='round';if(dash)ctx.setLineDash(dash);ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.stroke();ctx.restore();}
+function fpoly(P,fill){ctx.fillStyle=fill;ctx.beginPath();P.forEach((p,i)=>i?ctx.lineTo(p[0],p[1]):ctx.moveTo(p[0],p[1]));ctx.closePath();ctx.fill();}
+const DEV=[['Đèn LED',10],['Quạt điện',60],['Tivi',100],['Tủ lạnh',150],['Nồi cơm điện',700],['Điều hoà',1000],['Ấm siêu tốc',1800]];
+const SPEC=[['Đỏ','#ef4444',1.46],['Cam','#f97316',1.487],['Vàng','#facc15',1.513],['Lục','#22c55e',1.54],['Lam','#38bdf8',1.567],['Chàm','#6366f1',1.593],['Tím','#a855f7',1.62]];
+LESSONS.push(
+/* ===== CƠ ===== */
+{id:'tocdo',g:'co',title:'Chuyển động đều và tốc độ',grade:'Lớp 7',
+ goal:'Cho hai xe chạy đều với tốc độ khác nhau, so sánh quãng đường đi được và đồ thị quãng đường – thời gian của chúng.',
+ ctl:[{k:'vA',label:'Tốc độ xe A',min:2,max:10,step:1,v:4,u:'m/s'},{k:'vB',label:'Tốc độ xe B',min:2,max:10,step:1,v:7,u:'m/s'},{type:'button',label:'↻ Xuất phát lại',act(s){s.t=0;}}],
+ init(s){s.t=0;},
+ draw(s,dt){const sA=Math.min(100,s.vA*s.t),sB=Math.min(100,s.vB*s.t);if(sA<100||sB<100)s.t=Math.min(50,s.t+dt*4);
+  const X=m=>80+m*6.3;ctx.fillStyle='#e5e7eb';ctx.fillRect(40,45,720,115);line(40,102,760,102,'#fff',2,[14,10]);
+  for(let m=0;m<=100;m+=20){line(X(m),160,X(m),168,'#5d6b82',2);txt(m+' m',X(m),180,{size:12,col:'#5d6b82'});}
+  line(X(100),45,X(100),160,'#dc2626',3);
+  const car=(m,y,c,n)=>{const x=X(m);ctx.fillStyle=c;ctx.fillRect(x-40,y-10,40,20);ctx.fillRect(x-32,y-20,22,12);disc(x-31,y+11,6,'#1c2433');disc(x-9,y+11,6,'#1c2433');txt(n,x-20,y,{col:'#fff',bold:1,size:13});};
+  car(sA,76,'#2563eb','A');car(sB,132,'#dc4a26','B');
+  const gx=110,gy=415,gw=520,gh=185,GX=t=>gx+t/50*gw,GY=m=>gy-m/100*gh;axes(gx,gy,gx+gw,gy-gh,'t (s)','s (m)');
+  for(let t=10;t<=50;t+=10)txt(t,GX(t),gy+14,{size:12,col:'#5d6b82'});for(let m=25;m<=100;m+=25)txt(m,gx-10,GY(m),{size:12,align:'right',col:'#5d6b82'});
+  const g=(v,c,n)=>{const te=Math.min(s.t,100/v);line(GX(0),GY(0),GX(te),GY(v*te),c,3);disc(GX(te),GY(v*te),5,c);txt(n,GX(te)+12,GY(v*te)-8,{col:c,bold:1});};g(s.vA,'#2563eb','A');g(s.vB,'#dc4a26','B');},
+ read(s){const sA=Math.min(100,s.vA*s.t),sB=Math.min(100,s.vB*s.t);return row('Thời gian',f(s.t,1)+' s')+row('Xe A đi được',f(sA,0)+' m')+row('Xe B đi được',f(sB,0)+' m')+row('Thời gian đi hết 100 m','A: '+f(100/s.vA,1)+' s · B: '+f(100/s.vB,1)+' s')+verdict('v = s / t. Đường đồ thị càng dốc thì xe chạy càng nhanh.');},
+ qs:['Trong cùng một thời gian, xe nào đi được quãng đường dài hơn?','Đồ thị quãng đường – thời gian của chuyển động đều có dạng gì?','Cho hai xe cùng tốc độ: hai đường đồ thị trông như thế nào?'],
+ concl:'Tốc độ cho biết mức độ nhanh hay chậm của chuyển động: v = s / t. Với chuyển động đều, đồ thị quãng đường – thời gian là đường thẳng đi qua gốc toạ độ; đường càng dốc thì tốc độ càng lớn.'},
+
+{id:'apsuat',g:'co',title:'Áp suất trên một bề mặt',grade:'Lớp 8',
+ goal:'Thay đổi áp lực và diện tích bị ép, quan sát khối kim loại lún sâu hay nông trên mặt cát.',
+ ctl:[{k:'F',label:'Áp lực F',min:10,max:200,step:10,v:60,u:'N'},{k:'A',label:'Diện tích bị ép S',min:10,max:200,step:10,v:50,u:'cm²'}],
+ init(s){s.dep=0;},
+ draw(s,dt){const p=s.F/s.A,tg=clamp(16*Math.sqrt(p),3,85);s.dep+=(tg-s.dep)*Math.min(1,dt*4);const w=50+s.A*1.5,top=290,bh=60+s.F*.25,bx=400-w/2,by=top+s.dep-bh,al=20+s.F*.35;
+  ctx.fillStyle='#e8c98a';ctx.fillRect(80,top,640,140);ctx.fillStyle='#fff';ctx.fillRect(bx-1,top-2,w+2,s.dep+2);
+  ctx.fillStyle='#64748b';ctx.fillRect(bx,by,w,bh);ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.strokeRect(bx,by,w,bh);
+  arrow(400,by-6-al,400,by-4,'#dc2626',5);txt('F = '+s.F+' N',400,by-22-al,{bold:1,col:'#dc2626',size:17});
+  txt('S = '+s.A+' cm²',400,by+bh/2,{col:'#fff',bold:1,size:w<110?11:15});
+  line(bx+w+14,top,bx+w+14,top+s.dep,'#1c2433',2);txt('độ lún',bx+w+48,top+s.dep/2,{size:13});txt('Cát',112,415,{size:13,col:'#7a5a1c'});
+  txt('p = F / S = '+f(s.F/(s.A/1e4),0)+' N/m²',400,34,{bold:1,size:20,col:'#2563eb'});},
+ read(s){return row('Áp lực F',s.F+' N')+row('Diện tích S',s.A+' cm² = '+f(s.A/1e4,4)+' m²')+row('Áp suất p = F / S',f(s.F/(s.A/1e4),0)+' N/m²')+verdict('Áp lực càng lớn, diện tích bị ép càng nhỏ thì áp suất càng lớn.');},
+ qs:['Giữ nguyên F, giảm S đi một nửa thì áp suất thay đổi thế nào?','Có hai cách nào để làm giảm độ lún của khối kim loại?','Vì sao mũi đinh, mũi kim phải làm nhọn còn móng nhà phải làm rộng?'],
+ concl:'Áp suất là độ lớn của áp lực trên một đơn vị diện tích bị ép: p = F / S, đơn vị N/m² (Pa). Muốn tăng áp suất thì tăng áp lực hoặc giảm diện tích bị ép, và ngược lại.'},
+
+{id:'apsuatlong',g:'co',title:'Áp suất chất lỏng',grade:'Lớp 8',
+ goal:'Đổ chất lỏng vào bình có ba lỗ ở thành bình, quan sát các tia nước phun ra và đo áp suất ở các độ sâu khác nhau.',
+ ctl:[{k:'H',label:'Độ cao mực chất lỏng',min:20,max:100,step:5,v:90,u:'cm'},{k:'d',label:'Chất lỏng',type:'select',v:10000,opts:[[8000,'Dầu (d = 8 000 N/m³)'],[10000,'Nước (d = 10 000 N/m³)'],[12000,'Nước muối (d = 12 000 N/m³)']]},{k:'h',label:'Độ sâu điểm đo',min:0,max:100,step:5,v:50,u:'cm'}],
+ init(s){s.c=0;},
+ draw(s,dt){s.c+=dt;const bot=400,k=3,x0=150,x1=330,top=bot-s.H*k,col={8000:'rgba(240,200,60,.5)',10000:'rgba(80,160,235,.45)',12000:'rgba(60,190,190,.5)'}[s.d];
+  line(40,430,780,430,'#8a96a8',3);ctx.fillStyle='#94a3b8';ctx.fillRect(x0-12,bot,x1-x0+24,30);ctx.fillStyle=col;ctx.fillRect(x0,top,x1-x0,bot-top);
+  pline([[x0,80],[x0,bot],[x1,bot],[x1,80]],'#1c2433',4);
+  for(const hc of[15,45,75]){const y=bot-hc*k,dep=s.H-hc;ctx.fillStyle='#fff';ctx.fillRect(x1-3,y-5,6,10);if(dep<=0)continue;const v=24*Math.sqrt(dep),P=[];for(let t=0;;t+=.03){const yy=y+250*t*t;P.push([x1+v*t,Math.min(430,yy)]);if(yy>=430)break;}
+   ctx.save();ctx.lineDashOffset=-s.c*90;pline(P,'#3b82f6',4,[12,6]);ctx.restore();}
+  const hh=Math.min(s.h,s.H),y=top+hh*k;line(x0-30,top,x0-30,y,'#dc2626',2);line(x0-36,top,x0-24,top,'#dc2626',2);line(x0-36,y,x0-24,y,'#dc2626',2);txt('h = '+hh+' cm',x0-38,(top+y)/2,{align:'right',size:14,col:'#dc2626',bold:1});
+  disc(x0+50,y,7,'#dc2626');for(const a of[0,1.57,3.14,4.71])arrow(x0+50+Math.cos(a)*30,y+Math.sin(a)*30,x0+50+Math.cos(a)*11,y+Math.sin(a)*11,'#dc2626',2);
+  txt('p = d · h = '+f(s.d*hh/100,0)+' N/m²',570,60,{bold:1,size:20,col:'#2563eb'});txt('Chất lỏng gây áp suất theo mọi phương',570,90,{size:13,col:'#5d6b82'});},
+ read(s){const hh=Math.min(s.h,s.H),p=hc=>s.H>hc?f(s.d*(s.H-hc)/100,0)+' N/m²':'không có nước';return row('Áp suất tại điểm đo',f(s.d*hh/100,0)+' N/m²')+row('Tại lỗ trên',p(75))+row('Tại lỗ giữa',p(45))+row('Tại lỗ dưới',p(15))+verdict('Càng xuống sâu, áp suất chất lỏng càng lớn: p = d·h');},
+ qs:['Tia nước ở lỗ nào phun ra mạnh nhất? Điều đó cho biết gì về áp suất?','Ở cùng một độ sâu, đổi nước thành nước muối thì áp suất tăng hay giảm?','Vì sao thợ lặn xuống sâu phải mặc bộ áo lặn chịu được áp suất lớn?'],
+ concl:'Chất lỏng gây áp suất theo mọi phương lên đáy bình, thành bình và các vật ở trong lòng nó. Áp suất tại một điểm trong chất lỏng: p = d·h, với h là độ sâu tính từ mặt thoáng và d là trọng lượng riêng của chất lỏng.'},
+
+{id:'matnghieng',g:'co',title:'Mặt phẳng nghiêng',grade:'Lớp 6',
+ goal:'Kéo một vật lên cao bằng mặt phẳng nghiêng; thay đổi độ cao và chiều dài mặt nghiêng để xem lực kéo thay đổi thế nào.',
+ ctl:[{k:'P',label:'Trọng lượng vật P',min:50,max:500,step:50,v:200,u:'N'},{k:'h',label:'Độ cao h',min:0.5,max:2,step:0.1,v:1,u:'m',d:1},{k:'l',label:'Chiều dài mặt nghiêng l',min:2,max:6,step:0.5,v:4,u:'m',d:1}],
+ init(s){s.u=0;},
+ draw(s,dt){s.u=(s.u+dt/5)%1.25;const u=Math.min(1,s.u),k=95,gy=400,ax=90,b=Math.sqrt(s.l*s.l-s.h*s.h)*k,hy=s.h*k,an=Math.atan2(hy,b),F=s.P*s.h/s.l;
+  line(50,gy,770,gy,'#8a96a8',3);fpoly([[ax,gy],[ax+b,gy],[ax+b,gy-hy]],'#d6dde8');pline([[ax,gy],[ax+b,gy],[ax+b,gy-hy],[ax,gy]],'#1c2433',2.5);
+  line(ax+b+12,gy,ax+b+12,gy-hy,'#1c2433',1.5);txt('h = '+f(s.h,1)+' m',ax+b+18,gy-hy/2,{bold:1,align:'left',size:14});txt('l = '+f(s.l,1)+' m',ax+b/2+10,gy+20,{bold:1,size:14});
+  const d=(.1+.78*u)*s.l*k,bx=ax+d*Math.cos(an),by=gy-d*Math.sin(an),fl=30+F*.22;
+  ctx.save();ctx.translate(bx,by);ctx.rotate(-an);ctx.fillStyle='#b7793a';ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.fillRect(-22,-36,44,36);ctx.strokeRect(-22,-36,44,36);arrow(22,-18,22+fl,-18,'#2563eb',4);txt('F',30+fl,-32,{bold:1,col:'#2563eb',size:17});ctx.restore();
+  const cx=bx-18*Math.sin(an),cy=by-18*Math.cos(an),pl=24+s.P*.1;arrow(cx,cy,cx,cy+pl,'#dc2626',4);txt('P',cx-14,cy+pl-4,{bold:1,col:'#dc2626',size:17});
+  txt('Kéo thẳng đứng: cần lực bằng P = '+s.P+' N',60,40,{align:'left',size:16});txt('Kéo theo mặt nghiêng: F = P·h / l = '+f(F,0)+' N',60,68,{align:'left',size:16,bold:1,col:'#2563eb'});},
+ read(s){const F=s.P*s.h/s.l;return row('Lực kéo F = P·h / l',f(F,0)+' N')+row('Lợi về lực',f(s.P/F,1)+' lần')+row('Thiệt về đường đi',f(s.l/s.h,1)+' lần')+row('Công P·h = F·l',f(s.P*s.h,0)+' J')+note('Mô phỏng bỏ qua ma sát. Thực tế lực kéo lớn hơn một chút.');},
+ qs:['Giữ nguyên độ cao, tăng chiều dài mặt nghiêng thì lực kéo tăng hay giảm?','Được lợi bao nhiêu lần về lực thì quãng đường kéo dài hơn bao nhiêu lần?','Vì sao đường lên đèo thường làm ngoằn ngoèo chứ không chạy thẳng lên đỉnh?'],
+ concl:'Dùng mặt phẳng nghiêng có thể kéo vật lên với lực nhỏ hơn trọng lượng của vật. Mặt nghiêng càng thoải (càng dài so với độ cao) thì lực kéo càng nhỏ. Được lợi bao nhiêu lần về lực thì thiệt bấy nhiêu lần về đường đi, không được lợi về công.'},
+
+{id:'conlac',g:'co',title:'Chuyển hoá cơ năng của con lắc',grade:'Lớp 9',
+ goal:'Thả con lắc và theo dõi thế năng, động năng thay nhau tăng giảm trong khi con lắc dao động.',
+ ctl:[{k:'a0',label:'Góc thả ban đầu',min:10,max:70,step:5,v:45,u:'°'},{k:'ms',label:'Lực cản',type:'select',v:0,opts:[[0,'Bỏ qua lực cản'],[0.15,'Có lực cản của không khí']]},{type:'button',label:'↻ Thả lại',act(s){s.rs=1;}}],
+ init(s){s.rs=1;},
+ draw(s,dt){if(s.rs||s.pa!==s.a0){s.th=s.a0*Math.PI/180;s.w=0;s.pa=s.a0;s.rs=0;}const W2=7;for(let i=0;i<4;i++){const h=dt/4;s.w+=(-W2*Math.sin(s.th)-s.ms*s.w)*h;s.th+=s.w*h;}
+  const px=230,py=50,L=250,bx=px+L*Math.sin(s.th),by=py+L*Math.cos(s.th),a0=s.a0*Math.PI/180;
+  line(130,py,330,py,'#1c2433',5);line(40,py+L+22,460,py+L+22,'#94a3b8',1.5,[6,6]);txt('Vị trí thấp nhất',90,py+L+40,{size:13,col:'#5d6b82'});
+  for(const sg of[-1,1])disc(px+sg*L*Math.sin(a0),py+L*Math.cos(a0),20,null,'#cbd5e1');
+  line(px,py,bx,by,'#1c2433',2);disc(bx,by,20,'#2563eb','#1c2433');
+  const E0=1-Math.cos(a0),Ep=1-Math.cos(s.th),Ek=s.w*s.w/(2*W2);s.Ep=Ep/E0*100;s.Ek=Ek/E0*100;
+  [['Thế năng',Ep,'#2563eb'],['Động năng',Ek,'#dc4a26'],['Cơ năng',Ep+Ek,'#0f9d6b']].forEach((e,i)=>{const x=530+i*85,h=clamp(e[1]/E0,0,1.05)*260;ctx.fillStyle='#eef2f7';ctx.fillRect(x,120,54,260);ctx.fillStyle=e[2];ctx.fillRect(x,380-h,54,h);txt(e[0],x+27,400,{size:13,bold:1});txt(Math.round(e[1]/E0*100)+' %',x+27,104,{size:14,bold:1,col:e[2]});});},
+ read(s){const lo=(s.Ep||0)<8;return row('Thế năng',Math.round(s.Ep||0)+' %')+row('Động năng',Math.round(s.Ek||0)+' %')+row('Cơ năng (tổng)',Math.round((s.Ep||0)+(s.Ek||0))+' %')+verdict(s.ms?'Có lực cản: cơ năng giảm dần, chuyển thành nhiệt năng':'Bỏ qua lực cản: cơ năng được bảo toàn')+note(lo?'Đang qua vị trí thấp nhất: động năng lớn nhất.':'');},
+ qs:['Ở vị trí nào thế năng lớn nhất? Ở vị trí nào động năng lớn nhất?','Khi con lắc đi từ biên về vị trí thấp nhất, dạng năng lượng nào chuyển thành dạng nào?','Chọn “Có lực cản”: phần cơ năng bị mất đã đi đâu?'],
+ concl:'Trong quá trình dao động, thế năng và động năng của con lắc chuyển hoá qua lại. Nếu bỏ qua lực cản, cơ năng (tổng thế năng và động năng) được bảo toàn. Khi có lực cản, cơ năng giảm dần vì một phần chuyển thành nhiệt năng.'},
+
+/* ===== NHIỆT ===== */
+{id:'nonhiet',g:'nhiet',title:'Sự nở vì nhiệt của chất rắn',grade:'Lớp 8',
+ goal:'Nung nóng ba thanh nhôm, đồng, sắt dài bằng nhau và so sánh độ dài thêm của từng thanh.',
+ ctl:[{k:'T',label:'Nhiệt độ của các thanh',min:20,max:500,step:10,v:20,u:'°C'}],
+ init(s){s.c=0;},
+ draw(s,dt){s.c+=dt;const M=[['Nhôm',24,'#cbd5e1'],['Đồng',17,'#d99058'],['Sắt',12,'#8b95a5']],dT=s.T-20,x0=110,L=430,hot=dT/480;
+  ctx.fillStyle='#64748b';ctx.fillRect(84,60,26,340);txt('Chiều dài ban đầu của mỗi thanh: 1 m (ở 20 °C)',x0+L/2,48,{size:14,col:'#5d6b82'});
+  M.forEach((m,i)=>{const y=95+i*105,dl=m[1]*dT/1000,w=L+dl*12;ctx.fillStyle=m[2];ctx.fillRect(x0,y,w,30);ctx.fillStyle=`rgba(239,68,68,${hot*.6})`;ctx.fillRect(x0,y,w,30);ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.strokeRect(x0,y,w,30);
+   line(x0+L,y-10,x0+L,y+40,'#1c2433',1.5,[4,4]);txt(m[0],x0+50,y+15,{bold:1});txt('+'+f(dl,2)+' mm',x0+w+10,y+15,{align:'left',bold:1,col:'#dc4a26'});
+   if(dT>0)for(let j=0;j<5;j++)cflame(x0+50+j*85,y+72,7+hot*10,s.c*10+j+i);});
+  txt('Phần dài thêm được vẽ phóng đại để dễ quan sát',400,440,{size:13,col:'#5d6b82'});},
+ read(s){const dT=s.T-20;return row('Nhiệt độ tăng thêm',dT+' °C')+row('Nhôm dài thêm',f(24*dT/1000,2)+' mm')+row('Đồng dài thêm',f(17*dT/1000,2)+' mm')+row('Sắt dài thêm',f(12*dT/1000,2)+' mm')+verdict('Các chất rắn khác nhau nở vì nhiệt khác nhau: nhôm &gt; đồng &gt; sắt');},
+ qs:['Khi nóng lên, chiều dài các thanh thay đổi thế nào? Khi nguội đi thì sao?','Cùng tăng một nhiệt độ, thanh nào dài thêm nhiều nhất, thanh nào ít nhất?','Vì sao giữa hai thanh ray tàu hoả người ta phải để một khe hở nhỏ?'],
+ concl:'Chất rắn nở ra khi nóng lên và co lại khi lạnh đi. Các chất rắn khác nhau nở vì nhiệt khác nhau. Sự co dãn vì nhiệt khi bị ngăn cản có thể gây ra lực rất lớn, nên trong xây dựng phải chừa khe hở.'},
+
+{id:'dannhiet',g:'nhiet',title:'Sự dẫn nhiệt',grade:'Lớp 8',
+ goal:'Đun nóng một đầu của ba thanh đồng, nhôm, thuỷ tinh có gắn đinh bằng sáp; xem đinh trên thanh nào rơi trước.',
+ ctl:[{k:'sp',label:'Tốc độ mô phỏng',min:1,max:5,step:1,v:2,u:'×'},{type:'button',label:'↻ Đun lại từ đầu',act(s){s.t=0;}}],
+ init(s){s.t=0;s.c=0;s.n=[0,0,0];},
+ draw(s,dt){s.t+=dt*s.sp;s.c+=dt;const M=[['Đồng',1,'#d99058'],['Nhôm',.55,'#cbd5e1'],['Thuỷ tinh',.004,'#bfe3ea']],x0=180,L=520;
+  M.forEach((m,i)=>{const y=70+i*125,fr=Math.min(1,Math.sqrt(m[1]*s.t/25));ctx.fillStyle=m[2];ctx.fillRect(x0,y,L,22);
+   const g=ctx.createLinearGradient(x0,0,x0+L,0);g.addColorStop(0,'rgba(239,68,68,.9)');g.addColorStop(Math.max(.02,fr),'rgba(239,68,68,0)');g.addColorStop(1,'rgba(239,68,68,0)');ctx.fillStyle=g;ctx.fillRect(x0,y,L,22);
+   ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.strokeRect(x0,y,L,22);txt(m[0],100,y+11,{bold:1});cflame(x0+16,y+70,17,s.c*11+i);
+   let n=0;for(let j=1;j<=5;j++){const px=x0+j*L/5.3,tf=(j/5.3)**2*25/m[1],fell=s.t>tf,dr=fell?Math.min(50,(s.t-tf)/s.sp*160):0;if(fell)n++;else disc(px,y+26,4,'#facc15');line(px,y+28+dr,px,y+46+dr,'#475569',3);line(px-4,y+28+dr,px+4,y+28+dr,'#475569',3);}
+   s.n[i]=n;});
+  txt('Thời gian đun: '+f(s.t,0)+' s',400,440,{size:14,col:'#5d6b82'});},
+ read(s){return row('Thời gian đun',f(s.t,0)+' s')+row('Đồng – số đinh đã rơi',s.n[0]+' / 5')+row('Nhôm – số đinh đã rơi',s.n[1]+' / 5')+row('Thuỷ tinh – số đinh đã rơi',s.n[2]+' / 5')+verdict('Đồng dẫn nhiệt tốt hơn nhôm; thuỷ tinh dẫn nhiệt kém');},
+ qs:['Trên mỗi thanh, các đinh rơi theo thứ tự nào? Điều đó chứng tỏ nhiệt truyền theo hướng nào?','Thanh nào dẫn nhiệt tốt nhất, thanh nào kém nhất?','Vì sao nồi, chảo làm bằng kim loại còn quai và cán thường làm bằng nhựa hoặc gỗ?'],
+ concl:'Dẫn nhiệt là sự truyền nhiệt năng từ phần này sang phần khác của vật, hoặc từ vật này sang vật khác. Chất rắn dẫn nhiệt tốt, tốt nhất là kim loại; thuỷ tinh, gỗ, nhựa, chất lỏng và chất khí dẫn nhiệt kém.'},
+
+{id:'doiluu',g:'nhiet',title:'Sự đối lưu',grade:'Lớp 8',
+ goal:'Đun cốc nước từ phía dưới và quan sát các dòng nước nóng đi lên, nước lạnh đi xuống.',
+ ctl:[{k:'pos',label:'Vị trí ngọn lửa',type:'select',v:'c',opts:[['c','Ở giữa đáy cốc'],['l','Lệch về bên trái']]},{k:'P',label:'Độ lớn ngọn lửa',min:0,max:5,step:1,v:3,u:''}],
+ init(s){s.p=[];for(let i=0;i<120;i++)s.p.push([Math.random(),Math.random()]);s.c=0;},
+ draw(s,dt){s.c+=dt;const x0=250,y0=90,w=300,h=260,PI=Math.PI,sp=s.P*.035;ctx.fillStyle='#e0edfb';ctx.fillRect(x0,y0+20,w,h-20);
+  for(const q of s.p){const x=q[0],y=q[1];let vx,vy;if(s.pos==='c'){vx=.5*PI*Math.sin(2*PI*x)*Math.cos(PI*y);vy=-PI*Math.cos(2*PI*x)*Math.sin(PI*y);}else{vx=-PI*Math.sin(PI*x)*Math.cos(PI*y);vy=PI*Math.cos(PI*x)*Math.sin(PI*y);}
+   q[0]=clamp(x+vx*sp*dt+(Math.random()-.5)*.004*s.P,.02,.98);q[1]=clamp(y+vy*sp*dt+(Math.random()-.5)*.004*s.P,.02,.98);
+   disc(x0+q[0]*w,y0+20+(1-q[1])*(h-20),4.5,s.P===0?'#94a3b8':vy>.15?'#ef4444':vy<-.15?'#2563eb':'#a78bfa');}
+  pline([[x0,y0-10],[x0,y0+h],[x0+w,y0+h],[x0+w,y0-10]],'#1c2433',4);line(x0-30,y0+h+8,x0+w+30,y0+h+8,'#475569',6);
+  if(s.P>0)cflame(s.pos==='c'?x0+w/2:x0+50,y0+h+62,9+s.P*4,s.c*11);
+  disc(210,438,6,'#ef4444');txt('nước nóng hơn, đi lên',222,438,{align:'left',size:14});disc(430,438,6,'#2563eb');txt('nước lạnh hơn, đi xuống',442,438,{align:'left',size:14});},
+ read(s){return row('Ngọn lửa',s.P===0?'Tắt':'Mức '+s.P)+row('Vị trí đun',s.pos==='c'?'Giữa đáy':'Lệch trái')+verdict(s.P===0?'Không đun: nước đứng yên, không có dòng đối lưu':'Nước nóng nở ra, nhẹ hơn nên đi lên; nước lạnh nặng hơn chìm xuống thế chỗ')+note('Các chấm chỉ biểu diễn dòng chảy của nước, không phải từng phân tử.');},
+ qs:['Phần nước ngay phía trên ngọn lửa chuyển động theo hướng nào? Vì sao?','Chuyển ngọn lửa sang bên trái: dòng nước thay đổi thế nào?','Vì sao muốn đun nóng cả ấm nước phải đun từ đáy chứ không đun ở phía trên?'],
+ concl:'Đối lưu là sự truyền nhiệt bằng các dòng chất lỏng hoặc chất khí. Phần chất lỏng bị đun nóng nở ra, có trọng lượng riêng nhỏ hơn nên đi lên; phần lạnh hơn đi xuống thế chỗ, tạo thành dòng tuần hoàn. Đây là cách truyền nhiệt chủ yếu của chất lỏng và chất khí.'},
+
+{id:'canbangnhiet',g:'nhiet',title:'Phương trình cân bằng nhiệt',grade:'Lớp 8',
+ goal:'Trộn nước nóng với nước lạnh, theo dõi nhiệt độ hai phần nước tiến về cùng một giá trị và so sánh nhiệt lượng toả ra với nhiệt lượng thu vào.',
+ ctl:[{k:'m1',label:'Khối lượng nước nóng',min:50,max:500,step:50,v:200,u:'g'},{k:'t1',label:'Nhiệt độ nước nóng',min:40,max:100,step:5,v:80,u:'°C'},{k:'m2',label:'Khối lượng nước lạnh',min:50,max:500,step:50,v:300,u:'g'},{k:'t2',label:'Nhiệt độ nước lạnh',min:0,max:35,step:5,v:20,u:'°C'},{type:'button',label:'↻ Trộn lại',act(s){s.t=0;}}],
+ init(s){s.t=0;},
+ draw(s,dt){s.t+=dt;const tc=(s.m1*s.t1+s.m2*s.t2)/(s.m1+s.m2),e=Math.exp(-s.t/2.5),Th=tc+(s.t1-tc)*e,Tl=tc+(s.t2-tc)*e,col=T=>`rgb(${Math.round(70+T*1.8)},${Math.round(150-T*.5)},${Math.round(235-T*1.8)})`;
+  const bx=70,bw=200,bb=380,h1=s.m1*.22,h2=s.m2*.22;ctx.fillStyle=col(Tl);ctx.fillRect(bx,bb-h2,bw,h2);ctx.fillStyle=col(Th);ctx.fillRect(bx,bb-h2-h1,bw,h1);
+  pline([[bx,130],[bx,bb],[bx+bw,bb],[bx+bw,130]],'#1c2433',4);txt('Nước nóng: '+f(Th,1)+' °C',bx+bw/2,bb-h2-h1/2,{bold:1,col:'#fff',size:14});txt('Nước lạnh: '+f(Tl,1)+' °C',bx+bw/2,bb-h2/2,{bold:1,col:'#fff',size:14});
+  txt('Nhiệt truyền từ nước nóng sang nước lạnh',bx+bw/2,410,{size:13,col:'#5d6b82'});
+  const gx=390,gy=400,gw=330,gh=300,X=t=>gx+t/10*gw,Y=T=>gy-T/100*gh;axes(gx,gy,gx+gw,gy-gh,'Thời gian','Nhiệt độ (°C)');for(let T=20;T<=100;T+=20)txt(T,gx-10,Y(T),{size:12,align:'right',col:'#5d6b82'});
+  line(gx,Y(tc),gx+gw,Y(tc),'#0f9d6b',1.5,[6,5]);txt('t cân bằng = '+f(tc,1)+' °C',gx+gw-4,gy-gh+4,{align:'right',size:14,bold:1,col:'#0f9d6b'});
+  const te=Math.min(10,s.t),A=[],B=[];for(let t=0;t<=te;t+=.1){const k=Math.exp(-t/2.5);A.push([X(t),Y(tc+(s.t1-tc)*k)]);B.push([X(t),Y(tc+(s.t2-tc)*k)]);}if(A.length>1){pline(A,'#dc4a26',3.5);pline(B,'#2563eb',3.5);}},
+ read(s){const tc=(s.m1*s.t1+s.m2*s.t2)/(s.m1+s.m2),Q1=s.m1/1000*4200*(s.t1-tc),Q2=s.m2/1000*4200*(tc-s.t2);return row('Nhiệt độ cân bằng',f(tc,1)+' °C')+row('Q toả = m₁·c·(t₁ − t)',f(Q1,0)+' J')+row('Q thu = m₂·c·(t − t₂)',f(Q2,0)+' J')+verdict('Q toả ra = Q thu vào')+note('c = 4200 J/kg.K, bỏ qua sự trao đổi nhiệt với cốc và môi trường.');},
+ qs:['Nhiệt tự truyền từ phần nước nào sang phần nước nào? Đến khi nào thì dừng?','Tăng khối lượng nước lạnh thì nhiệt độ cân bằng tăng hay giảm?','Khi nào nhiệt độ cân bằng nằm đúng giữa t₁ và t₂?'],
+ concl:'Khi hai vật trao đổi nhiệt với nhau, nhiệt truyền từ vật có nhiệt độ cao hơn sang vật có nhiệt độ thấp hơn cho đến khi nhiệt độ hai vật bằng nhau. Nhiệt lượng vật này toả ra bằng nhiệt lượng vật kia thu vào: Q toả = Q thu, với Q = m·c·Δt.'},
+
+{id:'bayhoi',g:'nhiet',title:'Sự bay hơi',grade:'Lớp 6',
+ goal:'Thay đổi nhiệt độ, gió và diện tích mặt thoáng để tìm xem tốc độ bay hơi của nước phụ thuộc vào những yếu tố nào.',
+ ctl:[{k:'T',label:'Nhiệt độ',min:10,max:60,step:5,v:30,u:'°C'},{k:'wind',label:'Gió',min:0,max:5,step:1,v:1,u:''},{k:'A',label:'Diện tích mặt thoáng',min:1,max:5,step:1,v:3,u:''},{type:'button',label:'↻ Đổ nước lại',act(s){s.V=1;s.t=0;}}],
+ init(s){s.V=1;s.t=0;s.p=[];s.acc=0;},
+ draw(s,dt){const rate=(s.T/30)*(1+s.wind*.6)*s.A/3;s.rate=rate;if(s.V>0){s.V=Math.max(0,s.V-rate*dt/40);s.t+=dt;s.acc+=rate*dt*16;}
+  const w=90+s.A*100,cx=400,bot=390,dep=78*s.V/s.A,sy=bot-dep;
+  disc(690,70,18+s.T/3,'#fde047');txt(s.T+' °C',690,70,{bold:1,size:14});
+  for(let i=0;i<s.wind;i++){const y=150+i*26,o=(s.t*60*(1+i*.2))%60;arrow(40+o,y,95+o,y,'#94a3b8',2);}if(s.wind)txt('Gió',60,130,{size:13,col:'#5d6b82'});
+  ctx.fillStyle='rgba(80,160,235,.5)';ctx.fillRect(cx-w/2,sy,w,dep);pline([[cx-w/2,bot-95],[cx-w/2,bot],[cx+w/2,bot],[cx+w/2,bot-95]],'#1c2433',4);line(60,bot+3,740,bot+3,'#8a96a8',3);
+  while(s.acc>=1&&s.p.length<300){s.acc--;s.p.push([cx-w/2+8+Math.random()*(w-16),sy,3]);}
+  s.p=s.p.filter(q=>q[2]>0);for(const q of s.p){q[1]-=(28+s.T*.5)*dt;q[0]+=(s.wind*34+(Math.random()-.5)*20)*dt;q[2]-=dt;ctx.globalAlpha=clamp(q[2]/3,0,1);disc(q[0],q[1],3,'#3b82f6');}ctx.globalAlpha=1;
+  txt(s.V>0?'Nước còn lại: '+Math.round(s.V*100)+' %':'Nước đã bay hơi hết sau '+f(s.t,0)+' s',cx,425,{bold:1,size:16,col:s.V>0?'#1c2433':'#dc4a26'});},
+ read(s){return row('Tốc độ bay hơi (so với mức chuẩn)','× '+f(s.rate||0,1))+row('Nước còn lại',Math.round((s.V||0)*100)+' %')+row('Thời gian',f(s.t||0,0)+' s')+verdict('Nhiệt độ càng cao, gió càng mạnh, mặt thoáng càng rộng thì bay hơi càng nhanh')+note('Cùng một lượng nước: mặt thoáng rộng hơn thì lớp nước nông hơn.');},
+ qs:['Chỉ thay đổi một yếu tố mỗi lần và bấm “Đổ nước lại”. Yếu tố nào làm nước cạn nhanh hơn?','Vì sao khi làm thí nghiệm phải giữ nguyên các yếu tố còn lại?','Phơi quần áo thế nào thì mau khô nhất?'],
+ concl:'Sự bay hơi là sự chuyển từ thể lỏng sang thể hơi, xảy ra ở mặt thoáng của chất lỏng và ở mọi nhiệt độ. Tốc độ bay hơi phụ thuộc vào nhiệt độ, gió và diện tích mặt thoáng của chất lỏng.'},
+
+/* ===== ĐIỆN ===== */
+{id:'dientich',g:'dien',title:'Hai loại điện tích',grade:'Lớp 8',
+ goal:'Cho hai quả cầu nhẹ nhiễm điện cùng loại hoặc khác loại rồi quan sát chúng đẩy nhau hay hút nhau.',
+ ctl:[{k:'q1',label:'Quả cầu A',type:'select',v:1,opts:[[1,'Nhiễm điện dương (+)'],[-1,'Nhiễm điện âm (−)'],[0,'Không nhiễm điện']]},{k:'q2',label:'Quả cầu B',type:'select',v:1,opts:[[1,'Nhiễm điện dương (+)'],[-1,'Nhiễm điện âm (−)'],[0,'Không nhiễm điện']]},{k:'m',label:'Mức độ nhiễm điện',min:1,max:5,step:1,v:3,u:''}],
+ init(s){s.a=0;},
+ kind(s){const pr=s.q1*s.q2;return pr>0?1:pr<0?-1:(s.q1||s.q2)?-.5:0;},
+ draw(s,dt){const kd=this.kind(s),tg=kd===1?s.m*5:kd===-1?-s.m*1.8:kd?-s.m*.8:0;s.a+=(tg-s.a)*Math.min(1,dt*4);const a=s.a*Math.PI/180,L=250,py=50;line(200,py,600,py,'#1c2433',5);
+  [[320,-1,s.q1,'A'],[480,1,s.q2,'B']].forEach(([px,sg,q,n])=>{const bx=px+sg*L*Math.sin(a),by=py+L*Math.cos(a);line(px,py,bx,by,'#64748b',2);disc(bx,by,30,q>0?'#fecaca':q<0?'#bfdbfe':'#e5e7eb','#1c2433');
+   txt(q>0?'+':q<0?'−':'',bx,by,{size:32,bold:1,col:q>0?'#dc2626':'#2563eb'});txt(n,bx,by+48,{bold:1});if(kd){const dir=sg*Math.sign(kd),len=(22+s.m*7)*Math.abs(kd);arrow(bx,by-46,bx+dir*len,by-46,'#0f9d6b',4);}});
+  txt(kd===1?'ĐẨY NHAU':kd===-1?'HÚT NHAU':kd?'HÚT NHẸ':'Không tương tác',400,410,{bold:1,size:22,col:kd?'#0f9d6b':'#5d6b82'});},
+ read(s){const kd=this.kind(s),n=q=>q>0?'Dương (+)':q<0?'Âm (−)':'Không nhiễm điện';return row('Quả cầu A',n(s.q1))+row('Quả cầu B',n(s.q2))+verdict(kd===1?'Hai vật nhiễm điện cùng loại thì đẩy nhau':kd===-1?'Hai vật nhiễm điện khác loại thì hút nhau':kd?'Vật nhiễm điện hút được vật nhẹ không nhiễm điện':'Hai vật không nhiễm điện: không hút, không đẩy');},
+ qs:['Thử đủ các cặp (+,+), (−,−), (+,−). Khi nào hai quả cầu đẩy nhau, khi nào hút nhau?','Tăng mức độ nhiễm điện thì góc lệch của dây treo thay đổi thế nào?','Vì sao thước nhựa sau khi cọ xát vào vải khô lại hút được các vụn giấy?'],
+ concl:'Có hai loại điện tích: điện tích dương và điện tích âm. Các vật nhiễm điện cùng loại thì đẩy nhau, khác loại thì hút nhau. Vật bị nhiễm điện còn có khả năng hút các vật nhẹ khác.'},
+
+{id:'dientro',g:'dien',title:'Điện trở của dây dẫn',grade:'Lớp 9',
+ goal:'Thay đổi chiều dài, tiết diện và vật liệu làm dây để xem điện trở của dây dẫn phụ thuộc vào những yếu tố nào.',
+ ctl:[{k:'rho',label:'Vật liệu',type:'select',v:1.7,opts:[[1.7,'Đồng (ρ = 1,7·10⁻⁸ Ω·m)'],[2.8,'Nhôm (ρ = 2,8·10⁻⁸ Ω·m)'],[12,'Sắt (ρ = 12·10⁻⁸ Ω·m)'],[110,'Nicrom (ρ = 110·10⁻⁸ Ω·m)']]},{k:'l',label:'Chiều dài l',min:1,max:100,step:1,v:20,u:'m'},{k:'A',label:'Tiết diện S',min:0.1,max:2,step:0.1,v:0.5,u:'mm²',d:1}],
+ init(s){s.o=0;},
+ R(s){return s.rho*1e-8*s.l/(s.A*1e-6);},
+ fmt(R){return R<1?f(R,3):R<100?f(R,2):f(R,0);},
+ draw(s,dt){const R=this.R(s),I=6/R,len=120+s.l*5.4,th=10+s.A*24,x0=400-len/2,y=240,col={1.7:'#d99058',2.8:'#cbd5e1',12:'#8b95a5',110:'#b5b08a'}[s.rho];s.o+=clamp(I*10,3,240)*dt;
+  ctx.fillStyle=col;ctx.fillRect(x0,y-th/2,len,th);ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.strokeRect(x0,y-th/2,len,th);
+  for(let k=0;k*32<len-8;k++)disc(x0+4+((s.o+k*32)%(len-8)),y,3.2,'#1d4ed8');
+  line(x0,y+th/2+22,x0+len,y+th/2+22,'#1c2433',1.5);line(x0,y+th/2+16,x0,y+th/2+28,'#1c2433',1.5);line(x0+len,y+th/2+16,x0+len,y+th/2+28,'#1c2433',1.5);txt('l = '+s.l+' m',400,y+th/2+40,{bold:1});
+  txt('S = '+f(s.A,1)+' mm²',400,y-th/2-18,{bold:1});txt('R = ρ · l / S = '+this.fmt(R)+' Ω',400,70,{bold:1,size:24,col:'#0f9d6b'});
+  txt('Chấm xanh: dòng điện tích khi đặt hiệu điện thế 6 V – điện trở càng lớn, dòng càng yếu',400,430,{size:13,col:'#5d6b82'});},
+ read(s){const R=this.R(s);return row('Điện trở suất ρ',f(s.rho,1)+'·10⁻⁸ Ω·m')+row('Điện trở R',this.fmt(R)+' Ω')+row('Dòng điện khi U = 6 V',f(6/R,2)+' A')+verdict('R tỉ lệ thuận với chiều dài, tỉ lệ nghịch với tiết diện và phụ thuộc vật liệu');},
+ qs:['Tăng chiều dài dây lên gấp đôi thì điện trở thay đổi thế nào?','Tăng tiết diện dây lên gấp đôi thì điện trở thay đổi thế nào?','Vì sao dây dẫn điện làm bằng đồng, còn dây đốt nóng của bếp điện làm bằng nicrom?'],
+ concl:'Điện trở của dây dẫn tỉ lệ thuận với chiều dài l, tỉ lệ nghịch với tiết diện S và phụ thuộc vào vật liệu làm dây: R = ρ·l / S, trong đó ρ là điện trở suất của vật liệu.'},
+
+{id:'congsuat',g:'dien',title:'Công suất điện và điện năng tiêu thụ',grade:'Lớp 9',
+ goal:'Chọn một thiết bị điện trong nhà và thời gian sử dụng mỗi ngày để tính điện năng tiêu thụ và tiền điện phải trả.',
+ ctl:[{k:'P',label:'Thiết bị',type:'select',v:60,opts:DEV.map(d=>[d[1],d[0]+' ('+d[1]+' W)'])},{k:'h',label:'Thời gian dùng mỗi ngày',min:0.5,max:24,step:0.5,v:4,u:'giờ',d:1},{k:'gia',label:'Giá điện',min:2000,max:3500,step:100,v:2500,u:'đ/kWh'}],
+ init(s){s.ang=0;s.kwh=0;},
+ draw(s,dt){if(s.pP!==s.P){s.kwh=0;s.pP=s.P;}s.ang+=dt*(.4+s.P/150);s.kwh+=s.P/1000*dt*.5;
+  ctx.fillStyle='#f1f5f9';ctx.strokeStyle='#1c2433';ctx.lineWidth=3;ctx.fillRect(50,60,290,330);ctx.strokeRect(50,60,290,330);txt('CÔNG TƠ ĐIỆN',195,90,{bold:1,size:15,col:'#5d6b82'});
+  ctx.fillStyle='#fff';ctx.fillRect(90,115,210,56);ctx.strokeRect(90,115,210,56);txt(f(s.kwh,2)+' kWh',195,144,{bold:1,size:28});
+  ctx.fillStyle='#cbd5e1';ctx.beginPath();ctx.ellipse(195,260,100,24,0,0,7);ctx.fill();ctx.stroke();if(Math.sin(s.ang)>0)disc(195+100*Math.cos(s.ang),260+24*Math.sin(s.ang),7,'#dc2626');
+  txt('Đĩa quay càng nhanh khi công suất càng lớn',195,330,{size:12,col:'#5d6b82'});txt('1 giây ở đây ≈ 30 phút sử dụng',195,352,{size:12,col:'#5d6b82'});
+  DEV.forEach((d,i)=>{const y=70+i*46,on=d[1]===s.P,bl=Math.max(3,d[1]/1800*190);txt(d[0],380,y+13,{align:'left',size:14,bold:on});ctx.fillStyle=on?'#0f9d6b':'#cbd5e1';ctx.fillRect(500,y,bl,26);txt(d[1]+' W',508+bl,y+13,{align:'left',size:13,bold:on,col:on?'#0f9d6b':'#5d6b82'});});},
+ read(s){const A=s.P*s.h/1000,vn=x=>Math.round(x).toLocaleString('vi-VN');return row('Công suất P',s.P+' W')+row('Cường độ I = P / U',f(s.P/220,2)+' A')+row('Điện năng mỗi ngày',f(A,2)+' kWh')+row('Điện năng mỗi tháng (30 ngày)',f(A*30,1)+' kWh')+verdict('Tiền điện mỗi tháng ≈ '+vn(A*30*s.gia)+' đ')+note('A = P·t. 1 kWh = 1 “số điện” = 3 600 000 J. Hiệu điện thế 220 V.');},
+ qs:['Thiết bị nào trong danh sách tiêu thụ điện nhiều nhất trong cùng một thời gian?','Một bóng LED 10 W bật 10 giờ và một ấm siêu tốc 1800 W đun 5 phút: cái nào tốn điện hơn?','Nêu vài cách sử dụng điện tiết kiệm trong gia đình.'],
+ concl:'Công suất điện cho biết điện năng thiết bị tiêu thụ trong một giây: P = U·I. Điện năng tiêu thụ A = P·t, thường đo bằng kWh (số điện) trên công tơ. Thiết bị có công suất càng lớn và dùng càng lâu thì tốn càng nhiều điện.'},
+
+{id:'junlenxo',g:'dien',title:'Định luật Jun – Len-xơ',grade:'Lớp 9',
+ goal:'Cho dòng điện chạy qua dây điện trở nhúng trong nước và tính nhiệt lượng toả ra theo cường độ dòng điện, điện trở và thời gian.',
+ ctl:[{k:'I',label:'Cường độ dòng điện I',min:0.5,max:5,step:0.5,v:2,u:'A',d:1},{k:'R',label:'Điện trở R',min:1,max:20,step:1,v:5,u:'Ω'},{k:'t',label:'Thời gian t',min:10,max:600,step:10,v:120,u:'s'}],
+ init(s){s.c=0;},
+ draw(s,dt){s.c+=dt;const P=s.I*s.I*s.R,Q=P*s.t,T=Math.min(100,25+Q/2100),hot=clamp(P/300,0,1),x0=70,x1=250,bb=370;
+  ctx.fillStyle=`rgba(${Math.round(80+T*1.5)},${Math.round(160-T*.4)},${Math.round(235-T*1.2)},.5)`;ctx.fillRect(x0,190,x1-x0,bb-190);pline([[x0,150],[x0,bb],[x1,bb],[x1,150]],'#1c2433',4);
+  const Z=[[95,110],[95,270]];for(let i=0;i<=8;i++)Z.push([103+i*14.5,i%2?270:335]);Z.push([225,270],[225,110]);ctx.save();if(hot>.25){ctx.shadowColor='#f97316';ctx.shadowBlur=hot*22;}pline(Z,`rgb(${Math.round(110+145*hot)},${Math.round(110-30*hot)},${Math.round(110-90*hot)})`,5);ctx.restore();
+  if(T>=100)for(let i=0;i<7;i++)disc(x0+16+(i*41)%(x1-x0-30),bb-((s.c*70+i*47)%170),3+i%3,'#fff','#5aa0dd');
+  txt('P = I²·R = '+f(P,1)+' W',160,60,{bold:1,size:16,col:'#dc4a26'});txt('+',95,96,{bold:1,size:16});txt('−',225,96,{bold:1,size:16});
+  ctx.fillStyle='#fff';ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.fillRect(285,120,12,232);ctx.strokeRect(285,120,12,232);ctx.fillStyle='#dc2626';ctx.fillRect(287,350-T*2.2,8,T*2.2);disc(291,358,10,'#dc2626','#1c2433');
+  txt(f(T,0)+' °C',330,235,{bold:1,size:18,col:'#dc2626',align:'left'});if(T>=100)txt('Nước sôi!',330,260,{size:13,col:'#dc2626',align:'left'});
+  const gx=460,gy=400,gw=280,gh=270,QM=25*s.R*s.t,X=i=>gx+i/5*gw,Y=q=>gy-q/QM*gh;axes(gx,gy,gx+gw,gy-gh,'I (A)','Q');for(let i=1;i<=5;i++)txt(i,X(i),gy+14,{size:12,col:'#5d6b82'});txt(f(QM/1000,1)+' kJ',gx-8,Y(QM),{size:12,align:'right',col:'#5d6b82'});
+  const C=[];for(let i=0;i<=5.01;i+=.1)C.push([X(i),Y(i*i*s.R*s.t)]);pline(C,'#0f9d6b',3);line(X(s.I),gy,X(s.I),Y(Q),'#94a3b8',1,[4,4]);disc(X(s.I),Y(Q),7,'#dc2626');},
+ read(s){const P=s.I*s.I*s.R,Q=P*s.t,dT=Q/2100;return row('Công suất toả nhiệt I²R',f(P,1)+' W')+row('Nhiệt lượng Q = I²·R·t',f(Q,0)+' J')+row('0,5 kg nước nóng thêm',dT>75?'đủ làm nước sôi':f(dT,1)+' °C')+verdict('I tăng gấp đôi → Q tăng gấp bốn')+note('Giả sử toàn bộ nhiệt lượng truyền cho 0,5 kg nước ở 25 °C.');},
+ qs:['Giữ R và t, tăng I từ 1 A lên 2 A rồi 4 A: nhiệt lượng thay đổi theo quy luật nào?','Đồ thị Q theo I có phải đường thẳng không? Vì sao?','Vì sao dây dẫn điện trong nhà bị quá tải (I lớn) lại nóng lên và có thể gây cháy?'],
+ concl:'Nhiệt lượng toả ra trên dây dẫn khi có dòng điện chạy qua tỉ lệ thuận với bình phương cường độ dòng điện, với điện trở của dây và với thời gian dòng điện chạy qua: Q = I²·R·t.'},
+
+{id:'camung',g:'dien',title:'Hiện tượng cảm ứng điện từ',grade:'Lớp 9',
+ goal:'Đưa nam châm lại gần và ra xa cuộn dây, quan sát kim điện kế để biết khi nào trong cuộn dây xuất hiện dòng điện.',
+ ctl:[{k:'v',label:'Tốc độ di chuyển nam châm',min:0,max:5,step:1,v:2,u:''},{k:'N',label:'Số vòng dây',type:'select',v:2,opts:[[1,'100 vòng'],[2,'200 vòng'],[4,'400 vòng']]}],
+ init(s){s.ph=0;s.nd=0;s.emf=0;},
+ draw(s,dt){s.ph+=dt*s.v*.8;const mx=340+130*Math.sin(s.ph),vel=130*Math.cos(s.ph)*s.v*.8,cx=520,d=cx-(mx+70),q=1+(d/90)**2,emf=s.N*(2*d/8100/(q*q))*vel;s.emf=emf;s.nd+=(clamp(emf*4.5,-62,62)-s.nd)*Math.min(1,dt*12);
+  const yc=260;ctx.fillStyle='#2563eb';ctx.fillRect(mx-70,yc-18,70,36);ctx.fillStyle='#dc2626';ctx.fillRect(mx,yc-18,70,36);ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.strokeRect(mx-70,yc-18,140,36);txt('S',mx-35,yc,{bold:1,col:'#fff',size:20});txt('N',mx+35,yc,{bold:1,col:'#fff',size:20});
+  if(s.v>0){const dir=Math.sign(vel)||1;arrow(mx-20*dir,yc-40,mx+20*dir,yc-40,'#5d6b82',3);}
+  const n=s.N===1?5:s.N===2?8:13;ctx.strokeStyle='#b45309';ctx.lineWidth=3.5;for(let i=0;i<n;i++){ctx.beginPath();ctx.ellipse(472+i*96/(n-1),yc,7,48,0,0,7);ctx.stroke();}
+  pline([[472,yc-48],[472,150],[600,150]],'#1c2433',2.5);pline([[568,yc-48],[568,168],[600,168]],'#1c2433',2.5);
+  ctx.fillStyle='#f8fafc';ctx.strokeStyle='#1c2433';ctx.lineWidth=3;ctx.fillRect(600,60,140,130);ctx.strokeRect(600,60,140,130);ctx.beginPath();ctx.arc(670,170,80,Math.PI*1.15,Math.PI*1.85);ctx.lineWidth=2;ctx.stroke();
+  for(const a of[-60,-30,0,30,60]){const r=(a-90)*Math.PI/180;line(670+72*Math.cos(r),170+72*Math.sin(r),670+80*Math.cos(r),170+80*Math.sin(r),'#1c2433',2);}txt('0',670,80,{size:12});
+  const na=(s.nd-90)*Math.PI/180;line(670,170,670+70*Math.cos(na),170+70*Math.sin(na),'#dc2626',3);disc(670,170,6,'#1c2433');txt('Điện kế',670,206,{size:13,col:'#5d6b82'});
+  txt(Math.abs(emf)>.25?'Có dòng điện cảm ứng':'Kim điện kế chỉ số 0',300,60,{bold:1,size:20,col:Math.abs(emf)>.25?'#0f9d6b':'#5d6b82'});txt('Cuộn dây',520,yc+70,{size:13,col:'#5d6b82'});},
+ read(s){const e=s.emf||0,on=Math.abs(e)>.25;return row('Nam châm',s.v===0?'Đứng yên':'Đang chuyển động')+row('Dòng điện cảm ứng',on?'Có':'Không')+row('Chiều lệch của kim',on?(e>0?'Sang phải':'Sang trái'):'—')+verdict(s.v===0?'Nam châm đứng yên: không có dòng điện, dù nam châm ở gần cuộn dây':'Dòng điện chỉ xuất hiện khi số đường sức từ xuyên qua cuộn dây thay đổi');},
+ qs:['Đặt tốc độ bằng 0: kim điện kế có lệch không, kể cả khi nam châm nằm sát cuộn dây?','Khi nam châm đi vào và khi đi ra, kim lệch cùng chiều hay ngược chiều?','Tăng tốc độ hoặc số vòng dây thì kim lệch nhiều hơn hay ít hơn?'],
+ concl:'Dòng điện cảm ứng xuất hiện trong cuộn dây dẫn kín khi số đường sức từ xuyên qua tiết diện của cuộn dây biến thiên (tăng hoặc giảm). Nam châm chuyển động càng nhanh, cuộn dây càng nhiều vòng thì dòng điện cảm ứng càng lớn. Đây là nguyên tắc hoạt động của máy phát điện.'},
+
+/* ===== QUANG ===== */
+{id:'bongtoi',g:'quang',title:'Bóng tối và bóng nửa tối',grade:'Lớp 7',
+ goal:'Đặt một vật chắn trước nguồn sáng, thay đổi kích thước nguồn sáng và vị trí vật chắn để xem vùng tối trên màn thay đổi thế nào.',
+ ctl:[{k:'a',label:'Kích thước nguồn sáng',min:0,max:50,step:5,v:0,u:''},{k:'xo',label:'Khoảng cách từ nguồn sáng đến vật chắn',min:15,max:50,step:1,v:25,u:'cm'}],
+ init(){},
+ geo(s){const fr=s.xo*10/610;return{Yu:s.a+(40-s.a)/fr,Yp:-s.a+(40+s.a)/fr};},
+ draw(s){const xs=90,X=700,yc=230,b=40,a=s.a,xo=xs+s.xo*10,g=this.geo(s),Yu=g.Yu,Yp=Math.min(210,g.Yp);
+  ctx.fillStyle='#0f172a';ctx.fillRect(0,0,W,H);fpoly([[xs,yc-a],[X,20],[X,440],[xs,yc+a]],'rgba(253,224,71,.2)');
+  fpoly([[xo,yc-b],[X,yc-Yp],[X,yc+Yp],[xo,yc+b]],'rgba(15,23,42,.6)');
+  if(Yu>0)fpoly([[xo,yc-b],[X,yc-Math.min(210,Yu)],[X,yc+Math.min(210,Yu)],[xo,yc+b]],'#0f172a');else fpoly([[xo,yc-b],[xs+(xo-xs)*a/(a-b),yc],[xo,yc+b]],'#0f172a');
+  for(const sg of[-1,1]){line(xs,yc+sg*a,X,yc+sg*Yu,'rgba(253,224,71,.7)',1.2);if(a>0)line(xs,yc-sg*a,X,yc+sg*g.Yp,'rgba(253,224,71,.4)',1.2,[5,5]);}
+  ctx.fillStyle='#fde68a';ctx.fillRect(X,20,14,420);ctx.fillStyle='#8a7a45';ctx.fillRect(X,yc-Yp,14,2*Yp);if(Yu>0){ctx.fillStyle='#020617';ctx.fillRect(X,yc-Math.min(210,Yu),14,2*Math.min(210,Yu));}
+  if(a===0)disc(xs,yc,7,'#fde047');else{ctx.fillStyle='#fde047';ctx.fillRect(xs-6,yc-a,12,2*a);}
+  ctx.fillStyle='#94a3b8';ctx.fillRect(xo-5,yc-b,10,2*b);
+  const t=(str,x,y)=>txt(str,x,y,{size:13,col:'#e2e8f0'});t(a===0?'Nguồn sáng nhỏ':'Nguồn sáng rộng',xs+10,yc+a+26);t('Vật chắn',xo,yc+b+20);t('Màn',X+7,452);if(Yu>8)t('Bóng tối',X+50,yc);if(a>0&&Yp-Math.max(0,Yu)>12)t('Nửa tối',X+50,yc-(Yp+Math.max(0,Math.min(210,Yu)))/2);},
+ read(s){const g=this.geo(s),u=Math.max(0,g.Yu);return row('Bề rộng bóng tối',f(2*u/10,1)+' cm')+row('Bề rộng mỗi dải nửa tối',f((g.Yp-u)/10,1)+' cm')+verdict(s.a===0?'Nguồn sáng nhỏ: sau vật chắn chỉ có bóng tối, viền rõ nét':u>0?'Nguồn sáng rộng: quanh bóng tối có thêm bóng nửa tối':'Nguồn quá rộng so với vật: trên màn chỉ còn bóng nửa tối')+note('Vật chắn cao 8 cm, màn cách nguồn sáng 61 cm.');},
+ qs:['Với nguồn sáng nhỏ, đưa vật chắn lại gần nguồn sáng thì bóng tối trên màn to ra hay nhỏ đi?','Tăng kích thước nguồn sáng: trên màn xuất hiện thêm vùng gì?','Điểm nằm trong vùng nửa tối nhận được ánh sáng từ toàn bộ hay chỉ một phần nguồn sáng?'],
+ concl:'Ánh sáng truyền theo đường thẳng nên phía sau vật cản có vùng không nhận được ánh sáng từ nguồn, gọi là bóng tối. Với nguồn sáng rộng, quanh bóng tối còn có bóng nửa tối, là vùng chỉ nhận được ánh sáng từ một phần của nguồn sáng.'},
+
+{id:'guongphang',g:'quang',title:'Ảnh của vật tạo bởi gương phẳng',grade:'Lớp 7',
+ goal:'Đặt một vật trước gương phẳng và dựng ảnh của nó bằng các tia phản xạ đi tới mắt.',
+ ctl:[{k:'d',label:'Khoảng cách từ vật đến gương',min:3,max:25,step:1,v:12,u:'cm'},{k:'h',label:'Chiều cao vật',min:3,max:12,step:1,v:8,u:'cm'}],
+ init(){},
+ draw(s){const mx=420,by=340,k=10,ox=mx-s.d*k,ix=mx+s.d*k,ty=by-s.h*k,ex=90,ey=110;
+  line(40,by,770,by,'#94a3b8',1.5);ctx.fillStyle='#bfdbfe';ctx.fillRect(mx,50,8,340);line(mx,50,mx,390,'#1c2433',3);for(let y=56;y<385;y+=14)line(mx+8,y,mx+18,y+10,'#64748b',1.5);txt('Gương phẳng',mx+12,36,{size:13,col:'#5d6b82'});
+  for(const [py,c] of[[ty,'#f59e0b'],[by,'#16a34a']]){const t=(mx-ex)/(ix-ex),my=ey+(py-ey)*t;line(ox,py,mx,my,c,2.5);head((ox+mx)/2,(py+my)/2,Math.atan2(my-py,mx-ox),c,11);line(mx,my,ex,ey,c,2.5);head((mx+ex)/2,(my+ey)/2,Math.atan2(ey-my,ex-mx),c,11);line(mx,my,ix,py,c,1.5,[6,5]);}
+  arrow(ox,by,ox,ty,'#2563eb',6);txt('Vật',ox,by+18,{bold:1,col:'#2563eb',size:14});
+  ctx.save();ctx.globalAlpha=.55;ctx.setLineDash([7,5]);ctx.strokeStyle='#dc2626';ctx.lineWidth=6;ctx.beginPath();ctx.moveTo(ix,by);ctx.lineTo(ix,ty+10);ctx.stroke();ctx.restore();head(ix,ty,-Math.PI/2,'rgba(220,38,38,.6)',13);txt('Ảnh ảo',ix,by+18,{bold:1,col:'#dc2626',size:14});
+  ctx.fillStyle='#fff';ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(ex-8,ey-6,18,11,.4,0,7);ctx.fill();ctx.stroke();disc(ex-3,ey-4,5,'#1c2433');txt('Mắt',ex-8,ey-30,{size:13,col:'#5d6b82'});
+  const dy=by+44;line(ox,dy,mx,dy,'#2563eb',1.5);line(mx,dy,ix,dy,'#dc2626',1.5);txt('d = '+s.d+' cm',(ox+mx)/2,dy+16,{size:13,col:'#2563eb',bold:1});txt("d' = "+s.d+' cm',(ix+mx)/2+6,dy+16,{size:13,col:'#dc2626',bold:1});},
+ read(s){return row('Khoảng cách vật – gương',s.d+' cm')+row('Khoảng cách ảnh – gương',s.d+' cm')+row('Chiều cao vật · chiều cao ảnh',s.h+' cm · '+s.h+' cm')+verdict('Ảnh ảo, lớn bằng vật, đối xứng với vật qua gương')+note('Nét đứt là đường kéo dài của tia phản xạ; mắt thấy ảnh ở nơi các đường kéo dài gặp nhau.');},
+ qs:['Đưa vật lại gần gương thì ảnh di chuyển thế nào? Độ lớn của ảnh có đổi không?','Vì sao gọi đây là ảnh ảo? Có hứng được ảnh này trên màn chắn không?','Giơ tay phải trước gương, ảnh trong gương giơ tay nào?'],
+ concl:'Ảnh của một vật tạo bởi gương phẳng là ảnh ảo, không hứng được trên màn chắn, có độ lớn bằng vật. Khoảng cách từ ảnh đến gương bằng khoảng cách từ vật đến gương: ảnh và vật đối xứng nhau qua mặt gương.'},
+
+{id:'langkinh',g:'quang',title:'Phân tích ánh sáng trắng bằng lăng kính',grade:'Lớp 9',
+ goal:'Chiếu một chùm sáng hẹp qua lăng kính và quan sát chùm sáng ló ra trên màn chắn.',
+ ctl:[{k:'src',label:'Chùm sáng tới',type:'select',v:'w',opts:[['w','Ánh sáng trắng'],['0','Ánh sáng đỏ'],['3','Ánh sáng lục'],['6','Ánh sáng tím']]},{k:'i',label:'Góc tới',min:42,max:65,step:1,v:52,u:'°'}],
+ init(){},
+ draw(s){ctx.fillStyle='#0f172a';ctx.fillRect(0,0,W,H);const A=[290,350],B=[510,350],T=[400,159.5];fpoly([A,B,T],'rgba(255,255,255,.13)');pline([A,B,T,A],'#e2e8f0',2);ctx.fillStyle='#475569';ctx.fillRect(728,30,5,400);
+  const M=[(A[0]+T[0])/2,(A[1]+T[1])/2],an=(30-s.i)*Math.PI/180,d=[Math.cos(an),Math.sin(an)],white=s.src==='w';
+  const refr=(d,n,eta)=>{const c=-(d[0]*n[0]+d[1]*n[1]),k=1-eta*eta*(1-c*c);if(k<0)return null;const q=eta*c-Math.sqrt(k);return[eta*d[0]+q*n[0],eta*d[1]+q*n[1]];};
+  line(M[0]-d[0]*230,M[1]-d[1]*230,M[0],M[1],white?'#fff':SPEC[+s.src][1],5);
+  ctx.save();ctx.globalCompositeOperation='lighter';
+  for(const c of(white?SPEC:[SPEC[+s.src]])){const d1=refr(d,[-.866,-.5],1/c[2]),ex=B[0]-T[0],ey=B[1]-T[1],t=((T[0]-M[0])*ey-(T[1]-M[1])*ex)/(d1[0]*ey-d1[1]*ex),P=[M[0]+d1[0]*t,M[1]+d1[1]*t],d2=refr(d1,[-.866,.5],c[2]);
+   line(M[0],M[1],P[0],P[1],c[1],white?2.5:4);if(!d2)continue;const tt=(728-P[0])/d2[0],E=[728,P[1]+d2[1]*tt];line(P[0],P[1],E[0],E[1],c[1],white?3:4);ctx.fillStyle=c[1];ctx.fillRect(733,E[1]-5,14,10);ctx.globalCompositeOperation='source-over';txt(c[0],752,E[1],{size:11,col:'#e2e8f0',align:'left'});ctx.globalCompositeOperation='lighter';}
+  ctx.restore();txt('Lăng kính',400,372,{size:13,col:'#cbd5e1'});txt('Màn chắn',700,22,{size:13,col:'#cbd5e1'});txt(white?'Chùm sáng trắng':'Chùm sáng màu',M[0]-d[0]*200,M[1]-d[1]*200-18,{size:13,col:'#cbd5e1'});},
+ read(s){const w=s.src==='w';return row('Chùm sáng tới',w?'Ánh sáng trắng':'Ánh sáng '+SPEC[+s.src][0].toLowerCase())+row('Trên màn chắn',w?'Dải 7 màu liên tục':'Một vạch, giữ nguyên màu')+verdict(w?'Tia đỏ lệch ít nhất, tia tím lệch nhiều nhất':'Ánh sáng màu (đơn sắc) không bị phân tích khi qua lăng kính')+note('Độ lệch giữa các màu được vẽ lớn hơn thực tế để dễ phân biệt.');},
+ qs:['Chiếu ánh sáng trắng: trên màn chắn thu được những màu nào, theo thứ tự nào?','Tia màu nào bị lệch nhiều nhất, tia nào lệch ít nhất?','Đổi sang ánh sáng đỏ hoặc lục: chùm ló có bị tách thành nhiều màu không?'],
+ concl:'Lăng kính phân tích chùm sáng trắng thành dải màu liên tục từ đỏ đến tím (đỏ, cam, vàng, lục, lam, chàm, tím), trong đó tia đỏ lệch ít nhất và tia tím lệch nhiều nhất. Điều này chứng tỏ ánh sáng trắng là hỗn hợp của nhiều ánh sáng màu.'},
+
+{id:'tronmau',g:'quang',title:'Trộn các ánh sáng màu',grade:'Lớp 9',
+ goal:'Chiếu ba chùm sáng đỏ, lục, lam lên cùng một màn trắng và thay đổi độ mạnh của từng đèn để tạo ra các màu khác nhau.',
+ ctl:[{k:'R',label:'Đèn đỏ',min:0,max:100,step:5,v:100,u:'%'},{k:'G',label:'Đèn lục',min:0,max:100,step:5,v:100,u:'%'},{k:'B',label:'Đèn lam',min:0,max:100,step:5,v:100,u:'%'}],
+ init(){},
+ draw(s){const v=x=>Math.round(x*2.55);ctx.fillStyle='#0b1020';ctx.fillRect(0,0,W,H);ctx.save();ctx.globalCompositeOperation='lighter';
+  [[400,170,`rgb(${v(s.R)},0,0)`],[325,295,`rgb(0,${v(s.G)},0)`],[475,295,`rgb(0,0,${v(s.B)})`]].forEach(c=>disc(c[0],c[1],125,c[2]));ctx.restore();
+  const t=(a,x,y)=>txt(a,x,y,{size:14,col:'#e2e8f0',bold:1});t('Đèn đỏ',400,26);t('Đèn lục',150,330);t('Đèn lam',650,330);},
+ read(s){const on=[s.R>=50,s.G>=50,s.B>=50].map(Number).join(''),nm={'111':'Trắng','110':'Vàng','101':'Hồng tím (đỏ cánh sen)','011':'Xanh lơ','100':'Đỏ','010':'Lục','001':'Lam','000':'Tối (gần như đen)'}[on],v=x=>Math.round(x*2.55);
+  return row('Đỏ · Lục · Lam',s.R+' % · '+s.G+' % · '+s.B+' %')+row('Màu ở vùng cả ba đèn chiếu tới',`<span style="display:inline-block;width:42px;height:18px;border:1px solid #94a3b8;vertical-align:middle;background:rgb(${v(s.R)},${v(s.G)},${v(s.B)})"></span>`)+verdict('Màu thu được: gần với '+nm.toLowerCase())+note('Đỏ + lục → vàng · đỏ + lam → hồng tím · lục + lam → xanh lơ · cả ba → trắng.');},
+ qs:['Bật đủ ba đèn ở mức 100 %: vùng giữa có màu gì?','Tắt đèn lam (0 %): vùng đỏ và lục chồng lên nhau có màu gì?','Màn hình tivi, điện thoại tạo ra hàng triệu màu bằng cách nào?'],
+ concl:'Có thể trộn hai hay nhiều ánh sáng màu bằng cách chiếu chúng đồng thời vào cùng một chỗ trên màn trắng. Trộn ba ánh sáng đỏ, lục, lam với độ mạnh thích hợp sẽ được ánh sáng trắng; thay đổi độ mạnh của từng màu sẽ thu được nhiều màu khác nhau.'},
+
+{id:'mat',g:'quang',title:'Mắt cận, mắt lão và cách khắc phục',grade:'Lớp 9',
+ goal:'Chọn loại mắt, vị trí của vật và loại kính đeo để xem ảnh của vật hiện ở trước, ở sau hay đúng trên màng lưới.',
+ ctl:[{k:'eye',label:'Loại mắt',type:'select',v:'c',opts:[['n','Mắt bình thường'],['c','Mắt cận'],['l','Mắt lão']]},{k:'obj',label:'Vật cần nhìn',type:'select',v:'far',opts:[['far','Ở xa'],['near','Ở gần (trang sách)']]},{k:'gl',label:'Kính đeo',type:'select',v:0,opts:[[0,'Không đeo kính'],[1,'Kính phân kì (kính cận)'],[-1,'Kính hội tụ (kính lão)']]}],
+ init(){},
+ off(s){let o=0;if(s.eye==='c'&&s.obj==='far')o=-50;if(s.eye==='l'&&s.obj==='near')o=50;return o+s.gl*50;},
+ draw(s){const o=this.off(s),yc=240,lx=385,fx=568+o,gx=290;
+  disc(470,yc,100,'#fff7f0','#1c2433');ctx.save();ctx.strokeStyle='#dc2626';ctx.lineWidth=6;ctx.beginPath();ctx.arc(470,yc,100,-.8,.8);ctx.stroke();ctx.restore();
+  ctx.fillStyle='#bfdbfe';ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.beginPath();ctx.ellipse(lx+4,yc,14,54,0,0,7);ctx.fill();ctx.stroke();
+  if(s.gl){line(gx,yc-78,gx,yc+78,'#0891b2',4);for(const sg of[-1,1]){const y=yc+sg*78,k=s.gl<0?-sg:sg;line(gx-10,y+k*13,gx,y,'#0891b2',4);line(gx+10,y+k*13,gx,y,'#0891b2',4);}txt(s.gl>0?'Kính phân kì':'Kính hội tụ',gx,yc+104,{size:13,col:'#0891b2',bold:1});}
+  for(const sg of[-1,0,1]){const yl=yc+sg*45,yg=yc+sg*(45-s.gl*8),P=[];P.push(s.obj==='far'?[40,s.gl?yg:yl]:[80,yc]);if(s.gl)P.push([gx,yg]);P.push([lx,yl]);const yr=yc+(yl-yc)*(1-(566-lx)/(fx-lx));P.push([566,yr]);pline(P,'#f59e0b',2.5);if(fx>566)line(566,yr,fx,yc,'#f59e0b',1.5,[5,5]);}
+  disc(fx,yc,6,'#dc2626');txt('Ảnh',fx,yc-18,{size:13,bold:1,col:'#dc2626'});
+  if(s.obj==='near'){ctx.fillStyle='#fff';ctx.strokeStyle='#1c2433';ctx.lineWidth=2;ctx.fillRect(58,yc-26,20,52);ctx.strokeRect(58,yc-26,20,52);txt('Trang sách',70,yc+44,{size:12,col:'#5d6b82'});}else txt('Tia sáng từ vật ở rất xa',120,yc-70,{size:12,col:'#5d6b82'});
+  txt('Thể thuỷ tinh',lx,yc+120,{size:13,col:'#5d6b82'});txt('Màng lưới',600,yc+96,{size:13,col:'#dc2626'});
+  txt(o===0?'Ảnh hiện đúng trên màng lưới → NHÌN RÕ':o<0?'Ảnh hiện ở trước màng lưới → nhìn mờ':'Ảnh hiện ở sau màng lưới → nhìn mờ',400,46,{bold:1,size:20,col:o===0?'#0f9d6b':'#b45309'});},
+ read(s){const o=this.off(s),E={n:'Bình thường',c:'Cận',l:'Lão'}[s.eye];let tip='';if(o!==0)tip=s.gl?'Kính đang đeo không phù hợp với trường hợp này.':s.eye==='c'?'Mắt cận cần đeo kính phân kì để nhìn rõ vật ở xa.':'Mắt lão cần đeo kính hội tụ để nhìn rõ vật ở gần.';
+  return row('Loại mắt',E)+row('Vật',s.obj==='far'?'Ở xa':'Ở gần')+row('Vị trí ảnh',o===0?'Trên màng lưới':o<0?'Trước màng lưới':'Sau màng lưới')+verdict(o===0?'Nhìn rõ':'Nhìn mờ')+note(tip);},
+ qs:['Mắt cận không đeo kính nhìn rõ vật ở xa hay ở gần? Ảnh của vật ở xa hiện ở đâu?','Chọn kính nào để mắt cận nhìn rõ vật ở xa? Kính đó đã làm gì với chùm tia sáng?','Mắt lão gặp khó khăn khi nhìn vật ở đâu và cần đeo kính gì?'],
+ concl:'Mắt cận nhìn rõ vật ở gần nhưng không nhìn rõ vật ở xa vì ảnh hiện trước màng lưới; khắc phục bằng kính cận là thấu kính phân kì. Mắt lão nhìn rõ vật ở xa nhưng không nhìn rõ vật ở gần vì ảnh hiện sau màng lưới; khắc phục bằng kính lão là thấu kính hội tụ.'}
+);
+
+const SUN=(x,y,r=10)=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#fde047"/>`;
+const GLASS=`<path d="M56 40l6 48h36l6-48z" fill="#bfdbfe" stroke="none"/><path d="M52 18l10 70h36l10-70"/>`;
+Object.assign(REAL,{
+tocdo:[
+ ['Đồng hồ tốc độ','Tốc kế trên xe máy, ô tô cho biết tốc độ của xe tại thời điểm đó, tính theo km/h.',
+  sv(`<path d="M26 82a54 54 0 0 1 108 0" stroke-width="4"/><path d="M38 60l8 5M58 38l5 8M102 38l-5 8M122 60l-8 5" stroke-width="2"/><path d="M80 82l30-38" stroke="#dc2626" stroke-width="4"/><circle cx="80" cy="82" r="6" fill="#1c2433"/>${tx(80,66,'km/h',9,'#475569')}`)],
+ ['Biển giới hạn tốc độ','Biển báo cho biết tốc độ lớn nhất được phép chạy trên đoạn đường, ví dụ 50 km/h trong khu dân cư.',
+  sv(`<circle cx="80" cy="46" r="34" fill="#fff" stroke="#dc2626" stroke-width="8"/>${tx(80,58,'50',32)}<path d="M80 84v14" stroke-width="4"/>`)],
+ ['Đồng hồ bấm giây','Trong thi chạy 100 m, quãng đường như nhau nên ai có thời gian ngắn hơn thì người đó chạy nhanh hơn.',
+  sv(`<circle cx="80" cy="56" r="34" fill="#fff" stroke-width="4"/><rect x="73" y="10" width="14" height="12" fill="#64748b"/><path d="M80 56V32M80 56l16 9" stroke-width="3"/><circle cx="80" cy="56" r="3" fill="#1c2433"/>`)]],
+apsuat:[
+ ['Mũi đinh nhọn','Mũi đinh rất nhọn nên diện tích bị ép rất nhỏ; chỉ cần gõ nhẹ là áp suất đủ lớn để đinh cắm vào gỗ.',
+  sv(`<path d="M10 90h140" stroke="#b7793a" stroke-width="6"/><path d="M58 16h44" stroke-width="7"/><path d="M75 18v50l5 20 5-20V18z" fill="#94a3b8"/>`)],
+ ['Xe bánh xích','Máy xúc, xe tăng dùng bánh xích rộng để tăng diện tích tiếp xúc, giảm áp suất lên đất nên không bị lún.',
+  sv(`<path d="M6 88h148" stroke="#8a96a8"/><rect x="26" y="60" width="108" height="26" rx="13" fill="#475569"/>${dots([[42,73],[66,73],[92,73],[118,73]],'#cbd5e1',7)}<rect x="46" y="34" width="62" height="26" fill="#86a98a"/><path d="M108 44h34" stroke-width="5"/>`)],
+ ['Lưỡi dao mài sắc','Dao càng sắc thì lưỡi càng mỏng, diện tích bị ép càng nhỏ nên cùng một lực, áp suất lên vật cần cắt càng lớn.',
+  sv(`<path d="M58 40h86q-8 26-44 26H58z" fill="#e2e8f0"/><rect x="14" y="40" width="44" height="16" rx="5" fill="#92400e"/><path d="M58 66h42" stroke="#64748b" stroke-width="1.5"/>`)]],
+apsuatlong:[
+ ['Đập thuỷ điện','Chân đập phải xây dày hơn đỉnh đập, vì càng xuống sâu áp suất của nước lên thân đập càng lớn.',
+  sv(`<rect x="0" y="28" width="78" height="62" fill="#bfdbfe" stroke="none"/><path d="M78 18h14l36 72H78z" fill="#94a3b8"/><path d="M0 90h160M0 28h78" stroke="#2f6fb5"/><path d="M40 46h30M40 62h30M40 78h30M64 42l6 4-6 4M64 58l6 4-6 4M64 74l6 4-6 4" stroke="#dc2626" stroke-width="1.6"/>`)],
+ ['Tàu ngầm','Vỏ tàu ngầm làm bằng thép dày để chịu được áp suất rất lớn của nước biển ở độ sâu hàng trăm mét.',
+  sv(`<rect width="160" height="100" fill="#93c5fd" stroke="none"/><ellipse cx="80" cy="60" rx="50" ry="17" fill="#475569"/><rect x="68" y="32" width="20" height="14" fill="#475569"/>${dots([[56,60],[78,60],[100,60]],'#fde047',4)}`)],
+ ['Bồn nước trên cao','Bồn nước đặt trên mái nhà hoặc tháp cao để nước ở vòi phía dưới có áp suất lớn, chảy mạnh.',
+  sv(`<rect x="46" y="10" width="68" height="30" rx="5" fill="#bfdbfe"/><path d="M56 40v50M104 40v50M56 64h48M80 40v38h36v8"/><path d="M116 90v6" stroke="#3b82f6" stroke-width="3"/>`)]],
+matnghieng:[
+ ['Đường đèo','Đường lên đèo làm ngoằn ngoèo để đường dài và thoải hơn, xe cần lực kéo nhỏ hơn khi leo dốc.',
+  sv(`<path d="M14 92L80 12l66 80z" fill="#86a98a"/><path d="M36 86h84L58 64h46L72 44h20" stroke="#fff" stroke-width="3.5"/>`)],
+ ['Tấm ván dắt xe','Kê tấm ván để dắt xe máy lên thềm nhà: lực đẩy nhỏ hơn nhiều so với nhấc thẳng cả chiếc xe lên.',
+  sv(`<path d="M6 90h148" stroke="#8a96a8"/><rect x="104" y="52" width="50" height="38" fill="#cbd5e1"/><path d="M26 90l78-38" stroke="#b7793a" stroke-width="5"/><circle cx="60" cy="60" r="11" fill="#fff" stroke-width="4"/>`)],
+ ['Cầu thang','Cầu thang là một dạng mặt phẳng nghiêng: đi quãng đường dài hơn nhưng mỗi bước chỉ cần nâng người lên một đoạn ngắn.',
+  sv(`<path d="M16 90h24V72h24V54h24V36h24V18h32v72z" fill="#e2e8f0"/>`)]],
+conlac:[
+ ['Xích đu','Lên tới điểm cao nhất, xích đu có thế năng lớn nhất; qua điểm thấp nhất, nó chuyển động nhanh nhất.',
+  sv(`<path d="M24 92L56 12h48l32 80"/><path d="M68 12L46 64M92 12L70 64" stroke-width="1.6"/><path d="M40 64h36" stroke="#b7793a" stroke-width="6"/>`)],
+ ['Tàu lượn siêu tốc','Tàu được kéo lên đỉnh cao nhất rồi thả: thế năng chuyển thành động năng khi lao xuống và ngược lại khi leo lên.',
+  sv(`<path d="M4 28q28-22 44 26t40 12 30-40 38 54" stroke="#64748b" stroke-width="3.5"/><rect x="10" y="8" width="20" height="11" rx="2" fill="#dc4a26" transform="rotate(-24 20 14)"/><path d="M24 92V22M70 92V70M118 92V26" stroke-width="1.5" stroke="#94a3b8"/>`)],
+ ['Nhà máy thuỷ điện','Nước trên hồ cao có thế năng lớn; khi chảy xuống, thế năng chuyển thành động năng làm quay tuabin phát điện.',
+  sv(`<rect x="0" y="22" width="58" height="68" fill="#bfdbfe" stroke="none"/><path d="M58 14h14v76H58z" fill="#94a3b8"/><path d="M72 34q24 2 30 34" stroke="#3b82f6" stroke-width="4"/><circle cx="110" cy="76" r="13" fill="#fde047"/><path d="M110 63v26M97 76h26M101 67l18 18M119 67l-18 18" stroke-width="1.8"/><path d="M0 90h160"/>`)]],
+nonhiet:[
+ ['Khe hở đường ray','Giữa hai thanh ray có khe hở nhỏ để khi trời nóng, ray dài ra mà không bị cong vênh.',
+  sv(`<path d="M16 28v52M40 28v52M64 28v52M96 28v52M120 28v52M144 28v52" stroke="#92400e" stroke-width="4"/><path d="M6 42h66M88 42h66M6 66h66M88 66h66" stroke="#64748b" stroke-width="6"/>${tx(80,16,'khe hở',9,'#dc2626')}`)],
+ ['Băng kép trong bàn là','Hai lá kim loại nở vì nhiệt khác nhau được ghép chặt; khi nóng, băng kép cong lại và tự ngắt mạch điện.',
+  sv(`<rect x="10" y="58" width="16" height="26" fill="#475569"/><path d="M26 68q56-4 104-44" stroke="#d99058" stroke-width="5"/><path d="M26 74q58-4 108-45" stroke="#8b95a5" stroke-width="5"/>${tx(104,80,'cong khi nóng',9,'#475569')}`)],
+ ['Dây điện mùa hè','Dây điện trên cột chùng xuống nhiều hơn vào mùa hè vì dây nở dài ra; mùa đông dây co lại và căng hơn.',
+  sv(`${SUN(80,16,9)}<path d="M26 92V22M134 92V22M14 30h24M122 30h24" stroke-width="3"/><path d="M26 30q54 44 108 0" stroke-width="1.8"/><path d="M26 30q54 16 108 0" stroke-width="1.2" stroke-dasharray="4 4" stroke="#94a3b8"/>`)]],
+dannhiet:[
+ ['Nồi kim loại, quai nhựa','Thân nồi bằng kim loại dẫn nhiệt tốt để nấu nhanh; quai bằng nhựa dẫn nhiệt kém nên cầm không bị bỏng.',
+  sv(`<rect x="46" y="38" width="68" height="40" rx="4" fill="#cbd5e1"/><rect x="20" y="44" width="26" height="10" rx="4" fill="#1c2433"/><rect x="114" y="44" width="26" height="10" rx="4" fill="#1c2433"/>${flame(66,98)}${flame(94,98)}`)],
+ ['Áo ấm mùa đông','Áo bông, áo len giữ được lớp không khí dẫn nhiệt kém sát cơ thể, nên nhiệt của cơ thể ít truyền ra ngoài.',
+  sv(`<path d="M56 16L24 38l10 18 14-9v42h64V47l14 9 10-18-32-22q-24 14-48 0z" fill="#f59e0b"/><path d="M80 24v65"/>`)],
+ ['Thìa trong cốc nước nóng','Thìa kim loại cắm trong cốc nước nóng thì cán thìa nóng lên rất nhanh; thìa nhựa hoặc thìa gỗ thì không.',
+  sv(`<path d="M50 36v44q0 8 8 8h44q8 0 8-8V36z" fill="#fde9c4" stroke="none"/><path d="M50 30v50q0 8 8 8h44q8 0 8-8V30"/><path d="M112 8L80 74" stroke="#94a3b8" stroke-width="5"/>`)]],
+doiluu:[
+ ['Đun nước từ đáy ấm','Bếp đặt dưới đáy ấm: nước nóng ở đáy đi lên, nước lạnh phía trên đi xuống nên cả ấm nước nóng đều.',
+  sv(`<path d="M48 80V50q0-14 32-14t32 14v30z" fill="#cbd5e1"/><path d="M112 54l22-10M64 36q16-20 32 0"/>${flame(66,98)}${flame(94,98)}`)],
+ ['Gió biển','Ban ngày đất liền nóng nhanh hơn biển, không khí nóng trên đất liền bay lên, không khí mát từ biển thổi vào.',
+  sv(`<rect x="0" y="72" width="80" height="28" fill="#bfdbfe" stroke="none"/><rect x="80" y="66" width="80" height="34" fill="#e8c98a" stroke="none"/>${SUN(134,16,9)}<path d="M22 58q50-12 98 0M110 50l10 8-12 6" stroke="#2563eb"/><path d="M122 32q-50-12-98 0M34 24l-10 8 12 6" stroke="#dc2626" stroke-dasharray="5 4"/>`)],
+ ['Điều hoà lắp trên cao','Máy lạnh lắp ở trên cao vì không khí lạnh nặng hơn sẽ đi xuống, tạo dòng đối lưu làm mát cả phòng.',
+  sv(`<rect x="36" y="12" width="88" height="26" rx="6" fill="#f1f5f9"/><path d="M48 31h64"/><path d="M58 46v30M80 46v38M102 46v30M52 70l6 8 6-8M74 78l6 8 6-8M96 70l6 8 6-8" stroke="#2563eb"/>`)]],
+canbangnhiet:[
+ ['Pha nước tắm','Pha nước nóng với nước lạnh: nước nóng toả nhiệt, nước lạnh thu nhiệt cho đến khi cả chậu có cùng một nhiệt độ.',
+  sv(`<path d="M26 58h108l-12 32H38z" fill="#bfdbfe"/><path d="M52 12v26" stroke="#dc2626" stroke-width="7"/><path d="M108 12v26" stroke="#2563eb" stroke-width="7"/><path d="M52 42v14M108 42v14" stroke-dasharray="3 4" stroke-width="2"/>${tx(52,8,'nóng',8,'#dc2626')}${tx(108,8,'lạnh',8,'#2563eb')}`)],
+ ['Nước ngọt ướp đá','Thả đá vào ly nước: nước truyền nhiệt cho đá nên nước lạnh đi, còn đá nóng lên và tan dần.',
+  sv(`${GLASS}<rect x="64" y="42" width="14" height="14" fill="#f0f9ff" transform="rotate(-12 71 49)"/><rect x="82" y="50" width="14" height="14" fill="#f0f9ff" transform="rotate(15 89 57)"/><path d="M92 6L80 44" stroke="#dc4a26" stroke-width="3"/>`)],
+ ['Tôi thép','Thợ rèn nhúng thanh thép nung đỏ vào nước: thép toả nhiệt nguội đi rất nhanh, nước thu nhiệt nóng lên và bốc hơi.',
+  sv(`<path d="M26 58h108v32H26z" fill="#bfdbfe"/><path d="M104 10L74 78" stroke="#ef4444" stroke-width="8"/>${steam(40,52)}`)]],
+bayhoi:[
+ ['Phơi quần áo','Quần áo mau khô khi phơi ở chỗ nắng, có gió và được căng rộng ra: đủ cả ba yếu tố làm nước bay hơi nhanh.',
+  sv(`<path d="M6 22h148"/><path d="M50 22L32 36l9 12 9-7v40h40V41l9 7 9-12-18-14q-15 9-30 0z" fill="#60a5fa"/>${SUN(134,64,11)}`)],
+ ['Ruộng muối','Nước biển được dẫn vào các ô ruộng nông và rộng; nắng và gió làm nước bay hơi hết, để lại muối.',
+  sv(`${SUN(134,20,10)}<rect x="10" y="56" width="140" height="26" fill="#bfdbfe" stroke="none"/><path d="M10 82h140M10 56h140M10 56v26M56 56v26M104 56v26M150 56v26"/><path d="M22 82l11-15 11 15zM68 82l13-19 13 19zM116 82l11-15 11 15z" fill="#fff"/>`)],
+ ['Máy sấy tóc','Máy sấy thổi luồng gió nóng: vừa tăng nhiệt độ vừa tạo gió nên nước trên tóc bay hơi rất nhanh.',
+  sv(`<path d="M36 28h58q16 0 16 15t-16 15H36z" fill="#f472b6"/><rect x="56" y="58" width="18" height="32" rx="5" fill="#be185d"/><path d="M120 32h26M122 43h30M120 54h26" stroke="#94a3b8"/>`)]],
+dientich:[
+ ['Thước nhựa hút giấy vụn','Cọ thước nhựa vào vải khô, thước bị nhiễm điện và hút được các mẩu giấy vụn.',
+  sv(`<rect x="18" y="22" width="124" height="16" fill="#93c5fd"/><path d="M30 22v6M46 22v6M62 22v6M78 22v6M94 22v6M110 22v6M126 22v6" stroke-width="1.5"/>${[[40,44],[66,40],[92,46],[118,42],[54,74],[84,80],[108,72]].map(p=>`<rect x="${p[0]}" y="${p[1]}" width="9" height="7" fill="#fff" stroke-width="1.5"/>`).join('')}`)],
+ ['Tia sét','Đám mây dông nhiễm điện rất mạnh; sét là sự phóng điện giữa các đám mây hoặc giữa đám mây với mặt đất.',
+  sv(`<path d="M40 46q-18 0-16-15t20-11q6-15 26-11t19 13q18-2 20 11t-15 13z" fill="#94a3b8"/><path d="M84 48L68 70h13L70 96l28-34H86l10-14z" fill="#fde047"/>`)],
+ ['Lược chải tóc khô','Chải tóc khô bằng lược nhựa, lược và tóc nhiễm điện trái dấu nên tóc bị lược hút dựng lên.',
+  sv(`<rect x="28" y="46" width="104" height="16" rx="5" fill="#f59e0b"/><path d="M36 62v24M46 62v24M56 62v24M66 62v24M76 62v24M86 62v24M96 62v24M106 62v24M116 62v24M126 62v24" stroke-width="2"/><path d="M40 40q4-18-6-30M70 40q0-16 4-30M100 40q-2-16 8-28M124 40q4-14 14-22" stroke-width="1.4" stroke="#92400e"/>`)]],
+dientro:[
+ ['Dây điện lõi đồng','Lõi dây điện làm bằng đồng vì đồng có điện trở suất nhỏ, dẫn điện tốt, ít hao phí và ít nóng.',
+  sv(`<rect x="8" y="36" width="104" height="28" rx="8" fill="#1c2433"/><rect x="112" y="43" width="42" height="14" fill="#d99058"/>`)],
+ ['Dây đốt nóng bếp điện','Dây đốt làm bằng nicrom có điện trở suất lớn nên toả nhiều nhiệt khi có dòng điện chạy qua.',
+  sv(`<circle cx="80" cy="50" r="42" fill="#475569"/><path d="M74 50a6 6 0 1 1 12 0a12 12 0 1 1-24 0a18 18 0 1 1 36 0a24 24 0 1 1-48 0a30 30 0 1 1 60 0" stroke="#f97316" stroke-width="3.5"/>`)],
+ ['Đường dây tải điện','Dây tải điện đi xa hàng trăm kilômét nên phải làm to (tiết diện lớn) để giảm điện trở, giảm hao phí.',
+  sv(`<path d="M80 8L58 92M80 8l22 84M64 66h32M70 44h20M46 24h68M46 24v10M114 24v10" stroke-width="2.2"/><path d="M0 46q23 8 46-12M114 34q23 20 46 12" stroke-width="1.5"/>`)]],
+congsuat:[
+ ['Số oát ghi trên bóng đèn','Trên mỗi thiết bị có ghi công suất định mức, ví dụ 220 V – 10 W: số oát càng lớn thì càng tốn điện.',
+  sv(`<circle cx="52" cy="40" r="24" fill="#fef9c3"/><rect x="43" y="64" width="18" height="16" fill="#94a3b8"/>${tx(116,44,'220 V',13)}${tx(116,64,'10 W',13,'#dc2626')}`)],
+ ['Nhãn năng lượng','Nhãn năng lượng trên tủ lạnh, điều hoà: càng nhiều sao thì thiết bị càng tiết kiệm điện.',
+  sv(`<rect x="44" y="8" width="72" height="84" rx="8" fill="#fff"/>${tx(80,38,'★★★★★',13,'#f59e0b')}${tx(80,60,'TIẾT KIỆM',8)}${tx(80,74,'NĂNG LƯỢNG',8)}`)],
+ ['Hoá đơn tiền điện','Tiền điện tính theo số kWh trên công tơ: mỗi “số điện” là 1 kWh.',
+  sv(`<path d="M48 6h64v88l-11-6-11 6-10-6-10 6-11-6-11 6z" fill="#fff"/><path d="M60 24h40M60 36h40M60 48h26" stroke-width="1.6"/>${tx(80,74,'kWh',13,'#dc2626')}`)]],
+junlenxo:[
+ ['Bàn là','Dây đốt trong bàn là có điện trở lớn; dòng điện chạy qua làm nó nóng lên để là phẳng quần áo.',
+  sv(`<path d="M22 76h116q0-36-54-36H52z" fill="#cbd5e1"/><path d="M62 40q0-20 26-20h30v18" stroke-width="5"/><path d="M16 86h128" stroke="#dc4a26" stroke-width="3"/>`)],
+ ['Ấm siêu tốc','Thanh đốt ở đáy ấm biến điện năng thành nhiệt năng, làm sôi nước chỉ trong vài phút.',
+  sv(`<path d="M52 78V40q0-10 28-10t28 10v38z" fill="#e2e8f0"/><path d="M108 44h10q10 0 10 14t-10 14h-10M52 42l-14-8"/><rect x="42" y="78" width="76" height="10" rx="3" fill="#475569"/><path d="M62 70h36" stroke="#f97316" stroke-width="4"/>`)],
+ ['Bóng đèn sợi đốt','Dây tóc bị dòng điện nung nóng tới hơn 2000 °C nên phát sáng; phần lớn điện năng lại biến thành nhiệt.',
+  sv(`<circle cx="80" cy="40" r="30" fill="#fef9c3"/><path d="M66 48l4-12 5 12 5-12 5 12 5-12 4 12" stroke="#f97316"/><path d="M66 48v20M94 48v20" stroke-width="1.5"/><rect x="68" y="68" width="24" height="18" fill="#94a3b8"/>`)]],
+camung:[
+ ['Đinamô xe đạp','Bánh xe quay làm nam châm trong đinamô quay trước cuộn dây, tạo ra dòng điện thắp sáng đèn xe.',
+  sv(`<circle cx="48" cy="58" r="34" stroke-width="4"/><circle cx="48" cy="58" r="3" fill="#1c2433"/><rect x="80" y="18" width="16" height="28" rx="5" fill="#64748b"/><path d="M96 32h26"/><path d="M122 22l18-7v34l-18-7z" fill="#fde047"/>`)],
+ ['Điện gió','Gió làm quay cánh quạt, cánh quạt làm quay máy phát điện: cuộn dây và nam châm quay so với nhau tạo ra dòng điện.',
+  sv(`<path d="M80 94V44" stroke-width="4"/><path d="M80 44V8M80 44l32 18M80 44L48 62" stroke="#64748b" stroke-width="6"/><circle cx="80" cy="44" r="6" fill="#1c2433"/><path d="M40 94h80"/>`)],
+ ['Sạc không dây','Cuộn dây trong đế sạc tạo từ trường biến đổi, làm xuất hiện dòng điện cảm ứng trong cuộn dây của điện thoại.',
+  sv(`<ellipse cx="80" cy="82" rx="52" ry="10" fill="#cbd5e1"/><rect x="58" y="14" width="44" height="48" rx="7" fill="#1c2433"/><path d="M66 70q14-8 28 0M60 76q20-12 40 0" stroke="#2563eb" stroke-width="2"/>`)]],
+bongtoi:[
+ ['Nhật thực','Khi Mặt Trăng nằm giữa Mặt Trời và Trái Đất, nơi nằm trong vùng bóng tối của Mặt Trăng thấy nhật thực toàn phần.',
+  sv(`<rect width="160" height="100" fill="#0f172a" stroke="none"/><circle cx="24" cy="50" r="18" fill="#fde047" stroke="none"/><circle cx="88" cy="50" r="7" fill="#94a3b8" stroke="none"/><circle cx="136" cy="50" r="15" fill="#60a5fa" stroke="none"/><path d="M24 32L122 48M24 68l98-16" stroke="#fde047" stroke-width="1" stroke-dasharray="3 3"/>`)],
+ ['Bóng người dưới nắng','Ánh sáng truyền thẳng nên phía sau người có bóng; buổi trưa bóng ngắn, sáng sớm và chiều muộn bóng dài.',
+  sv(`${SUN(22,18,11)}<path d="M6 90h148" stroke="#8a96a8"/><circle cx="76" cy="30" r="8" fill="#1c2433"/><path d="M76 38v28M76 46l-12 10M76 46l12 10M76 66l-9 22M76 66l9 22" stroke-width="3.5"/><path d="M82 92l56 2" stroke="#475569" stroke-width="7" opacity=".5"/>`)],
+ ['Đèn phòng mổ','Đèn mổ gồm nhiều bóng xếp trên một chao rộng, nên tay bác sĩ không tạo ra bóng tối che vết mổ.',
+  sv(`<path d="M80 4v12"/><ellipse cx="80" cy="30" rx="54" ry="15" fill="#e2e8f0"/>${dots([[44,30],[62,34],[80,36],[98,34],[116,30]],'#fde047',5)}<path d="M44 44l16 44M80 48v42M116 44l-16 44" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 4"/>`)]],
+guongphang:[
+ ['Gương soi','Soi gương ta thấy ảnh của mình ở sau gương, to bằng mình và cách gương đúng bằng khoảng cách mình đứng.',
+  sv(`<ellipse cx="80" cy="42" rx="30" ry="36" fill="#dbeafe" stroke="#b7793a" stroke-width="5"/><path d="M80 80v12M60 94h40" stroke-width="4"/><path d="M66 30l14-12M68 46l22-20" stroke="#fff" stroke-width="3"/>`)],
+ ['Kính tiềm vọng','Hai gương phẳng đặt nghiêng 45° trong ống giúp người trong tàu ngầm hay sau vật chắn quan sát được bên ngoài.',
+  sv(`<path d="M44 10h38v60h36v18H62V28H44z" fill="#e2e8f0"/><path d="M64 12l16 16M64 72l16 16" stroke="#2563eb" stroke-width="4"/><path d="M14 19h58v60h70" stroke="#f59e0b" stroke-width="1.8" stroke-dasharray="5 4"/>`)],
+ ['Chữ viết ngược trên xe cứu thương','Chữ ở đầu xe được viết ngược để tài xế xe phía trước nhìn qua gương chiếu hậu đọc được thành chữ xuôi.',
+  sv(`<rect x="16" y="28" width="128" height="44" rx="8" fill="#fff"/><text x="-80" y="58" transform="scale(-1 1)" font-size="17" font-weight="700" text-anchor="middle" fill="#dc2626" stroke="none" font-family="Arial">AMBULANCE</text>`)]],
+langkinh:[
+ ['Cầu vồng','Sau cơn mưa, các giọt nước nhỏ li ti trong không khí phân tích ánh sáng Mặt Trời thành dải bảy màu.',
+  sv(SPEC.map((c,i)=>`<path d="M${22+i*6} 92a${58-i*6} ${58-i*6} 0 0 1 ${116-i*12} 0" stroke="${c[1]}" stroke-width="6"/>`).join(''))],
+ ['Mặt ghi của đĩa CD','Nghiêng mặt đĩa CD dưới ánh sáng trắng sẽ thấy các dải màu: ánh sáng trắng đã bị tách thành nhiều màu.',
+  sv(`<circle cx="80" cy="50" r="42" fill="#e2e8f0"/>${SPEC.map((c,i)=>`<path d="M80 50L${80+42*Math.cos(i*.32-.6)} ${50+42*Math.sin(i*.32-.6)}" stroke="${c[1]}" stroke-width="7" opacity=".7"/>`).join('')}<circle cx="80" cy="50" r="10" fill="#fff"/>`)],
+ ['Bong bóng xà phòng','Màng bong bóng xà phòng và váng dầu trên mặt nước hiện nhiều màu sắc dù được chiếu bằng ánh sáng trắng.',
+  sv(`<circle cx="62" cy="56" r="32" stroke="#a855f7"/><circle cx="62" cy="56" r="28" stroke="#38bdf8" stroke-width="2"/><circle cx="62" cy="56" r="24" stroke="#facc15" stroke-width="1.6"/><circle cx="120" cy="28" r="17" stroke="#22c55e"/><circle cx="120" cy="28" r="13" stroke="#f97316" stroke-width="1.6"/>`)]],
+tronmau:[
+ ['Điểm ảnh màn hình','Mỗi điểm ảnh trên màn hình gồm ba chấm đỏ, lục, lam; thay đổi độ sáng từng chấm sẽ tạo ra mọi màu.',
+  sv([0,1,2].map(r=>[0,1,2].map(c=>['#ef4444','#22c55e','#3b82f6'].map((k,i)=>`<rect x="${26+c*38+i*11}" y="${14+r*26}" width="9" height="20" fill="${k}" stroke="none"/>`).join('')).join('')).join(''))],
+ ['Đèn sân khấu','Các đèn màu chiếu chồng lên nhau trên sân khấu tạo ra những màu mới ở vùng giao nhau.',
+  sv(`<rect width="160" height="100" fill="#0f172a" stroke="none"/><path d="M40 6L14 92h62z" fill="#ef4444" opacity=".6" stroke="none"/><path d="M80 6L48 92h64z" fill="#22c55e" opacity=".6" stroke="none"/><path d="M120 6L84 92h62z" fill="#3b82f6" opacity=".6" stroke="none"/>`)],
+ ['Đèn LED đổi màu','Đèn LED trang trí chứa ba chip đỏ, lục, lam; bộ điều khiển chỉnh độ sáng từng chip để đổi màu ánh sáng.',
+  sv(`<path d="M52 56V40a28 28 0 0 1 56 0v16z" fill="#f8fafc"/><rect x="60" y="56" width="40" height="18" fill="#94a3b8"/>${dots([[68,44]],'#ef4444',5)}${dots([[80,36]],'#22c55e',5)}${dots([[92,44]],'#3b82f6',5)}<path d="M70 74v16M90 74v16"/>`)]],
+mat:[
+ ['Kính cận','Kính cận là thấu kính phân kì: nó làm chùm sáng loe ra một chút để ảnh lùi về đúng màng lưới.',
+  sv(`<circle cx="52" cy="52" r="22" fill="#dbeafe"/><circle cx="108" cy="52" r="22" fill="#dbeafe"/><path d="M74 50q6-8 12 0M30 48L12 36M130 48l18-12"/>`)],
+ ['Bảng đo thị lực','Đi khám mắt, bác sĩ cho đọc bảng chữ nhỏ dần để biết mắt có nhìn rõ vật ở xa không và cần kính bao nhiêu độ.',
+  sv(`<rect x="46" y="6" width="68" height="88" fill="#fff"/>${tx(80,34,'E',26)}${tx(80,56,'F P',15)}${tx(80,72,'T O Z',10)}${tx(80,85,'L P E D',7)}`)],
+ ['Giữ khoảng cách khi đọc','Đọc sách cách mắt 25–30 cm, đủ ánh sáng và cho mắt nghỉ thường xuyên giúp hạn chế cận thị.',
+  sv(`<path d="M80 30q-28-13-58 0v54q30-13 58 0q28-13 58 0V30q-30-13-58 0zM80 30v54" fill="#fff"/><path d="M32 44h36M32 56h36M92 44h36M92 56h36" stroke-width="1.5" stroke="#94a3b8"/>`)]]
+});
+
+/* ---------- khung ứng dụng ---------- */
+let cur=null,S={},paused=false,last=0,lastRead='';
+const $=id=>document.getElementById(id);
+function buildNav(){const nav=$('nav');for(const g in GROUPS){const d=document.createElement('div');d.className='grp';d.innerHTML=`<i style="background:${GROUPS[g][1]}"></i>${GROUPS[g][0]}`;nav.appendChild(d);
+  LESSONS.filter(l=>l.g===g).forEach(l=>{const b=document.createElement('button');b.textContent=l.title;b.dataset.id=l.id;b.onclick=()=>open(l.id);nav.appendChild(b);});}}
+function open(id){cur=LESSONS.find(l=>l.id===id)||LESSONS[0];S={};cur.ctl.forEach(c=>{if(c.k)S[c.k]=c.v;});cur.init(S);
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.id===cur.id));
+  const col=GROUPS[cur.g][1];document.documentElement.style.setProperty('--acc',col);
+  $('tag').textContent=GROUPS[cur.g][0]+' · '+cur.grade;$('tag').style.background=col;$('title').textContent=cur.title;$('goal').textContent=cur.goal;
+  $('qs').innerHTML=cur.qs.map(q=>`<li>${q}</li>`).join('');$('concl').textContent=cur.concl;$('det').open=false;
+  $('real').innerHTML=(REAL[cur.id]||[]).map(r=>`<figure>${r[2]}<figcaption><b>${r[0]}</b>${r[1]}</figcaption></figure>`).join('');
+  const box=$('ctl');box.innerHTML='';
+  cur.ctl.forEach(c=>{const d=document.createElement('div');d.className='ctl';
+    if(c.type==='button'){const b=document.createElement('button');b.className='btn';b.style.width='100%';b.textContent=c.label;b.onclick=()=>c.act.call(cur,S);d.appendChild(b);}
+    else if(c.type==='select'){d.innerHTML=`<label>${c.label}</label>`;const sel=document.createElement('select');c.opts.forEach(o=>{const op=document.createElement('option');op.value=o[0];op.textContent=o[1];sel.appendChild(op);});sel.value=c.v;
+      sel.onchange=()=>{S[c.k]=typeof c.v==='number'?Number(sel.value):sel.value;};d.appendChild(sel);}
+    else{const lb=document.createElement('label'),out=document.createElement('output');lb.append(c.label,out);const inp=document.createElement('input');inp.type='range';inp.min=c.min;inp.max=c.max;inp.step=c.step;inp.value=c.v;
+      const show=()=>out.textContent=f(S[c.k],c.d||0)+' '+c.u;inp.oninput=()=>{S[c.k]=Number(inp.value);show();};show();d.append(lb,inp);}
+    box.appendChild(d);});
+  const nv=$('nav'),on=nv.querySelector('button.on');if(on&&nv.scrollWidth>nv.clientWidth+4)nv.scrollLeft=on.offsetLeft-nv.clientWidth/2+on.offsetWidth/2;
+  try{history.replaceState(null,'','#'+cur.id);}catch(e){}
+  lastRead='';}
+function fit(){const r=cv.getBoundingClientRect(),dpr=window.devicePixelRatio||1;const w=Math.max(100,Math.round(r.width*dpr));if(cv.width!==w){cv.width=w;cv.height=Math.round(w*H/W);}scale=cv.width/W;}
+function frame(ts){const dt=paused?0:Math.min(.05,(ts-last)/1000||0);last=ts;fit();ctx.setTransform(scale,0,0,scale,0,0);ctx.clearRect(0,0,W,H);
+  cur.draw(S,dt);const h=cur.read(S);if(h!==lastRead){$('read').innerHTML=h;lastRead=h;}requestAnimationFrame(frame);}
+$('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'▶ Chạy tiếp':'⏸ Tạm dừng';};
+$('full').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else if(document.documentElement.requestFullscreen)document.documentElement.requestFullscreen();};
+if(!document.fullscreenEnabled)$('full').style.display='none';
+document.addEventListener('fullscreenchange',()=>{$('full').textContent=document.fullscreenElement?'✕ Thoát trình chiếu':'⛶ Trình chiếu';});
+window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(cur&&id!==cur.id)open(id);});
+buildNav();open(location.hash.slice(1));requestAnimationFrame(frame);
+</script>
+</body>
+</html>
