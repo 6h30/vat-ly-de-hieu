@@ -7,28 +7,39 @@
 <link rel="icon" href="icon-192.png">
 <title>Vật lý dễ hiểu – THCS</title>
 <style>
+@font-face{font-family:'Be Vietnam Pro';font-weight:400;font-style:normal;font-display:swap;src:url(fonts/bvp-400.woff) format('woff')}
+@font-face{font-family:'Be Vietnam Pro';font-weight:600;font-style:normal;font-display:swap;src:url(fonts/bvp-600.woff) format('woff')}
+@font-face{font-family:'Be Vietnam Pro';font-weight:700;font-style:normal;font-display:swap;src:url(fonts/bvp-700.woff) format('woff')}
+@font-face{font-family:'Be Vietnam Pro';font-weight:800;font-style:normal;font-display:swap;src:url(fonts/bvp-800.woff) format('woff')}
 :root{--bg:#f4f6fa;--card:#fff;--ink:#1c2433;--mute:#5d6b82;--line:#dfe5ee;--acc:#2563eb;
   --co:#2563eb;--nhiet:#dc4a26;--dien:#0f9d6b;--quang:#8b3fd9}
 *{box-sizing:border-box}
 body{padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)}
 body::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:#172033;z-index:50}
 html,body{margin:0;height:100%}
-body{font-family:"Segoe UI",system-ui,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px}
+body{font-family:"Be Vietnam Pro","Segoe UI",system-ui,Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:16px;line-height:1.55;letter-spacing:.005em;-webkit-font-smoothing:antialiased}
+button,select,input{font-family:inherit}
+h2,h3,.goal,figcaption,.verdict,li,details p,.note,.chal{text-wrap:balance}
+li,details p,.goal,figcaption{text-wrap:pretty}
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100%}
 nav{background:#172033;color:#fff;padding:16px 12px;overflow:auto}
-nav h1{font-size:19px;margin:4px 8px 2px}
+nav h1{font-size:21px;font-weight:800;letter-spacing:-.01em;margin:4px 8px 2px}
 nav .sub{font-size:13px;color:#9fb0cc;margin:0 8px 14px}
 .grp{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:14px 8px 6px;font-weight:700;display:flex;align-items:center;gap:8px}
 .grp i{width:10px;height:10px;border-radius:50%;display:inline-block}
 nav button{display:block;width:100%;text-align:left;background:none;border:0;color:#dbe4f3;font:inherit;font-size:14px;padding:6px 10px;border-radius:8px;cursor:pointer}
 nav button:hover{background:#243251}
 nav button.on{background:#fff;color:#172033;font-weight:600}
+nav button.done::after{content:' ✓';color:#4ade80;font-weight:800}
+nav button.on.done::after{color:#16a34a}
+.prog{font-size:12.5px;color:#9fb0cc;margin:0 8px 10px}
+.prog i{display:block;height:5px;border-radius:9px;background:#243251;margin-top:6px;overflow:hidden}.prog i b{display:block;height:100%;background:#4ade80;width:0;transition:width .4s}
 main{padding:18px 22px 28px;min-width:0}
 .head{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:12px}
 .head .t{flex:1;min-width:220px}
-.tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;padding:3px 10px;border-radius:99px;margin-bottom:6px}
-h2{margin:0;font-size:26px;line-height:1.2}
-.goal{color:var(--mute);margin:6px 0 0;max-width:70ch}
+.tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.04em;color:#fff;padding:3px 10px;border-radius:99px;margin-bottom:6px}
+h2{margin:0;font-size:30px;line-height:1.18;font-weight:800;letter-spacing:-.015em}
+.goal{color:var(--mute);margin:8px 0 0;max-width:62ch;font-size:16.5px}
 .tools{display:flex;gap:8px}
 .btn{font:inherit;font-size:14px;font-weight:600;border:1px solid var(--line);background:#fff;color:var(--ink);padding:8px 14px;border-radius:8px;cursor:pointer}
 .btn:hover{border-color:#9fb0cc}
@@ -39,7 +50,7 @@ h2{margin:0;font-size:26px;line-height:1.2}
 canvas{display:block;width:100%;aspect-ratio:800/460;border-radius:8px;background:#fff}
 .side{display:flex;flex-direction:column;gap:14px}
 .box{padding:14px 16px}
-.box h3{margin:0 0 10px;font-size:13px;letter-spacing:.07em;text-transform:uppercase;color:var(--mute)}
+.box h3{margin:0 0 12px;font-size:12.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
 .ctl{margin-bottom:12px}
 .ctl:last-child{margin-bottom:0}
 .ctl label{display:flex;justify-content:space-between;font-size:15px;margin-bottom:4px;gap:8px}
@@ -53,7 +64,11 @@ select{width:100%;font:inherit;padding:8px;border-radius:8px;border:1px solid va
 .below{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
 .below ol{margin:0;padding-left:20px}
 .below li{margin-bottom:6px}
-.pic{display:block;width:100%;height:auto;border-radius:12px;border:1px solid var(--line);background:#f4f6fa}
+.hero{margin:0 0 16px;border-radius:16px;overflow:hidden;border:1px solid var(--line);background:#fff;box-shadow:0 8px 24px rgba(23,32,51,.08)}
+.pic{display:block;width:100%;height:auto;aspect-ratio:2/1;max-height:360px;object-fit:cover;object-position:center 45%;background:#eef2f8}
+.chal{display:flex;gap:12px;align-items:baseline;padding:14px 18px;font-size:16.5px;font-weight:600;line-height:1.45}
+.chip{flex:none;font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#fff;background:var(--acc);padding:4px 10px;border-radius:99px;transform:translateY(-1px)}
+@media(max-width:760px){.pic{aspect-ratio:16/9;max-height:none}.hero{border-radius:14px;margin-bottom:12px}.chal{flex-direction:column;gap:6px;padding:12px 14px;font-size:15.5px}}
 .real{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 .real figure{margin:0}
 .real svg{display:block;width:100%;background:#f3f7fc;border-radius:10px;border:1px solid var(--line)}
@@ -73,7 +88,7 @@ details p{margin:10px 0 0}
   .app{grid-template-columns:1fr}
   nav{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
   nav{scrollbar-width:none}nav::-webkit-scrollbar{display:none}
-  nav h1,nav .sub{display:none}
+  nav h1,nav .sub,nav .prog{display:none}
   .grp{margin:0 2px 0 8px;white-space:nowrap}
   nav button{width:auto;white-space:nowrap;padding:8px 10px}
   main{padding:12px}
@@ -91,6 +106,7 @@ details p{margin:10px 0 0}
   <nav id="nav">
     <h1>Vật lý dễ hiểu</h1>
     <p class="sub">Mô phỏng tương tác · THCS</p>
+    <div class="prog" id="prog"></div>
   </nav>
   <main>
     <div class="head">
@@ -104,6 +120,7 @@ details p{margin:10px 0 0}
         <button class="btn pri" id="full">⛶ Trình chiếu</button>
       </div>
     </div>
+    <div class="hero" id="picbox"><img id="pic" class="pic" alt="" decoding="async"><div class="chal"><span class="chip">Thử thách</span><span id="chal"></span></div></div>
     <div class="work">
       <div class="card stage"><canvas id="cv"></canvas></div>
       <div class="side">
@@ -111,7 +128,6 @@ details p{margin:10px 0 0}
         <div class="card box"><h3>Số liệu quan sát</h3><div id="read"></div></div>
       </div>
     </div>
-    <div class="card box" id="picbox" style="margin-top:16px"><h3>Hình minh hoạ</h3><img id="pic" class="pic" alt="" loading="lazy"></div>
     <div class="card box" style="margin-top:16px"><h3>Trong thực tế</h3><div class="real" id="real"></div></div>
     <div class="below">
       <div class="card box"><h3>Câu hỏi gợi mở</h3><ol id="qs"></ol></div>
@@ -135,7 +151,7 @@ const note=t=>`<div class="note">${t}</div>`;
 
 /* ---------- vẽ cơ bản ---------- */
 function line(x1,y1,x2,y2,col='#1c2433',w=2,dash){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;if(dash)ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
-function txt(s,x,y,o={}){ctx.save();ctx.font=(o.bold?'600 ':'')+((o.size||15)*TK)+'px "Segoe UI",system-ui,Arial';ctx.fillStyle=o.col||'#1c2433';ctx.textAlign=o.align||'center';ctx.textBaseline=o.base||'middle';ctx.fillText(s,x,y);ctx.restore();}
+function txt(s,x,y,o={}){ctx.save();ctx.font=(o.bold?'600 ':'')+((o.size||15)*TK)+'px "Be Vietnam Pro","Segoe UI",system-ui,Arial';ctx.fillStyle=o.col||'#1c2433';ctx.textAlign=o.align||'center';ctx.textBaseline=o.base||'middle';ctx.fillText(s,x,y);ctx.restore();}
 function head(x,y,ang,col,s=10){ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-s,-s*.45);ctx.lineTo(-s,s*.45);ctx.closePath();ctx.fill();ctx.restore();}
 function arrow(x1,y1,x2,y2,col,w=3){if(Math.hypot(x2-x1,y2-y1)<2)return;line(x1,y1,x2,y2,col,w);head(x2,y2,Math.atan2(y2-y1,x2-x1),col,11);}
 function flow(p,off,sp,col){let L=0;const seg=[];for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],l=Math.hypot(b[0]-a[0],b[1]-a[1]);seg.push([a,b,l]);L+=l;}
@@ -905,16 +921,17 @@ mat:[
 });
 
 /* ---------- khung ứng dụng ---------- */
-let cur=null,S={},paused=false,last=0,lastRead='';
+let t0=Date.now(),cur=null,S={},paused=false,last=0,lastRead='';
 const $=id=>document.getElementById(id);
 function buildNav(){const nav=$('nav');for(const g in GROUPS){const d=document.createElement('div');d.className='grp';d.innerHTML=`<i style="background:${GROUPS[g][1]}"></i>${GROUPS[g][0]}`;nav.appendChild(d);
   LESSONS.filter(l=>l.g===g).forEach(l=>{const b=document.createElement('button');b.textContent=l.title;b.dataset.id=l.id;b.onclick=()=>open(l.id);nav.appendChild(b);});}}
-function open(id){cur=LESSONS.find(l=>l.id===id)||LESSONS[0];S={};cur.ctl.forEach(c=>{if(c.k)S[c.k]=c.v;});cur.init(S);
+const fx=t=>String(t).replace(/F_A/g,'F<sub>A</sub>').replace(/(Ác-si-mét|Len-xơ|Jun-Len-xơ)/g,'<span style="white-space:nowrap">$1</span>');
+function open(id){cur=LESSONS.find(l=>l.id===id)||LESSONS[0];S={};t0=Date.now();cur.ctl.forEach(c=>{if(c.k)S[c.k]=c.v;});cur.init(S);
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.id===cur.id));
   const col=GROUPS[cur.g][1];document.documentElement.style.setProperty('--acc',col);
-  $('tag').textContent=GROUPS[cur.g][0]+' · '+cur.grade;$('tag').style.background=col;$('title').textContent=cur.title;$('goal').textContent=cur.goal;
-  $('qs').innerHTML=cur.qs.map(q=>`<li>${q}</li>`).join('');$('concl').textContent=cur.concl;$('det').open=false;
-  {const im=$('pic');im.alt='Hình minh hoạ: '+cur.title;im.onerror=()=>{$('picbox').style.display='none'};$('picbox').style.display='';im.src='img/'+cur.id+'.webp';}
+  $('tag').textContent=GROUPS[cur.g][0]+' · '+cur.grade;$('tag').style.background=col;$('title').innerHTML=fx(cur.title);$('goal').innerHTML=fx(cur.goal);
+  $('qs').innerHTML=cur.qs.map(q=>`<li>${fx(q)}</li>`).join('');$('concl').innerHTML=fx(cur.concl);$('det').open=false;
+  {const im=$('pic');im.alt='Hình minh hoạ: '+cur.title;$('chal').innerHTML=fx(cur.qs[0]||'');im.onerror=()=>{$('picbox').style.display='none'};$('picbox').style.display='';im.src='img/'+cur.id+'.webp';}
   $('real').innerHTML=(REAL[cur.id]||[]).map(r=>`<figure>${r[2]}<figcaption><b>${r[0]}</b>${r[1]}</figcaption></figure>`).join('');
   const box=$('ctl');box.innerHTML='';
   cur.ctl.forEach(c=>{const d=document.createElement('div');d.className='ctl';
@@ -938,10 +955,15 @@ $('full').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();e
 if(!document.fullscreenEnabled)$('full').style.display='none';
 document.addEventListener('fullscreenchange',()=>{$('full').textContent=document.fullscreenElement?'✕ Thoát trình chiếu':'⛶ Trình chiếu';});
 window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(cur&&id!==cur.id)open(id);});
+let seen=[];try{seen=JSON.parse(localStorage.getItem('vldh-seen')||'[]')}catch(e){}
+function markSeen(add){if(add&&cur&&!seen.includes(cur.id)){seen.push(cur.id);try{localStorage.setItem('vldh-seen',JSON.stringify(seen))}catch(e){}}
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('done',seen.includes(b.dataset.id)));
+  $('prog').innerHTML='Đã khám phá <b>'+seen.length+'/'+LESSONS.length+'</b> bài<i><b style="width:'+Math.round(100*seen.length/LESSONS.length)+'%"></b></i>';}
+setInterval(()=>{if(cur&&!seen.includes(cur.id)&&!document.hidden&&Date.now()-t0>8000)markSeen(true);},1000);
 function setNavH(){document.documentElement.style.setProperty('--navh',$('nav').offsetHeight+'px');}
 window.addEventListener('resize',setNavH);
 document.addEventListener('keydown',e=>{if(e.target.matches('input,select,textarea'))return;if(e.key==='ArrowRight'&&!$('next').disabled)$('next').click();else if(e.key==='ArrowLeft'&&!$('prev').disabled)$('prev').click();});
-buildNav();setNavH();open(location.hash.slice(1));requestAnimationFrame(frame);
+buildNav();setNavH();open(location.hash.slice(1));markSeen(false);requestAnimationFrame(frame);
 </script>
 </body>
 </html>

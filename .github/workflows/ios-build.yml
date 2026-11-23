@@ -29,7 +29,7 @@ jobs:
         run: |
           mkdir -p app/www
           cp index.html icon-192.png icon-512.png app/www/
-          cp -r img app/www/img
+          cp -r img fonts app/www/
 
       - name: Create the iOS project
         working-directory: app
