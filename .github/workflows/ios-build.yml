@@ -1,0 +1,94 @@
+name: iOS build (Xcode project and unsigned app) - Vật lý dễ hiểu
+
+# Builds on a GitHub macOS machine, no Apple account needed:
+#  1. VatLyDeHieu-ios-xcode-project: the ready Xcode project. Open it on a Mac, pick your Apple team, Archive, upload to App Store Connect.
+#  2. VatLyDeHieu-ios-simulator: the .app that runs in the Xcode iOS Simulator (proves the build works).
+#  3. VatLyDeHieu-ios-unsigned-ipa: unsigned .ipa of the device build (to re-sign with your own certificate).
+# Publishing to the App Store needs an Apple Developer Program account (99 USD per year) and a Mac or a signing setup.
+on:
+  workflow_dispatch:
+    inputs:
+      build_number:
+        description: "Build number (a whole number that must go up with every upload)"
+        default: "1"
+      version_name:
+        description: "Version name shown to people"
+        default: "1.0.1"
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Copy the site into the app
+        run: |
+          mkdir -p app/www
+          cp index.html icon-192.png icon-512.png app/www/
+          cp -r img app/www/img
+
+      - name: Create the iOS project
+        working-directory: app
+        run: |
+          npm install
+          npx cap add ios
+          npx capacitor-assets generate --ios
+          npx cap sync ios
+
+      - name: Set version and export compliance
+        working-directory: app/ios/App
+        env:
+          VERSION_NAME: ${{ inputs.version_name }}
+          BUILD_NUMBER: ${{ inputs.build_number }}
+        run: |
+          sed -i '' "s/MARKETING_VERSION = [^;]*;/MARKETING_VERSION = $VERSION_NAME;/g" App.xcodeproj/project.pbxproj
+          sed -i '' "s/CURRENT_PROJECT_VERSION = [^;]*;/CURRENT_PROJECT_VERSION = $BUILD_NUMBER;/g" App.xcodeproj/project.pbxproj
+          # The app uses no encryption of its own: skips the export-compliance question on App Store Connect.
+          /usr/libexec/PlistBuddy -c "Add :ITSAppUsesNonExemptEncryption bool false" App/Info.plist || true
+          grep -E "MARKETING_VERSION|CURRENT_PROJECT_VERSION" App.xcodeproj/project.pbxproj | sort -u
+
+      - name: Build for the iOS Simulator
+        working-directory: app/ios/App
+        run: |
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release \
+            -sdk iphonesimulator -derivedDataPath "$RUNNER_TEMP/dd-sim" \
+            CODE_SIGNING_ALLOWED=NO build | tail -n 25
+          cd "$RUNNER_TEMP/dd-sim/Build/Products/Release-iphonesimulator"
+          ditto -c -k --keepParent App.app "$GITHUB_WORKSPACE/VatLyDeHieu-simulator.zip"
+
+      - name: Build the unsigned device app and .ipa
+        working-directory: app/ios/App
+        run: |
+          xcodebuild -project App.xcodeproj -scheme App -configuration Release \
+            -sdk iphoneos -derivedDataPath "$RUNNER_TEMP/dd-dev" \
+            CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO CODE_SIGN_IDENTITY="" build | tail -n 25
+          mkdir -p "$RUNNER_TEMP/ipa/Payload"
+          cp -R "$RUNNER_TEMP/dd-dev/Build/Products/Release-iphoneos/App.app" "$RUNNER_TEMP/ipa/Payload/"
+          cd "$RUNNER_TEMP/ipa" && zip -qry "$GITHUB_WORKSPACE/VatLyDeHieu-unsigned.ipa" Payload
+
+      - name: Pack the Xcode project
+        run: |
+          cd app
+          zip -qry "$GITHUB_WORKSPACE/VatLyDeHieu-ios-project.zip" ios -x "ios/App/build/*" "ios/DerivedData/*"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VatLyDeHieu-ios-xcode-project
+          path: VatLyDeHieu-ios-project.zip
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VatLyDeHieu-ios-simulator
+          path: VatLyDeHieu-simulator.zip
+          if-no-files-found: error
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VatLyDeHieu-ios-unsigned-ipa
+          path: VatLyDeHieu-unsigned.ipa
+          if-no-files-found: error

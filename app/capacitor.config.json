@@ -3,6 +3,14 @@
   "appName": "Vật lý dễ hiểu",
   "webDir": "www",
   "backgroundColor": "#172033",
-  "server": { "androidScheme": "https" },
-  "android": { "allowMixedContent": false }
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#172033"
+  }
 }
