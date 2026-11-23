@@ -64,6 +64,10 @@ details summary{cursor:pointer;font-weight:600;color:var(--acc)}
 details p{margin:10px 0 0}
 :fullscreen nav{display:none}
 :fullscreen .app{grid-template-columns:1fr}
+.pn{display:flex;justify-content:space-between;gap:10px;margin-top:16px}
+.pn .btn{flex:1;max-width:340px;padding:12px 14px;font-size:15px;min-height:46px}
+.pn .btn:disabled{opacity:.35;cursor:default}
+#next{margin-left:auto}
 @media(max-width:1000px){.work{grid-template-columns:1fr}.below{grid-template-columns:1fr}}
 @media(max-width:760px){
   .app{grid-template-columns:1fr}
@@ -74,6 +78,11 @@ details p{margin:10px 0 0}
   nav button{width:auto;white-space:nowrap;padding:8px 10px}
   main{padding:12px}
   h2{font-size:21px}
+  nav{-webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent)}
+  .stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--navh,56px) + 6px);z-index:4;box-shadow:0 6px 14px rgba(23,32,51,.14)}
+  input[type=range]{height:38px}
+  .ctl label{font-size:16px}
+  .pn .btn{font-size:14px}
 }
 </style>
 </head>
@@ -110,11 +119,12 @@ details p{margin:10px 0 0}
         <details id="det"><summary>Bấm để hiện kết luận</summary><p id="concl"></p></details>
       </div>
     </div>
+    <div class="pn"><button class="btn" id="prev"></button><button class="btn pri" id="next"></button></div>
   </main>
 </div>
 <script>
 "use strict";
-const W=800,H=460,cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let TK=1;const W=800,H=460,cv=document.getElementById('cv'),ctx=cv.getContext('2d');
 let scale=1;
 const GROUPS={co:['Cơ học','#2563eb'],nhiet:['Nhiệt học','#dc4a26'],dien:['Điện học','#0f9d6b'],quang:['Quang học','#8b3fd9']};
 const f=(n,d=1)=>Number(n).toFixed(d).replace('.',',');
@@ -125,7 +135,7 @@ const note=t=>`<div class="note">${t}</div>`;
 
 /* ---------- vẽ cơ bản ---------- */
 function line(x1,y1,x2,y2,col='#1c2433',w=2,dash){ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w;if(dash)ctx.setLineDash(dash);ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();ctx.restore();}
-function txt(s,x,y,o={}){ctx.save();ctx.font=(o.bold?'600 ':'')+(o.size||15)+'px "Segoe UI",system-ui,Arial';ctx.fillStyle=o.col||'#1c2433';ctx.textAlign=o.align||'center';ctx.textBaseline=o.base||'middle';ctx.fillText(s,x,y);ctx.restore();}
+function txt(s,x,y,o={}){ctx.save();ctx.font=(o.bold?'600 ':'')+((o.size||15)*TK)+'px "Segoe UI",system-ui,Arial';ctx.fillStyle=o.col||'#1c2433';ctx.textAlign=o.align||'center';ctx.textBaseline=o.base||'middle';ctx.fillText(s,x,y);ctx.restore();}
 function head(x,y,ang,col,s=10){ctx.save();ctx.translate(x,y);ctx.rotate(ang);ctx.fillStyle=col;ctx.beginPath();ctx.moveTo(0,0);ctx.lineTo(-s,-s*.45);ctx.lineTo(-s,s*.45);ctx.closePath();ctx.fill();ctx.restore();}
 function arrow(x1,y1,x2,y2,col,w=3){if(Math.hypot(x2-x1,y2-y1)<2)return;line(x1,y1,x2,y2,col,w);head(x2,y2,Math.atan2(y2-y1,x2-x1),col,11);}
 function flow(p,off,sp,col){let L=0;const seg=[];for(let i=0;i<p.length;i++){const a=p[i],b=p[(i+1)%p.length],l=Math.hypot(b[0]-a[0],b[1]-a[1]);seg.push([a,b,l]);L+=l;}
@@ -915,9 +925,12 @@ function open(id){cur=LESSONS.find(l=>l.id===id)||LESSONS[0];S={};cur.ctl.forEac
       const show=()=>out.textContent=f(S[c.k],c.d||0)+' '+c.u;inp.oninput=()=>{S[c.k]=Number(inp.value);show();};show();d.append(lb,inp);}
     box.appendChild(d);});
   const nv=$('nav'),on=nv.querySelector('button.on');if(on&&nv.scrollWidth>nv.clientWidth+4)nv.scrollLeft=on.offsetLeft-nv.clientWidth/2+on.offsetWidth/2;
+  {const i=LESSONS.indexOf(cur),p=LESSONS[i-1],n=LESSONS[i+1],pb=$('prev'),nb=$('next');
+    pb.disabled=!p;pb.textContent=p?'← '+p.title:'';pb.style.visibility=p?'':'hidden';pb.onclick=()=>{if(p){open(p.id);scrollTo(0,0);}};
+    nb.disabled=!n;nb.textContent=n?n.title+' →':'';nb.style.visibility=n?'':'hidden';nb.onclick=()=>{if(n){open(n.id);scrollTo(0,0);}};}
   try{history.replaceState(null,'','#'+cur.id);}catch(e){}
   lastRead='';}
-function fit(){const r=cv.getBoundingClientRect(),dpr=window.devicePixelRatio||1;const w=Math.max(100,Math.round(r.width*dpr));if(cv.width!==w){cv.width=w;cv.height=Math.round(w*H/W);}scale=cv.width/W;}
+function fit(){const r=cv.getBoundingClientRect(),dpr=window.devicePixelRatio||1;TK=r.width<520?1.3:1;const w=Math.max(100,Math.round(r.width*dpr));if(cv.width!==w){cv.width=w;cv.height=Math.round(w*H/W);}scale=cv.width/W;}
 function frame(ts){const dt=paused?0:Math.min(.05,(ts-last)/1000||0);last=ts;fit();ctx.setTransform(scale,0,0,scale,0,0);ctx.clearRect(0,0,W,H);
   cur.draw(S,dt);const h=cur.read(S);if(h!==lastRead){$('read').innerHTML=h;lastRead=h;}requestAnimationFrame(frame);}
 $('pause').onclick=()=>{paused=!paused;$('pause').textContent=paused?'▶ Chạy tiếp':'⏸ Tạm dừng';};
@@ -925,7 +938,10 @@ $('full').onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();e
 if(!document.fullscreenEnabled)$('full').style.display='none';
 document.addEventListener('fullscreenchange',()=>{$('full').textContent=document.fullscreenElement?'✕ Thoát trình chiếu':'⛶ Trình chiếu';});
 window.addEventListener('hashchange',()=>{const id=location.hash.slice(1);if(cur&&id!==cur.id)open(id);});
-buildNav();open(location.hash.slice(1));requestAnimationFrame(frame);
+function setNavH(){document.documentElement.style.setProperty('--navh',$('nav').offsetHeight+'px');}
+window.addEventListener('resize',setNavH);
+document.addEventListener('keydown',e=>{if(e.target.matches('input,select,textarea'))return;if(e.key==='ArrowRight'&&!$('next').disabled)$('next').click();else if(e.key==='ArrowLeft'&&!$('prev').disabled)$('prev').click();});
+buildNav();setNavH();open(location.hash.slice(1));requestAnimationFrame(frame);
 </script>
 </body>
 </html>
