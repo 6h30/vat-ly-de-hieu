@@ -23,7 +23,10 @@ h2,h3,.goal,figcaption,.verdict,li,details p,.note,.chal{text-wrap:balance}
 li,details p,.goal,figcaption{text-wrap:pretty}
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100%}
 nav{background:#172033;color:#fff;padding:16px 12px;overflow:auto}
-nav h1{font-size:21px;font-weight:800;letter-spacing:-.01em;margin:4px 8px 2px}
+nav h1{font-size:21px;font-weight:800;letter-spacing:-.01em;margin:0 0 2px;line-height:1.15}
+.brand{display:flex;align-items:center;gap:12px;margin:4px 8px 12px}
+.brand img{width:48px;height:48px;border-radius:12px;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.14)}
+.brand .sub{margin:0}
 nav .sub{font-size:13px;color:#9fb0cc;margin:0 8px 14px}
 .grp{font-size:12px;letter-spacing:.08em;text-transform:uppercase;margin:14px 8px 6px;font-weight:700;display:flex;align-items:center;gap:8px}
 .grp i{width:10px;height:10px;border-radius:50%;display:inline-block}
@@ -88,7 +91,9 @@ details p{margin:10px 0 0}
   .app{grid-template-columns:1fr}
   nav{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
   nav{scrollbar-width:none}nav::-webkit-scrollbar{display:none}
-  nav h1,nav .sub,nav .prog{display:none}
+  nav .bt,nav .prog{display:none}
+  .brand{margin:0 4px 0 0;flex:none;position:sticky;left:0;z-index:2;background:#172033;padding:0 8px 0 2px;box-shadow:8px 0 8px -2px #172033}
+  .brand img{width:36px;height:36px;border-radius:10px}
   .grp{margin:0 2px 0 8px;white-space:nowrap}
   nav button{width:auto;white-space:nowrap;padding:8px 10px}
   main{padding:12px}
@@ -104,8 +109,7 @@ details p{margin:10px 0 0}
 <body>
 <div class="app">
   <nav id="nav">
-    <h1>Vật lý dễ hiểu</h1>
-    <p class="sub">Mô phỏng tương tác · THCS</p>
+    <div class="brand"><img src="icon-192.png" alt="" width="48" height="48"><div class="bt"><h1>Vật lý dễ hiểu</h1><p class="sub">Mô phỏng tương tác · THCS</p></div></div>
     <div class="prog" id="prog"></div>
   </nav>
   <main>
