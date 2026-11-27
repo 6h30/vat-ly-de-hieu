@@ -24,6 +24,7 @@ li,details p,.goal,figcaption{text-wrap:pretty}
 .app{display:grid;grid-template-columns:250px 1fr;min-height:100%}
 nav{background:#172033;color:#fff;padding:16px 12px;overflow:auto}
 nav h1{font-size:21px;font-weight:800;letter-spacing:-.01em;margin:0 0 2px;line-height:1.15}
+.mtabs,.mrow{display:none}
 .brand{display:flex;align-items:center;gap:12px;margin:4px 8px 12px}
 .brand img{width:48px;height:48px;border-radius:12px;flex:none;box-shadow:0 0 0 2px rgba(255,255,255,.14)}
 .brand .sub{margin:0}
@@ -89,16 +90,21 @@ details p{margin:10px 0 0}
 @media(max-width:1000px){.work{grid-template-columns:1fr}.below{grid-template-columns:1fr}}
 @media(max-width:760px){
   .app{grid-template-columns:1fr}
-  nav{display:flex;align-items:center;gap:6px;overflow-x:auto;padding:8px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
-  nav{scrollbar-width:none}nav::-webkit-scrollbar{display:none}
-  nav .bt,nav .prog{display:none}
-  .brand{margin:0 4px 0 0;flex:none;position:sticky;left:0;z-index:2;background:#172033;padding:0 8px 0 2px;box-shadow:8px 0 8px -2px #172033}
-  .brand img{width:36px;height:36px;border-radius:10px}
-  .grp{margin:0 2px 0 8px;white-space:nowrap}
-  nav button{width:auto;white-space:nowrap;padding:8px 10px}
+  nav{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:6px 8px;padding:8px 8px 8px 10px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;overflow:visible}
+  nav .bt,nav .prog,nav>.grp,nav>button{display:none}
+  .brand{margin:0;grid-column:1;grid-row:1}
+  .brand img{width:40px;height:40px;border-radius:10px}
+  .mtabs{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;grid-column:2;grid-row:1}
+  .mtabs button{display:flex;align-items:center;justify-content:center;gap:6px;padding:6px 2px;min-height:40px;border-radius:11px;background:#243251;color:#c9d6ee;font-size:13.5px;font-weight:700;line-height:1.1;border:0;cursor:pointer;width:auto}
+  .mtabs button i{width:8px;height:8px;border-radius:50%;display:block}
+  .mtabs button.gon{background:var(--gc);color:#fff;box-shadow:0 2px 8px rgba(0,0,0,.3)}
+  .mtabs button.gon i{background:#fff!important}
+  .mrow{display:flex;gap:6px;overflow-x:auto;grid-column:1/-1;grid-row:2;padding:2px 0 2px;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 22px),transparent);mask-image:linear-gradient(90deg,transparent,#000 14px,#000 calc(100% - 22px),transparent)}
+  .mrow::-webkit-scrollbar{display:none}
+  .mrow button{flex:none;display:block;width:auto;white-space:nowrap;padding:8px 13px;border-radius:99px;background:#243251;color:#dbe4f3;font-size:14px;min-height:38px}
+  .mrow button.on{background:#fff;color:#172033;font-weight:700}
   main{padding:12px}
   h2{font-size:21px}
-  nav{-webkit-mask-image:linear-gradient(90deg,#000 90%,transparent);mask-image:linear-gradient(90deg,#000 90%,transparent)}
   .stage{position:sticky;top:calc(env(safe-area-inset-top,0px) + var(--navh,56px) + 6px);z-index:4;box-shadow:0 6px 14px rgba(23,32,51,.14)}
   input[type=range]{height:38px}
   .ctl label{font-size:16px}
@@ -111,6 +117,8 @@ details p{margin:10px 0 0}
   <nav id="nav">
     <div class="brand"><img src="icon-192.png" alt="" width="48" height="48"><div class="bt"><h1>Vật lý dễ hiểu</h1><p class="sub">Mô phỏng tương tác · THCS</p></div></div>
     <div class="prog" id="prog"></div>
+    <div class="mtabs" id="mtabs" role="tablist"></div>
+    <div class="mrow" id="mrow"></div>
   </nav>
   <main>
     <div class="head">
@@ -930,6 +938,13 @@ const $=id=>document.getElementById(id);
 function buildNav(){const nav=$('nav');for(const g in GROUPS){const d=document.createElement('div');d.className='grp';d.innerHTML=`<i style="background:${GROUPS[g][1]}"></i>${GROUPS[g][0]}`;nav.appendChild(d);
   LESSONS.filter(l=>l.g===g).forEach(l=>{const b=document.createElement('button');b.textContent=l.title;b.dataset.id=l.id;b.onclick=()=>open(l.id);nav.appendChild(b);});}}
 const fx=t=>String(t).replace(/F_A/g,'F<sub>A</sub>').replace(/(Ác-si-mét|Len-xơ|Jun-Len-xơ)/g,'<span style="white-space:nowrap">$1</span>');
+function mobNav(){
+  const mt=$('mtabs');if(!mt.children.length){for(const g in GROUPS){const b=document.createElement('button');b.dataset.g=g;b.style.setProperty('--gc',GROUPS[g][1]);b.innerHTML=`<i style="background:${GROUPS[g][1]}"></i>${GROUPS[g][0].replace(' học','')}`;
+    b.onclick=()=>{if(cur.g!==g){open(LESSONS.find(l=>l.g===g).id);scrollTo(0,0);}};mt.appendChild(b);}}
+  [...mt.children].forEach(b=>b.classList.toggle('gon',b.dataset.g===cur.g));
+  const mr=$('mrow');mr.innerHTML='';
+  LESSONS.filter(l=>l.g===cur.g).forEach(l=>{const b=document.createElement('button');b.textContent=l.title;b.dataset.id=l.id;b.className=(l.id===cur.id?'on ':'')+(seen.includes(l.id)?'done':'');b.onclick=()=>{open(l.id);scrollTo(0,0);};mr.appendChild(b);});
+  const on=mr.querySelector('.on');if(on)mr.scrollLeft=on.offsetLeft-mr.clientWidth/2+on.offsetWidth/2;}
 function open(id){cur=LESSONS.find(l=>l.id===id)||LESSONS[0];S={};t0=Date.now();cur.ctl.forEach(c=>{if(c.k)S[c.k]=c.v;});cur.init(S);
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.id===cur.id));
   const col=GROUPS[cur.g][1];document.documentElement.style.setProperty('--acc',col);
@@ -945,7 +960,7 @@ function open(id){cur=LESSONS.find(l=>l.id===id)||LESSONS[0];S={};t0=Date.now();
     else{const lb=document.createElement('label'),out=document.createElement('output');lb.append(c.label,out);const inp=document.createElement('input');inp.type='range';inp.min=c.min;inp.max=c.max;inp.step=c.step;inp.value=c.v;
       const show=()=>out.textContent=f(S[c.k],c.d||0)+' '+c.u;inp.oninput=()=>{S[c.k]=Number(inp.value);show();};show();d.append(lb,inp);}
     box.appendChild(d);});
-  const nv=$('nav'),on=nv.querySelector('button.on');if(on&&nv.scrollWidth>nv.clientWidth+4)nv.scrollLeft=on.offsetLeft-nv.clientWidth/2+on.offsetWidth/2;
+  mobNav();{const on=$('nav').querySelector('button.on');const nv=$('nav');if(on&&nv.scrollHeight>nv.clientHeight+4&&innerWidth>760)nv.scrollTop=on.offsetTop-nv.clientHeight/2;}setNavH();
   {const i=LESSONS.indexOf(cur),p=LESSONS[i-1],n=LESSONS[i+1],pb=$('prev'),nb=$('next');
     pb.disabled=!p;pb.textContent=p?'← '+p.title:'';pb.style.visibility=p?'':'hidden';pb.onclick=()=>{if(p){open(p.id);scrollTo(0,0);}};
     nb.disabled=!n;nb.textContent=n?n.title+' →':'';nb.style.visibility=n?'':'hidden';nb.onclick=()=>{if(n){open(n.id);scrollTo(0,0);}};}
